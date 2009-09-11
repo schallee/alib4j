@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import net.darkmist.alib.generics.GenericFudge;
 import net.darkmist.alib.ref.AbstractRef;
@@ -15,7 +16,8 @@ import static net.darkmist.alib.io.Serializer.serializeToTempFile;
 
 public class SerializedObjectFile<T extends Serializable> extends AbstractRef<T>
 {
-        private static final Logger logger = Logger.getLogger(SerializedObjectFile.class);
+	private static final Class<SerializedObjectFile> CLASS = SerializedObjectFile.class;
+        private static final Log logger = LogFactory.getLog(CLASS);
 	private File file;
 	private Class<? extends T> objType;
 

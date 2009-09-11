@@ -1,6 +1,7 @@
 package net.darkmist.alib.db;
 
 // not changed since qcomm
+// except commons-logging
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -9,13 +10,17 @@ import java.sql.ResultSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /** {@link java.util.Iterator} interface to a {@link java.sql.ResultSet}. */
 public class ResultSetIterator<E> implements Iterator<E>
 {
-	/** log4j logger for class */
-	private static final Logger logger = Logger.getLogger(ResultSetIterator.class);
+	/** Class object for this class. */
+	private static final Class<ResultSetIterator> CLASS = ResultSetIterator.class;
+	/** commons logging logger */
+        private static final Log logger = LogFactory.getLog(CLASS);
+
 	/** The {@link java.sql.ResultSet} to iterate through. */
 	private ResultSet rs = null;
 	/** The {@link java.sql.PreparedStatement} to iterate through. */

@@ -7,11 +7,14 @@ import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public abstract class RegexIterator<T> implements Iterator<T>
 {
-	private static final Logger logger = Logger.getLogger(RegexIterator.class);
+	private static final Class<RegexIterator> CLASS = RegexIterator.class;
+        private static final Log logger = LogFactory.getLog(CLASS);
+
 	protected Matcher matcher;
 	protected T next;
 	protected boolean hasNext;

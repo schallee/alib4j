@@ -3,11 +3,15 @@ package net.darkmist.alib.str;
 // never in qcomm
 
 import java.io.UnsupportedEncodingException;
-import org.apache.log4j.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public abstract class URLEscape
 {
-	private static final Logger logger = Logger.getLogger(URLEscape.class);
+	private static final Class<URLEscape> CLASS = URLEscape.class;
+        private static final Log logger = LogFactory.getLog(CLASS);
+
 	private static String urlByte2Str[] = new String[256];
 	private URLEscape()
 	{

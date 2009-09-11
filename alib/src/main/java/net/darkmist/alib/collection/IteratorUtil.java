@@ -6,11 +6,13 @@ import java.util.Set;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public abstract class IteratorUtil
 {
-	private static final Logger logger = Logger.getLogger(IteratorUtil.class);
+	private static final Class<IteratorUtil> CLASS = IteratorUtil.class;
+        private static final Log logger = LogFactory.getLog(CLASS);
 
 	public static <T> Set<T> addToSet(Set<T> set, Iterator<T> i)
 	{

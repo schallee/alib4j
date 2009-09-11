@@ -5,11 +5,15 @@ package net.darkmist.alib.collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import org.apache.log4j.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class IteratorIterator<T,U extends Iterator<T>> extends NonRemovingIterator<T>
 {
-	private static final Logger logger = Logger.getLogger(IteratorIterator.class);
+	private static final Class<IteratorIterator> CLASS = IteratorIterator.class;
+        private static final Log logger = LogFactory.getLog(CLASS);
+
 	private LinkedList<U> iterators = new LinkedList<U>();
 	private U iterator = null;
 
