@@ -1,13 +1,31 @@
 package net.darkmist.alib.collection;
 
 import java.util.Collection;
+import java.util.Collections;
 
-public abstract class CollectionUtil
+/**
+ * Static utils for {@link Collection}s.
+ */
+public class CollectionUtil
 {
-	public static <U, T extends Collection<U>> T addAll(T collection, U[] array)
+	private CollectionUtil()
 	{
-		for(U i : array)
-			collection.add(i);
-		return collection;
+	}
+
+	/**
+	 * Add elements to a collection and return the collection.
+	 * This only differs from
+	 * {@link Collections#addAll(Collection,Object[])} in that it
+	 * returns the collection instead of a boolean.
+	 * @param c The collection to add to.
+	 * @param elements The elements to add.
+	 * @return c
+	 * @see Collections#addAll(Collection,Object[])
+	 */
+	public static <T> Collection<? super T> addAll(Collection<? super T> c, T... elements)
+	{
+		
+		Collections.addAll(c,elements);
+		return c;
 	}
 }
