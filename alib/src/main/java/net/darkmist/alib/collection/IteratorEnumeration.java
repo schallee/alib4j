@@ -1,7 +1,5 @@
 package net.darkmist.alib.collection;
 
-// never at qcomm
-
 import java.util.Enumeration;
 import java.util.Iterator;
 
