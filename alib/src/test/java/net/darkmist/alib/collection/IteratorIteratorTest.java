@@ -1,7 +1,5 @@
 package net.darkmist.alib.collection;
 
-// new since qcomm
-
 import java.util.Iterator;
 
 import junit.framework.TestCase;
