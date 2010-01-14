@@ -1,161 +1,98 @@
 package net.darkmist.alib.io;
 
 import java.io.File;
-import java.util.concurrent.Executor;
-
-import net.darkmist.alib.exception.ExceptionHandler;
-import net.darkmist.alib.exception.LoggingExceptionHandler;
-import net.darkmist.alib.job.RunnableJobFactory;
-import net.darkmist.alib.job.CurrentThreadExecutor;
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+import java.util.Queue;
+import java.util.LinkedList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class DirTraverser
 {
-	private static final Class CLASS = DirTraverser.class;
+	private static final Class<DirTraverser> CLASS = DirTraverser.class;
+	@SuppressWarnings("unused")
 	private static final String CLASS_NAME = CLASS.getName();
+	@SuppressWarnings("unused")
 	private static final Log logger = LogFactory.getLog(CLASS);
 
-	private Executor dirExecutor;
-	private Executor fileExecutor;
-	private RunnableJobFactory<File> jobFactory;
+	private FileHandler fileHandler;
+	private Queue<File> frontier;
 
-	private class DirJob implements Runnable
+	/**
+	 * Create a queue for use. This is here to ease changing of the
+	 * default quque implementation.
+	 * @return empty queue.
+	 */
+	private static final Queue<File> newQueue()
 	{
-		private File dir;
-
-		protected void setDir(File dir_)
-		{
-			dir = dir_;
-		}
-
-		protected File getDir()
-		{
-			return dir;
-		}
-
-		protected DirJob()
-		{
-		}
-
-		protected DirJob(File dir_)
-		{
-			setDir(dir_);
-		}
-
-		public void run()
-		{
-			File[] files;
-
-			files = dir.listFiles();
-			for(File file : files)
-				traverse(file);
-		}
+		return new LinkedList<File>();
 	}
 
-	public DirTraverser(Executor dirExecutor_, Executor fileExecutor_, RunnableJobFactory<File> jobFactory_)
+	private static final Queue<File> newQueue(File initial)
 	{
-		setDirExecutor(dirExecutor_);
-		setFileExecutor(fileExecutor_);
-		setJobFactory(jobFactory_);
+		Queue<File> ret = newQueue();
+
+		ret.add(initial);
+		return ret;
 	}
 
-	public DirTraverser(Executor executor_, RunnableJobFactory<File> jobFactory_)
+	public DirTraverser(Queue<File> frontier, FileHandler fileHandler)
 	{
-		this(executor_, executor_, jobFactory_);
+		if(frontier == null)
+			frontier = newQueue();
+		this.frontier = frontier;
+		this.fileHandler = fileHandler;
 	}
 
-	public DirTraverser(RunnableJobFactory<File> jobFactory_)
+	public DirTraverser(File start, FileHandler fileHandler)
 	{
-		this(CurrentThreadExecutor.instance(), jobFactory_);
+		this(newQueue(start), fileHandler);
 	}
 
-	protected void setDirExecutor(Executor dirExecutor_)
+	protected void onFile(File file)
 	{
-		dirExecutor = dirExecutor_;
+		if(fileHandler != null)
+			fileHandler.handleFile(file);
 	}
 
-	protected Executor getDirExecutor()
-	{
-		return dirExecutor;
-	}
-
-	protected void setFileExecutor(Executor fileExecutor_)
-	{
-		fileExecutor = fileExecutor_;
-	}
-
-	protected Executor getFileExecutor()
-	{
-		return fileExecutor;
-	}
-
-	protected void setJobFactory(RunnableJobFactory<File> jobFactory_)
-	{
-		jobFactory = jobFactory_;
-	}
-
-	protected RunnableJobFactory<File> getJobFactory()
-	{
-		return jobFactory;
-	}
-
-	public void traverse(File file)
+	private void onRawFile(File file)
 	{
 		if(file.isDirectory())
-			getDirExecutor().execute(new DirJob(file));
+			frontier.add(file);
 		else
-		{
-			Runnable job;
-
-			if((job = getJobFactory().mkJob(file))!=null)
-				getFileExecutor().execute(job);
-		}
+			onFile(file);
 	}
 
-	private static class PrintingRunnable implements Runnable
+	private static <T> T[] sort(T...a)
 	{
-		private File file;
-
-		PrintingRunnable(File file_)
-		{
-			file = file_;
-		}
-
-		public void run()
-		{
-			System.out.println(file.getPath());
-		}
+		Arrays.sort(a);
+		return a;
 	}
 
-	private static class PrintingRunnableFactory implements RunnableJobFactory<File>
+	public void run()
 	{
-		private static final PrintingRunnableFactory singleton = new PrintingRunnableFactory();
+		File dir;
 
-		private PrintingRunnableFactory()
+		try
 		{
+			while((dir = frontier.remove())!=null)
+			{
+				if(dir.isDirectory())
+				{
+					File[] files = dir.listFiles();
+					if(files != null)
+						for(File file : sort(dir.listFiles()))
+							onRawFile(file);
+				}
+				else
+					onFile(dir);
+			}
 		}
-
-		static PrintingRunnableFactory instance()
+		catch(NoSuchElementException ignored)
 		{
-			return singleton;
+			// we're done
 		}
-
-		public Runnable mkJob(File file)
-		{
-			return new PrintingRunnable(file);
-		}
-	}
-
-	public static void main(String[] args)
-	{
-		DirTraverser traverser = new DirTraverser(PrintingRunnableFactory.instance());
-
-		if(args.length == 0)
-			traverser.traverse(new File("."));
-		else
-			for(String arg : args)
-				traverser.traverse(new File(arg));
 	}
 }
