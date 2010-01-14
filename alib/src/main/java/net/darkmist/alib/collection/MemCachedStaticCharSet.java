@@ -1,4 +1,3 @@
-
 package net.darkmist.alib.collection;
 
 import java.util.Collection;
