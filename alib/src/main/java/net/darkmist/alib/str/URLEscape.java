@@ -1,7 +1,5 @@
 package net.darkmist.alib.str;
 
-// never in qcomm
-
 import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.logging.Log;
