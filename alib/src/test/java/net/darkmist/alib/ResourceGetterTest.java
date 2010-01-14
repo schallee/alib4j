@@ -6,11 +6,13 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.framework.Test;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ResourceGetterTest extends TestCase
 {
-	private static final Logger logger = Logger.getLogger(ResourceGetterTest.class);
+	private static final Class<ResourceGetterTest> CLASS = ResourceGetterTest.class;
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	protected void setUp()
 	{
@@ -21,9 +23,9 @@ public class ResourceGetterTest extends TestCase
 		String input = "select column from table -- comment\n";
 		String expected = "select column from table \n";
 		String result = ResourceGetter.sqlFixup(input);
-		logger.info("input=" + input);
-		logger.info("expected=" + expected);
-		logger.info("result=" + result);
+		logger.debug("input=" + input);
+		logger.debug("expected=" + expected);
+		logger.debug("result=" + result);
 		assertEquals(expected, result);
 	}
 
@@ -32,9 +34,9 @@ public class ResourceGetterTest extends TestCase
 		String input = "select column as 'name' from table -- comment\n";
 		String expected = "select column as 'name' from table \n";
 		String result = ResourceGetter.sqlFixup(input);
-		logger.info("input=" + input);
-		logger.info("expected=" + expected);
-		logger.info("result=" + result);
+		logger.debug("input=" + input);
+		logger.debug("expected=" + expected);
+		logger.debug("result=" + result);
 		assertEquals(expected, result);
 	}
 
@@ -43,9 +45,9 @@ public class ResourceGetterTest extends TestCase
 		String input = "select column as \"name\" from table -- comment\n";
 		String expected = "select column as \"name\" from table \n";
 		String result = ResourceGetter.sqlFixup(input);
-		logger.info("input=" + input);
-		logger.info("expected=" + expected);
-		logger.info("result=" + result);
+		logger.debug("input=" + input);
+		logger.debug("expected=" + expected);
+		logger.debug("result=" + result);
 		assertEquals(expected, result);
 	}
 
@@ -54,9 +56,9 @@ public class ResourceGetterTest extends TestCase
 		String input = "select column as '--name' from table -- comment\n";
 		String expected = "select column as '--name' from table \n";
 		String result = ResourceGetter.sqlFixup(input);
-		logger.info("input=" + input);
-		logger.info("expected=" + expected);
-		logger.info("result=" + result);
+		logger.debug("input=" + input);
+		logger.debug("expected=" + expected);
+		logger.debug("result=" + result);
 		assertEquals(expected, result);
 	}
 
@@ -65,9 +67,9 @@ public class ResourceGetterTest extends TestCase
 		String input = "select column as \"--name\" from table -- comment\n";
 		String expected = "select column as \"--name\" from table \n";
 		String result = ResourceGetter.sqlFixup(input);
-		logger.info("input=" + input);
-		logger.info("expected=" + expected);
-		logger.info("result=" + result);
+		logger.debug("input=" + input);
+		logger.debug("expected=" + expected);
+		logger.debug("result=" + result);
 		assertEquals(expected, result);
 	}
 
@@ -76,9 +78,9 @@ public class ResourceGetterTest extends TestCase
 		String input = "select column as '--\"nam\"e' from table -- comment\n";
 		String expected = "select column as '--\"nam\"e' from table \n";
 		String result = ResourceGetter.sqlFixup(input);
-		logger.info("input=" + input);
-		logger.info("expected=" + expected);
-		logger.info("result=" + result);
+		logger.debug("input=" + input);
+		logger.debug("expected=" + expected);
+		logger.debug("result=" + result);
 		assertEquals(expected, result);
 	}
 
@@ -87,9 +89,9 @@ public class ResourceGetterTest extends TestCase
 		String input = "select column as \"name's\" from table -- comment\n";
 		String expected = "select column as \"name's\" from table \n";
 		String result = ResourceGetter.sqlFixup(input);
-		logger.info("input=" + input);
-		logger.info("expected=" + expected);
-		logger.info("result=" + result);
+		logger.debug("input=" + input);
+		logger.debug("expected=" + expected);
+		logger.debug("result=" + result);
 		assertEquals(expected, result);
 	}
 
@@ -98,9 +100,9 @@ public class ResourceGetterTest extends TestCase
 		String input = "-- a comment \nselect column from table\n";
 		String expected = "\nselect column from table\n";
 		String result = ResourceGetter.sqlFixup(input);
-		logger.info("input=" + input);
-		logger.info("expected=" + expected);
-		logger.info("result=" + result);
+		logger.debug("input=" + input);
+		logger.debug("expected=" + expected);
+		logger.debug("result=" + result);
 		assertEquals(expected.trim(), result.trim());
 	}
 
@@ -109,9 +111,9 @@ public class ResourceGetterTest extends TestCase
 		String input = "select column from table -- first -- comment\n";
 		String expected = "select column from table \n";
 		String result = ResourceGetter.sqlFixup(input);
-		logger.info("input=" + input);
-		logger.info("expected=" + expected);
-		logger.info("result=" + result);
+		logger.debug("input=" + input);
+		logger.debug("expected=" + expected);
+		logger.debug("result=" + result);
 		assertEquals(expected, result);
 	}
 
