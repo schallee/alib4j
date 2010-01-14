@@ -1,7 +1,5 @@
 package net.darkmist.alib.io;
 
-// never in qcomm
-
 import java.io.File;
 import java.io.IOException;
 import java.io.FileOutputStream;
