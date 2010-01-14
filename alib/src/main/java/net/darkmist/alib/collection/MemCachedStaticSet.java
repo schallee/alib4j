@@ -12,7 +12,7 @@ public class MemCachedStaticSet<T> extends MemCachedRef<Set<T>> implements Set<T
 {
 	protected final T[] array;
 
-	public MemCachedStaticSet(T[] array)
+	public MemCachedStaticSet(T...array)
 	{
 		this.array = array;
 	}
