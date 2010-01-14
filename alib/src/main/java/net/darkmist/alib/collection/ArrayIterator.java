@@ -1,14 +1,19 @@
 package net.darkmist.alib.collection;
 
-// new since qcomm
-
 import java.util.Iterator;
 
+/**
+ * Iterator that iterates over an array.
+ */
 public class ArrayIterator<T> extends NonRemovingIterator<T>
 {
 	private T[] array;
 	private int i;
 
+	/**
+	 * Given an array, create an iterator.
+	 * @param array The array to iterate over.
+	 */
 	public ArrayIterator(T[] array)
 	{
 		this.array = array;
