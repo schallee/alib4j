@@ -18,6 +18,7 @@
 		<module>servlet</module>
 		<module>getpass</module>
 		<module>handler</module>
+		<module>spring</module>
 	</modules>
 	<build>
 		<defaultGoal>package</defaultGoal>
