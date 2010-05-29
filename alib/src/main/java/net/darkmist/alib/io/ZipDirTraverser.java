@@ -14,8 +14,9 @@ import java.util.zip.ZipEntry;
 
 import net.darkmist.alib.collection.Sets;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class ZipDirTraverser extends DirTraverser
 {
@@ -23,7 +24,7 @@ public class ZipDirTraverser extends DirTraverser
 	@SuppressWarnings("unused")
 	private static final String CLASS_NAME = CLASS.getName();
 	@SuppressWarnings("unused")
-	private static final Log logger = LogFactory.getLog(CLASS);
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 	private static final Set<String> ZIP_EXTS = Sets.newUnmodifiableSet("jar", "war", "ear", "zip", "rar", "car", "pak");
 	private NamedInputStreamHandler inputStreamHandler;
 

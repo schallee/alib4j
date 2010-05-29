@@ -3,8 +3,8 @@ package net.darkmist.alib.io;
 import java.io.Closeable;
 import java.io.IOException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Static methods to convinently close {@Closeable}s.
@@ -12,7 +12,7 @@ import org.apache.commons.logging.LogFactory;
 public class Closer
 {
 	private static final Class<Closer> CLASS = Closer.class;
-	private static final Log logger = LogFactory.getLog(CLASS);
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	/** Only static methods so private. */
 	private Closer()
@@ -31,7 +31,7 @@ public class Closer
 	 * @return null as a convinence to null out the closed object as in 
 	 * 	<code>toClose = Closer.close(toClose,logExceptionTo,name)</code>
 	 */
-	public static <T extends Closeable> T close(T toClose, Log logExceptionTo, Object name)
+	public static <T extends Closeable> T close(T toClose, Logger logExceptionTo, Object name)
 	{
 		if(toClose == null)
 			return null;
