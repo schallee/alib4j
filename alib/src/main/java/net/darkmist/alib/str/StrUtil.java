@@ -50,4 +50,43 @@ public class StrUtil
 		strs.add(str.substring(start));
 		return (String[])strs.toArray(EMPTY_STRING_ARRAY);
 	}
+
+	/**
+	 * Replace occurences of oen string with another.
+	 * @param src The string to look for match in
+	 * @param match The string to look for
+	 * @param replacement The string to replace match with
+	 * @return src with occurances of match replaced with replacement
+	 */
+	private static final String replace(String src, String match, String replacement)
+	{
+		return replaceToStringBuffer(new StringBuffer(), src, match, replacement).toString();
+	}
+
+	/**
+	 * Replace occurences of oen string with another appending
+	 * 	the result.
+	 * @param sb The StringBuffer to append to
+	 * @param src The string to look for match in
+	 * @param match The string to look for
+	 * @param replacement The string to replace match with
+	 * @return sb with src appended with occurances of match replaced
+	 * 	with replacement
+	 * FIXME: convert to Appendable with wrapped StringBuilder &amp; StringBuffer
+	 */
+	private static final StringBuffer replaceToStringBuffer(StringBuffer sb, String src, String match, String replacement)
+	{
+		int pos;
+		int off=0;
+
+		while((pos=src.indexOf(match,off))>=0)
+		{
+			sb.append(src.substring(off,pos));
+			sb.append(replacement);
+			off=pos+match.length();
+		}
+		if(off<src.length())
+			sb.append(src.substring(off));
+		return sb;
+	}
 }
