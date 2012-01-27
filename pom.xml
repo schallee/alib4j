@@ -13,6 +13,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<shortGroupName>alib</shortGroupName>
+		<slf4j.version>1.5.10</slf4j.version>
 	</properties>
 	<modules>
 		<module>core</module>
@@ -36,11 +37,110 @@
 						<showDeprecation>true</showDeprecation>
 					</configuration>
 				</plugin>
+				<!--
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-pmd-plugin</artifactId>
+					<version>2.4</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>check</goal>
+								<goal>cpd-check</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				-->
 			</plugins>
 		</pluginManagement>
 	</build>
 	<dependencyManagement>
 		<dependencies>
+			<!-- sub modules -->
+			<dependency>
+				<groupId>${groupId}</groupId>
+				<artifactId>core</artifactId>
+				<version>${version}</version>
+			</dependency>
+			
+			<!-- junit -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>3.8.1</version>
+			</dependency>
+
+			<!-- slf4j -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<!-- commons -->
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>1.4</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.4</version>
+			</dependency>
+
+			<!-- log4j -->
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.13</version>
+			</dependency>
+
+			<!-- easymock -->
+			<dependency>
+				<groupId>org.easymock</groupId>
+				<artifactId>easymock</artifactId>
+				<version>2.5.2</version>
+			</dependency>
+
+			<!-- jline -->
+			<dependency>
+				<groupId>jline</groupId>
+				<artifactId>jline</artifactId>
+				<version>0.9.94</version>
+			</dependency>
+
+			<!-- spring -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring</artifactId>
+				<version>2.5.6</version>
+			</dependency>
+
+			<!-- standard -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>2.4</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 	<reporting>
@@ -59,6 +159,31 @@
 						<linksource>true</linksource>
 						<verbose>true</verbose>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-pmd-plugin</artifactId>
+					<version>2.4</version>
+					<configuration>
+						<linkXref>true</linkXref>
+						<sourceEncoding>utf-8</sourceEncoding>
+						<targetJdk>1.5</targetJdk>
+					</configuration>
+					
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>1.1</version>
+					<reportSets>
+						<reportSet>
+							<reports>
+								<report>dependency-updates-report</report>
+								<report>plugin-updates-report</report>
+								<report>property-updates-report</report>
+							</reports>
+						</reportSet>
+					</reportSets>
 				</plugin>
 			<plugins>
 		</pluginManagement>

@@ -14,65 +14,22 @@
 	<name>${shortGroupName}.${artifactId}</name>
 	<build>
 		<finalName>${shortGroupName}-${artifactId}-${version}</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-					<showWarnings>true</showWarnings>
-					<showDeprecation>true</showDeprecation>
-				</configuration>
-			</plugin>
-		</plugins>
 	</build>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
-			<version>2.4</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.darkmist.alib</groupId>
 			<artifactId>core</artifactId>
-			<version>1.0-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
-		<!--
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
-			<scope>compile</scope>
-		</dependency>
-		-->
 	</dependencies>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.5</version>
-				<!--
-                                <configuration>
-                                        <detectJavaApiLink>true</detectJavaApiLink>
-                                        <detectLinks>true</detectLinks>
-                                        <serialwarn>true</serialwarn>
-                                        <show>private</show>
-                                        <linksource>true</linksource>
-                                        <verbose>true</verbose>
-                                </configuration>
-                                -->
-			</plugin>
-		</plugins>
-	</reporting>
 </project>
