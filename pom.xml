@@ -8,10 +8,11 @@
 	<version>1.0-SNAPSHOT</version>
 	<artifactId>alib</artifactId>
 	<packaging>pom</packaging>
-	<name>alib group</name>
+	<name>alib.parent</name>
 	<url>http://www.darkmist.net/alib/</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<shortGroupName>alib</shortGroupName>
 	</properties>
 	<modules>
 		<module>alib</module>

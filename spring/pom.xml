@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.darkmist.alib</groupId>
-	<artifactId>alib-spring</artifactId>
+	<artifactId>spring</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<parent>
@@ -14,6 +14,7 @@
 	</parent>
 	<name>alib.spring</name>
 	<build>
+		<finalName>${shortGroupName}-${artifactId}-${version}</finalName>
 		<plugins>
 		</plugins>
 	</build>

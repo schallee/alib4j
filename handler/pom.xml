@@ -13,8 +13,9 @@
 	<artifactId>handler</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>net.darkmist.alib.handler</name>
+	<name>alib.handler</name>
 	<build>
+		<finalName>${shortGroupName}-${artifactId}-${version}</finalName>
 		<plugins>
 		</plugins>
 	</build>

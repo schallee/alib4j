@@ -13,12 +13,13 @@
 	<artifactId>alib</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>alib</name>
+	<name>alib.core</name>
 	<url>http://www.darkmist.net/alib/</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<build>
+		<finalName>${shortGroupName}-${artifactId}-${version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
