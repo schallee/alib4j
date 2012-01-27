@@ -1,7 +1,5 @@
 package net.darkmist.alib.io;
 
-// not changed since qcomm
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

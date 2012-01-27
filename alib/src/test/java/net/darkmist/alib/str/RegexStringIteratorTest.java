@@ -1,7 +1,5 @@
 package net.darkmist.alib.str;
 
-// not changed since qcomm
-
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.framework.Test;

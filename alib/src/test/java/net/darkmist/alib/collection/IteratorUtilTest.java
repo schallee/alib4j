@@ -1,7 +1,5 @@
 package net.darkmist.alib.collection;
 
-// not changed since qcomm
-
 import java.util.Set;
 import java.util.Iterator;
 import java.util.HashSet;

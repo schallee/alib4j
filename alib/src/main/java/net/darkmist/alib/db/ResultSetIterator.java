@@ -1,8 +1,5 @@
 package net.darkmist.alib.db;
 
-// not changed since qcomm
-// except commons-logging
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;

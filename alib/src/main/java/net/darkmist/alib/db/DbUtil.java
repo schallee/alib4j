@@ -1,7 +1,5 @@
 package net.darkmist.alib.db;
 
-// not changed since qcomm
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

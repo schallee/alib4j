@@ -1,7 +1,5 @@
 package net.darkmist.alib.str;
 
-// not changed since qcomm
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.regex.Pattern;

@@ -1,6 +1,5 @@
 package net.darkmist.alib.str;
 
-// not changed since qcomm
 // we may be able to use org.apache.commons.lang.StringEscapeUtils.escapeJava(String)
 
 import java.util.Map;

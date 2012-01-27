@@ -1,7 +1,5 @@
 package net.darkmist.alib.str;
 
-// not changed since qcomm
-
 import  java.util.regex.Matcher;
 
 public abstract class RegexStringIterator extends RegexIterator<String>
