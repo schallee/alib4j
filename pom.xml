@@ -4,9 +4,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.darkmist</groupId>
+	<groupId>net.darkmist.alib</groupId>
 	<version>1.0-SNAPSHOT</version>
-	<artifactId>alib</artifactId>
+	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
 	<name>alib.parent</name>
 	<url>http://www.darkmist.net/alib/</url>
@@ -15,7 +15,7 @@
 		<shortGroupName>alib</shortGroupName>
 	</properties>
 	<modules>
-		<module>alib</module>
+		<module>core</module>
 		<module>servlet</module>
 		<module>getpass</module>
 		<module>handler</module>

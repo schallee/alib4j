@@ -3,20 +3,16 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.darkmist.alib</groupId>
 	<artifactId>spring</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
 	<parent>
-		<artifactId>alib</artifactId>
-		<groupId>net.darkmist</groupId>
+		<artifactId>parent</artifactId>
+		<groupId>net.darkmist.alib</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<name>alib.spring</name>
+	<name>${shortGroupName}.${artifactId}</name>
 	<build>
 		<finalName>${shortGroupName}-${artifactId}-${version}</finalName>
-		<plugins>
-		</plugins>
 	</build>
 	<dependencies>
 		<dependency>

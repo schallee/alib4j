@@ -5,19 +5,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>alib</artifactId>
-		<groupId>net.darkmist</groupId>
+		<artifactId>parent</artifactId>
+		<groupId>net.darkmist.alib</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>net.darkmist.alib</groupId>
 	<artifactId>servlet</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
-	<name>alib.servlet</name>
-	<url>http://www.darkmist.net/alib/</url>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+	<name>${shortGroupName}.${artifactId}</name>
 	<build>
 		<finalName>${shortGroupName}-${artifactId}-${version}</finalName>
 		<plugins>
@@ -49,7 +43,7 @@
 		</dependency>
 		<dependency>
 			<groupId>net.darkmist.alib</groupId>
-			<artifactId>alib</artifactId>
+			<artifactId>core</artifactId>
 			<version>1.0-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
