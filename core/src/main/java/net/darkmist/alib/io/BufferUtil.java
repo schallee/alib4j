@@ -1,13 +1,16 @@
 package net.darkmist.alib.io;
 
-import java.nio.ByteBuffer;
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
-import java.io.EOFException;
-import java.io.InputStream;
-import java.io.DataInputStream;
-import java.io.DataInput;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -375,4 +378,28 @@ public class BufferUtil
 		localBuf.limit(len);
 		return localBuf.slice();
 	}
+
+	public static ByteBuffer map(File file) throws IOException
+	{
+		FileInputStream fin=null;
+		FileChannel fc=null;
+
+		try
+		{
+			fin = new FileInputStream(file);
+			fc = fin.getChannel();
+			return fc.map(FileChannel.MapMode.READ_ONLY, 0, file.length());
+		}
+		finally
+		{
+			fc = Closer.close(fc);
+			fin = Closer.close(fin);
+		}
+	}
+
+	public static ByteBuffer mapFile(String path) throws IOException
+	{
+		return map(new File(path));
+	}
+
 }
