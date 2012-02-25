@@ -27,27 +27,34 @@ public class Hex
 		return (char)((n<0xa ? '0' : 'a'-0xa) + n);
 	}
 
-	public static Appendable hexNybble(Appendable dst, int n) throws IOException
+	public static <T extends Appendable> T hexNybble(T dst, int n) throws IOException
 	{
-		return dst.append(hexNybble(n));
+		dst.append(hexNybble(n));
+		return dst;
 	}
 
-	public static Appendable hexByte(Appendable dst, int b) throws IOException
+	public static <T extends Appendable> T hexByte(T dst, int b) throws IOException
 	{
-		dst.append(hexNybble((b>>HEX_CHAR_SIZE)&0xf));
-		return dst.append(hexNybble(b&0xf));
+		hexNybble(dst,(b>>HEX_CHAR_SIZE)&0xf);
+		return hexNybble(dst,b&0xf);
 	}
 
-	public static String hexByte(int b)
+	public static StringBuilder hexByte(StringBuilder dst, int b)
 	{
 		try
 		{
-			return hexByte(new StringBuilder(), b).toString();
+			hexByte((Appendable)dst, b);
+			return dst;
 		}
 		catch(IOException e)
 		{
 			throw new IllegalStateException("IOException caught when appending to a " + StringBuilder.class.getName(), e);
 		}
+	}
+
+	public static String hexByte(int b)
+	{
+		return hexByte(new StringBuilder(), b).toString();
 	}
 
 	public static String hex(byte b)
@@ -55,22 +62,28 @@ public class Hex
 		return hexByte(b);
 	}
 
-	public static Appendable hex(Appendable dst, byte b) throws IOException
+	public static <T extends Appendable> T hex(T dst, byte b) throws IOException
 	{
 		return hexByte(dst,b);
 	}
 
-	public static Appendable hexShort(Appendable dst, int s) throws IOException
+	public static StringBuilder hex(StringBuilder dst, byte b)
+	{
+		return hexByte(dst, b);
+	}
+
+	public static <T extends Appendable> T hexShort(T dst, int s) throws IOException
 	{
 		hexByte(dst,(s>>8)&0xff);
 		return hexByte(dst,s&0xff);
 	}
 
-	public static String hexShort(int s)
+	public static StringBuilder hexShort(StringBuilder dst, int s)
 	{
 		try
 		{
-			return hexShort(new StringBuilder(), s).toString();
+			hexShort((Appendable)dst, s);
+			return dst;
 		}
 		catch(IOException e)
 		{
@@ -78,7 +91,17 @@ public class Hex
 		}
 	}
 
-	public static Appendable hex(Appendable dst, short s) throws IOException
+	public static String hexShort(int s)
+	{
+		return hexShort(new StringBuilder(), s).toString();
+	}
+
+	public static <T extends Appendable> T hex(T dst, short s) throws IOException
+	{
+		return hexShort(dst,s);
+	}
+
+	public static StringBuilder hex(StringBuilder dst, short s)
 	{
 		return hexShort(dst,s);
 	}
@@ -88,17 +111,18 @@ public class Hex
 		return hexShort(s);
 	}
 
-	public static Appendable hexInt(Appendable dst, int i) throws IOException
+	public static <T extends Appendable> T hexInt(T dst, int i) throws IOException
 	{
 		hexShort(dst,(i>>16)&0xffff);
 		return hexShort(dst,i&0xffff);
 	}
 
-	public static String hexInt(int i)
+	public static StringBuilder hexInt(StringBuilder dst, int i)
 	{
 		try
 		{
-			return hexInt(new StringBuilder(), i).toString();
+			hexInt((Appendable)dst, i);
+			return dst;
 		}
 		catch(IOException e)
 		{
@@ -106,7 +130,17 @@ public class Hex
 		}
 	}
 
-	public static Appendable hex(Appendable dst, int i) throws IOException
+	public static String hexInt(int i)
+	{
+		return hexInt(new StringBuilder(), i).toString();
+	}
+
+	public static <T extends Appendable> T hex(T dst, int i) throws IOException
+	{
+		return hexInt(dst,i);
+	}
+
+	public static StringBuilder hex(StringBuilder dst, int i)
 	{
 		return hexInt(dst,i);
 	}
@@ -116,17 +150,18 @@ public class Hex
 		return hexInt(i);
 	}
 
-	public static Appendable hexLong(Appendable dst, long l) throws IOException
+	public static <T extends Appendable> T hexLong(T dst, long l) throws IOException
 	{
 		hexInt(dst,(int)(l>>32));
 		return hexInt(dst,(int)l);
 	}
 
-	public static String hexLong(long l)
+	public static StringBuilder hexLong(StringBuilder dst, long l)
 	{
 		try
 		{
-			return hexLong(new StringBuilder(), l).toString();
+			hexLong((Appendable)dst, l);
+			return dst;
 		}
 		catch(IOException e)
 		{
@@ -134,9 +169,19 @@ public class Hex
 		}
 	}
 
-	public static Appendable hex(Appendable dst, long l) throws IOException
+	public static String hexLong(long l)
+	{
+		return hexLong(new StringBuilder(), l).toString();
+	}
+
+	public static <T extends Appendable> T hex(T dst, long l) throws IOException
 	{
 		return hexLong(dst,l);
+	}
+
+	public static StringBuilder hex(StringBuilder dst, long l)
+	{
+		return hexLong(dst, l);
 	}
 
 	public static String hex(long l)
@@ -144,7 +189,7 @@ public class Hex
 		return hexLong(l);
 	}
 
-	public static Appendable hex(Appendable dst, byte[] bytes, int off, int len) throws IOException
+	public static <T extends Appendable> T hex(T dst, byte[] bytes, int off, int len) throws IOException
 	{
 		int end = off + len;
 
@@ -155,21 +200,40 @@ public class Hex
 		return dst;
 	}
 
-	public static Appendable hex(Appendable dst, byte[] bytes, int off) throws IOException
+	public static <T extends Appendable> T hex(T dst, byte[] bytes, int off) throws IOException
 	{
 		return hex(dst, bytes, off, bytes.length - off);
 	}
 
-	public static Appendable hex(Appendable dst, byte[] bytes) throws IOException
+	public static <T extends Appendable> T hex(T dst, byte[] bytes) throws IOException
 	{
 		return hex(dst, bytes, 0, bytes.length);
 	}
 
-	public static String hex(byte[] bytes, int off, int len)
+	public static StringBuilder hex(StringBuilder dst, byte[] bytes, int off, int len)
 	{
 		try
 		{
-			return hex(new StringBuilder(), bytes, off, len).toString();
+			hex((Appendable)dst, bytes, off, len);
+			return dst;
+		}
+		catch(IOException e)
+		{
+			throw new IllegalStateException("IOException caught when appending to a " + StringBuilder.class.getName(), e);
+		}
+	}
+
+	public static String hex(byte[] bytes, int off, int len)
+	{
+		return hex(new StringBuilder(), bytes, off, len).toString();
+	}
+
+	public static StringBuilder hex(StringBuilder dst, byte[] bytes, int off)
+	{
+		try
+		{
+			hex((Appendable)dst, bytes, off);
+			return dst;
 		}
 		catch(IOException e)
 		{
@@ -179,9 +243,15 @@ public class Hex
 
 	public static String hex(byte[] bytes, int off)
 	{
+		return hex(new StringBuilder(), bytes, off).toString();
+	}
+
+	public static StringBuilder hex(StringBuilder dst, byte[] bytes)
+	{
 		try
 		{
-			return hex(new StringBuilder(), bytes, off).toString();
+			hex((Appendable)dst, bytes);
+			return dst;
 		}
 		catch(IOException e)
 		{
@@ -191,14 +261,7 @@ public class Hex
 
 	public static String hex(byte[] bytes)
 	{
-		try
-		{
-			return hex(new StringBuilder(), bytes).toString();
-		}
-		catch(IOException e)
-		{
-			throw new IllegalStateException("IOException caught when appending to a " + StringBuilder.class.getName(), e);
-		}
+		return hex(new StringBuilder(), bytes).toString();
 	}
 
 	public static byte unhexNybble(int c)

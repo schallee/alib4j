@@ -88,6 +88,23 @@ public class HexTest extends TestCase
 		}
 	}
 
+	public void testHexIntStringBuilder()
+	{
+		String actual;
+		String expected;
+		int n;
+
+		for(int i=0;i<NUM_RAND_TESTS;i++)
+		{
+			StringBuilder sb = new StringBuilder(8);
+			n = rand.nextInt();
+			expected = zeroPad(Integer.toHexString(n),8);
+			Hex.hex(sb,n);
+			actual = sb.toString();
+			assertEquals(expected, actual);
+		}
+	}
+
 	public void testHexLong() throws Exception
 	{
 		String actual;
