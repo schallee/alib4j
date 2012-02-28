@@ -1,6 +1,7 @@
 package net.darkmist.alib.str;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Formatter;
 
 public class Hex
@@ -383,65 +384,50 @@ public class Hex
 		return unhex(src, 0, srcLen, new  byte[srcLen/2], 0);
 	}
 
-	public static <T extends Appendable> T dump(T sb, byte[] bytes) throws IOException
+
+	public static <T extends Appendable> T dump(T sb, ByteBuffer buf) throws IOException
 	{
-		int length = bytes.length;
-		int leftover = length % 0x10;
-		Formatter fmt = new Formatter(sb);
-		int i;
-		int j;
+		StringBuilder printable = new StringBuilder(0x10);
+		int off=0;
 
-		fmt.format(HEX_DUMP_HEADER);
-		for(i=0;i<length-0x10;i+=0x10)
-			fmt.format("%08x: %02x%02x %02x%02x %02x%02x %02x%02x  %02x%02x %02x%02x %02x%02x %02x%02x  %s\n", i, bytes[i+0x0], bytes[i+0x1], bytes[i+0x2], bytes[i+0x3], bytes[i+0x4], bytes[i+0x5], bytes[i+0x6], bytes[i+0x7], bytes[i+0x8], bytes[i+0x9], bytes[i+0xa], bytes[i+0xb], bytes[i+0xc], bytes[i+0xd], bytes[i+0xe], bytes[i+0xf], ASCII.printable(bytes,i,0x10));
-
-		if(leftover > 0)
-		{
-			fmt.format("%08x: %02x", i, bytes[i]);
-			for(j=i+1;j<i+0x8;j++)
+		buf = buf.duplicate();
+		sb.append(HEX_DUMP_HEADER);
+		while(buf.hasRemaining())
+		{	// line
+			hexInt(sb, off);
+			off+=0x10;
+			sb.append(": ");
+			printable.delete(0,printable.length());
+			for(int i=0;i<2;i++)
 			{
-				if(j<length)
+				for(int j=0;j<4;j++)
 				{
-					fmt.format("%02x", bytes[j]);
-					if(j%2==1)
-						fmt.format(" ");
+					for(int k=0;k<2;k++)
+					{
+						if(buf.hasRemaining())
+						{
+							byte b = buf.get();
+							hexByte(sb, b);
+							printable.append(ASCII.printable(b));
+						}
+						else
+							sb.append("  ");
+					}
+					sb.append(' ');
 				}
-				else
-				{
-					fmt.format("  ");
-					if(j%2==1)
-						fmt.format(" ");
-				}
+				sb.append(' ');
 			}
-			fmt.format(" ");
-			for(;j<i+0xf;j++)
-			{
-				if(j<length)
-				{
-					if(j%2==0)
-						fmt.format("%02x", bytes[j]);
-					else
-						fmt.format("%02x ", bytes[j]);
-				}
-				else
-				{
-					if(j%2==0)
-						fmt.format("  ");
-					else
-						fmt.format("   ");
-				}
-			}
-			fmt.format("    %s", ASCII.printable(bytes,i,leftover));
+			sb.append(printable.toString());
+			sb.append('\n');
 		}
-		fmt.flush();
 		return sb;
 	}
 
-	public static StringBuilder dump(StringBuilder sb, byte[] bytes)
+	public static StringBuilder dump(StringBuilder sb, ByteBuffer buf)
 	{
 		try
 		{
-			dump((Appendable)sb, bytes);
+			dump((Appendable)sb, buf);
 			return sb;
 		}
 		catch(IOException e)
@@ -450,8 +436,53 @@ public class Hex
 		}
 	}
 
+	public static String dump(ByteBuffer buf)
+	{
+		return dump(new StringBuilder(), buf).toString();
+	}
+
+	public static <T extends Appendable> T dump(T sb, byte[] bytes) throws IOException
+	{
+		return dump(sb, ByteBuffer.wrap(bytes));
+	}
+
+	public static StringBuilder dump(StringBuilder sb, byte[] bytes)
+	{
+		return dump(sb, ByteBuffer.wrap(bytes));
+	}
+
 	public static String dump(byte[] bytes)
 	{
-		return dump(new StringBuilder(bytes.length*4), bytes).toString();
+		return dump(ByteBuffer.wrap(bytes));
+	}
+
+	public static <T extends Appendable> T dump(T sb, byte[] bytes, int off, int len) throws IOException
+	{
+		return dump(sb, ByteBuffer.wrap(bytes,off,len));
+	}
+
+	public static StringBuilder dump(StringBuilder sb, byte[] bytes, int off, int len)
+	{
+		return dump(sb, ByteBuffer.wrap(bytes,off,len));
+	}
+
+	public static String dump(byte[] bytes, int off, int len)
+	{
+		return dump(ByteBuffer.wrap(bytes,off,len));
+	}
+
+	public static <T extends Appendable> T dump(T sb, byte[] bytes, int off) throws IOException
+	{
+		return dump(sb, ByteBuffer.wrap(bytes,off,bytes.length-off));
+	}
+
+	public static StringBuilder dump(StringBuilder sb, byte[] bytes, int off)
+	{
+		return dump(sb, ByteBuffer.wrap(bytes,off,bytes.length-off));
+	}
+
+	public static String dump(byte[] bytes, int off)
+	{
+		return dump(ByteBuffer.wrap(bytes,off,bytes.length-off));
 	}
 }

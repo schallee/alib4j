@@ -1,14 +1,19 @@
 package net.darkmist.alib.str;
 
+import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.framework.Test;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class HexTest extends TestCase
 {
-	private static final Class CLASS = HexTest.class;
+	private static final Class<HexTest> CLASS = HexTest.class;
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 	private static final SecureRandom rand = new SecureRandom();
 	private static final int NUM_RAND_TESTS = 100;
 
@@ -164,6 +169,62 @@ public class HexTest extends TestCase
 			long l = rand.nextLong();
 			assertEquals(Hex.unhexLong(zeroPad(Long.toHexString(l).toUpperCase(),16)),l);
 		}
+	}
+
+	public void testDumpEmpty() throws Exception
+	{
+		ByteBuffer in = ByteBuffer.wrap(new byte[0]);
+		String actual = Hex.dump(in);
+		String expected =	"          0011 2233 4455 6677  8899 aabb ccdd eeff  0123456789abcdef\n";
+		logger.debug("expected:\n{}", expected);
+		logger.debug("actual:\n{}", actual);
+		assertEquals(expected, actual);
+	}
+
+	public void testDumpMultiPartialLine() throws Exception
+	{
+		ByteBuffer in = ByteBuffer.wrap(ASCII.toBytes("abcdefghijklmnopqrstuvwxyz \u0000"));
+		String actual = Hex.dump(in);
+		String expected =	"          0011 2233 4455 6677  8899 aabb ccdd eeff  0123456789abcdef\n"
+			+ 		"00000000: 6162 6364 6566 6768  696a 6b6c 6d6e 6f70  abcdefghijklmnop\n"
+			+ 		"00000010: 7172 7374 7576 7778  797a 2000            qrstuvwxyz..\n";
+		logger.debug("expected:\n{}", expected);
+		logger.debug("actual:\n{}", actual);
+		assertEquals(expected, actual);
+	}
+
+	public void testDumpMultiLine() throws Exception
+	{
+		ByteBuffer in = ByteBuffer.wrap(ASCII.toBytes("abcdefghijklmnopqrstuvwxyz0123 \u0000"));
+		String actual = Hex.dump(in);
+		String expected =	"          0011 2233 4455 6677  8899 aabb ccdd eeff  0123456789abcdef\n"
+			+ 		"00000000: 6162 6364 6566 6768  696a 6b6c 6d6e 6f70  abcdefghijklmnop\n"
+			+ 		"00000010: 7172 7374 7576 7778  797a 3031 3233 2000  qrstuvwxyz0123..\n";
+		logger.debug("expected:\n{}", expected);
+		logger.debug("actual:\n{}", actual);
+		assertEquals(expected, actual);
+	}
+
+	public void testDumpSingleLine() throws Exception
+	{
+		ByteBuffer in = ByteBuffer.wrap(ASCII.toBytes("abcdefghijklmnop"));
+		String actual = Hex.dump(in);
+		String expected =	"          0011 2233 4455 6677  8899 aabb ccdd eeff  0123456789abcdef\n"
+			+ 		"00000000: 6162 6364 6566 6768  696a 6b6c 6d6e 6f70  abcdefghijklmnop\n";
+		logger.debug("expected:\n{}", expected);
+		logger.debug("actual:\n{}", actual);
+		assertEquals(expected, actual);
+	}
+
+	public void testDumpPartialLine() throws Exception
+	{
+		ByteBuffer in = ByteBuffer.wrap(ASCII.toBytes("abcdefghijklm"));
+		String actual = Hex.dump(in);
+		String expected =	"          0011 2233 4455 6677  8899 aabb ccdd eeff  0123456789abcdef\n"
+			+ 		"00000000: 6162 6364 6566 6768  696a 6b6c 6d         abcdefghijklm\n";
+		logger.debug("expected:\n{}", expected);
+		logger.debug("actual:\n{}", actual);
+		assertEquals(expected, actual);
 	}
 
 	protected void tearDown()
