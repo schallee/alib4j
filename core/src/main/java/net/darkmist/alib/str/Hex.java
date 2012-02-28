@@ -1,9 +1,11 @@
 package net.darkmist.alib.str;
 
 import java.io.IOException;
+import java.util.Formatter;
 
 public class Hex
 {
+	private static final String HEX_DUMP_HEADER = "          0011 2233 4455 6677  8899 aabb ccdd eeff  0123456789abcdef\n";
 	public static final int HEX_CHAR_SIZE = 4;
 	public static final int BYTE_HEX_CHARS = Byte.SIZE / HEX_CHAR_SIZE;
 	public static final int SHORT_HEX_CHARS = Short.SIZE / HEX_CHAR_SIZE;
@@ -379,5 +381,77 @@ public class Hex
 		int srcLen = src.length();
 
 		return unhex(src, 0, srcLen, new  byte[srcLen/2], 0);
+	}
+
+	public static <T extends Appendable> T hexDump(T sb, byte[] bytes) throws IOException
+	{
+		int length = bytes.length;
+		int leftover = length % 0x10;
+		Formatter fmt = new Formatter(sb);
+		int i;
+		int j;
+
+		fmt.format(HEX_DUMP_HEADER);
+		for(i=0;i<length-0x10;i+=0x10)
+			fmt.format("%08x: %02x%02x %02x%02x %02x%02x %02x%02x  %02x%02x %02x%02x %02x%02x %02x%02x  %s\n", i, bytes[i+0x0], bytes[i+0x1], bytes[i+0x2], bytes[i+0x3], bytes[i+0x4], bytes[i+0x5], bytes[i+0x6], bytes[i+0x7], bytes[i+0x8], bytes[i+0x9], bytes[i+0xa], bytes[i+0xb], bytes[i+0xc], bytes[i+0xd], bytes[i+0xe], bytes[i+0xf], ASCII.printable(bytes,i,0x10));
+
+		if(leftover > 0)
+		{
+			fmt.format("%08x: %02x", i, bytes[i]);
+			for(j=i+1;j<i+0x8;j++)
+			{
+				if(j<length)
+				{
+					fmt.format("%02x", bytes[j]);
+					if(j%2==1)
+						fmt.format(" ");
+				}
+				else
+				{
+					fmt.format("  ");
+					if(j%2==1)
+						fmt.format(" ");
+				}
+			}
+			fmt.format(" ");
+			for(;j<i+0xf;j++)
+			{
+				if(j<length)
+				{
+					if(j%2==0)
+						fmt.format("%02x", bytes[j]);
+					else
+						fmt.format("%02x ", bytes[j]);
+				}
+				else
+				{
+					if(j%2==0)
+						fmt.format("  ");
+					else
+						fmt.format("   ");
+				}
+			}
+			fmt.format("    %s", ASCII.printable(bytes,i,leftover));
+		}
+		fmt.flush();
+		return sb;
+	}
+
+	public static StringBuilder hexDump(StringBuilder sb, byte[] bytes)
+	{
+		try
+		{
+			hexDump((Appendable)sb, bytes);
+			return sb;
+		}
+		catch(IOException e)
+		{
+			throw new IllegalStateException("Caught IOException appending to a StringBuilder", e);
+		}
+	}
+
+	public static String hexDump(byte[] bytes)
+	{
+		return hexDump(new StringBuilder(bytes.length*4), bytes).toString();
 	}
 }
