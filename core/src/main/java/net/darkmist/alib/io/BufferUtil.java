@@ -60,8 +60,20 @@ public class BufferUtil
 
 	public static byte[] asBytes(ByteBuffer buf)
 	{
-		if(!buf.isReadOnly() && buf.hasArray())
-			return buf.array();
+		/* To use buf.array() the buffer must:
+		 * 	be writable as the array will be writable
+		 * 	have arrayOffset() == 0 or the array will not start at the right location
+		 * 	the returned array must be the same length as the buffer's limit or it will be the wrong size.
+		 */
+		if(!buf.isReadOnly() && buf.hasArray() && buf.arrayOffset() == 0)
+		{
+			logger.debug("read-only, hasArray && offset is 0");
+			byte[] ret = buf.array();
+
+			if(ret.length == buf.limit())
+				return buf.array();
+			logger.debug("length of array !=limit, doing copy...");
+		}
 
 		byte[] bytes = new byte[buf.limit()];
 		buf.get(bytes,0,buf.limit());
@@ -368,15 +380,19 @@ public class BufferUtil
 	/**
 	 * Sane ByteBuffer slice
 	 * @param buf the buffer to slice something out of
-	 * @param off The offset int othe buffer
+	 * @param off The offset into the buffer
 	 * @param len the length of the part to slice out
 	 */
 	public static ByteBuffer slice(ByteBuffer buf, int off, int len)
 	{
 		ByteBuffer localBuf=buf.duplicate();	// so we don't mess up the position,etc
+		logger.debug("off={} len={}", off, len);
 		localBuf.position(off);
-		localBuf.limit(len);
-		return localBuf.slice();
+		localBuf.limit(off+len);
+		logger.debug("pre-slice: localBuf.position()={} localBuf.limit()={}", localBuf.position(), localBuf.limit());
+		localBuf = localBuf.slice();
+		logger.debug("post-slice: localBuf.position()={} localBuf.limit()={}", localBuf.position(), localBuf.limit());
+		return localBuf;
 	}
 
 	public static ByteBuffer map(File file) throws IOException
