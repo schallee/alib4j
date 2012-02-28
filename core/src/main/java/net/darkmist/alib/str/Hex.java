@@ -383,7 +383,7 @@ public class Hex
 		return unhex(src, 0, srcLen, new  byte[srcLen/2], 0);
 	}
 
-	public static <T extends Appendable> T hexDump(T sb, byte[] bytes) throws IOException
+	public static <T extends Appendable> T dump(T sb, byte[] bytes) throws IOException
 	{
 		int length = bytes.length;
 		int leftover = length % 0x10;
@@ -437,11 +437,11 @@ public class Hex
 		return sb;
 	}
 
-	public static StringBuilder hexDump(StringBuilder sb, byte[] bytes)
+	public static StringBuilder dump(StringBuilder sb, byte[] bytes)
 	{
 		try
 		{
-			hexDump((Appendable)sb, bytes);
+			dump((Appendable)sb, bytes);
 			return sb;
 		}
 		catch(IOException e)
@@ -450,8 +450,8 @@ public class Hex
 		}
 	}
 
-	public static String hexDump(byte[] bytes)
+	public static String dump(byte[] bytes)
 	{
-		return hexDump(new StringBuilder(bytes.length*4), bytes).toString();
+		return dump(new StringBuilder(bytes.length*4), bytes).toString();
 	}
 }
