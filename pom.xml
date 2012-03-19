@@ -59,9 +59,9 @@
 		<dependencies>
 			<!-- sub modules -->
 			<dependency>
-				<groupId>${groupId}</groupId>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>core</artifactId>
-				<version>${version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			
 			<!-- junit -->
