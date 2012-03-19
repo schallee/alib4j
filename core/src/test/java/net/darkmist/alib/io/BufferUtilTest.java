@@ -28,4 +28,16 @@ public class BufferUtilTest extends TestCase
 		assertTrue(Arrays.equals(expected, actual));
 	}
 
+	public void testIsAll0True()
+	{
+		byte[] bytes = new byte[1024];
+		assertTrue(BufferUtil.isAll(ByteBuffer.wrap(bytes), (byte)0));
+	}
+
+	public void testIsAll0False()
+	{
+		byte[] bytes = new byte[1024];
+		bytes[bytes.length-1] = (byte)0xff;
+		assertFalse(BufferUtil.isAll(ByteBuffer.wrap(bytes), (byte)0));
+	}
 }

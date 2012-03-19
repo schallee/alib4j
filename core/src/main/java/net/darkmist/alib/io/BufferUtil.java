@@ -418,4 +418,19 @@ public class BufferUtil
 		return map(new File(path));
 	}
 
+	public static boolean isAll(ByteBuffer buf, byte b)
+	{
+		buf = buf.duplicate();
+
+		while(buf.hasRemaining())
+			if(buf.get() != b)
+				return false;
+		return true;
+	}
+
+	public static boolean isAllZero(ByteBuffer buf)
+	{
+		return isAll(buf, (byte)0);
+	}
+
 }
