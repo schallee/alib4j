@@ -11,10 +11,10 @@
 	</parent>
 	<artifactId>getpass</artifactId>
 	<packaging>jar</packaging>
-	<name>${shortGroupName}.${artifactId}</name>
+	<name>${shortGroupName}.${project.artifactId}</name>
 	<url>http://www.darkmist.net/alib/</url>
 	<build>
-		<finalName>${shortGroupName}-${artifactId}-${version}</finalName>
+		<finalName>${shortGroupName}-${project.artifactId}-${project.version}</finalName>
 	</build>
 	<dependencies>
 		<dependency>
