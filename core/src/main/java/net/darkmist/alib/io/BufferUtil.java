@@ -450,4 +450,19 @@ public class BufferUtil
 		return ByteBuffer.wrap(Slurp.slurp(in,len));
 	}
 
+	public static ByteBuffer asBuffer(DataInput in) throws IOException
+	{
+		return ByteBuffer.wrap(Slurp.slurp(in));
+	}
+
+	public static ByteBuffer asBuffer(DataInput in, int len) throws IOException
+	{
+		return ByteBuffer.wrap(Slurp.slurp(in,len));
+	}
+
+	public static ByteBuffer asBuffer(DataInput in, long len) throws IOException
+	{
+		return ByteBuffer.wrap(Slurp.slurp(in,len));
+	}
+
 }
