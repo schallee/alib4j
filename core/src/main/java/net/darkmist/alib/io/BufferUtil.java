@@ -12,6 +12,8 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
+import org.apache.commons.io.IOUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -431,6 +433,21 @@ public class BufferUtil
 	public static boolean isAllZero(ByteBuffer buf)
 	{
 		return isAll(buf, (byte)0);
+	}
+
+	public static ByteBuffer asBuffer(InputStream in) throws IOException
+	{
+		return ByteBuffer.wrap(IOUtils.toByteArray(in));
+	}
+
+	public static ByteBuffer asBuffer(InputStream in, int len) throws IOException
+	{
+		return ByteBuffer.wrap(Slurp.slurp(in,len));
+	}
+
+	public static ByteBuffer asBuffer(InputStream in, long len) throws IOException
+	{
+		return ByteBuffer.wrap(Slurp.slurp(in,len));
 	}
 
 }
