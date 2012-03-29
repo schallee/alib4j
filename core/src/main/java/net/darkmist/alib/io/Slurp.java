@@ -1,5 +1,8 @@
 package net.darkmist.alib.io;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataInput;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -94,6 +97,43 @@ public abstract class Slurp
 		if(amount > Integer.MAX_VALUE)
 			throw new IOException("Size larger than max int");
 		return slurp(stream, (int)amount);
+	}
+
+	public static byte[] slurp(DataInput din) throws IOException
+	{
+		ByteArrayOutputStream baos;
+		int b;
+
+		if(din instanceof InputStream)
+			return IOUtils.toByteArray((InputStream)din);
+		baos = new ByteArrayOutputStream();
+		while(true)
+		{
+			try
+			{
+				b = din.readByte();
+			}
+			catch(EOFException e)
+			{
+				return baos.toByteArray();
+			}
+			baos.write(b);
+		}
+	}
+
+	public static byte[] slurp(DataInput din, int amount) throws IOException
+	{
+		byte data[] = new byte[amount];
+
+		din.readFully(data);
+		return data;
+	}
+
+	public static byte[] slurp(DataInput din, long amount) throws IOException
+	{
+		if(amount > Integer.MAX_VALUE)
+			throw new IOException("Size larger than max int");
+		return slurp(din, (int)amount);
 	}
 
 	/**
