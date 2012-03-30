@@ -10,6 +10,9 @@
 		<groupId>net.darkmist.alib</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
+	<properties>
+		<spring.version>2.5.6</spring.version>
+	</properties>
 	<name>${shortGroupName}.${project.artifactId}</name>
 	<build>
 		<finalName>${shortGroupName}-${project.artifactId}-${project.version}</finalName>
@@ -22,9 +25,9 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring</artifactId>
+			<artifactId>spring-context</artifactId>
 			<scope>compile</scope>
-			<version>2.5.6</version>
+			<version>${spring.version}</version>
 		</dependency>
 	</dependencies>
 </project>
