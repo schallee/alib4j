@@ -267,6 +267,27 @@ public class Hex
 		return hex(new StringBuilder(), bytes).toString();
 	}
 
+	public static <T extends Appendable> T hex(T dst, ByteBuffer buf) throws IOException
+	{
+		buf = buf.duplicate();
+		while(buf.hasRemaining())
+			hexByte(dst, buf.get());
+		return dst;
+	}
+
+	public static StringBuilder hex(StringBuilder sb, ByteBuffer buf)
+	{
+		try
+		{
+			hex((Appendable)sb, buf);
+			return sb;
+		}
+		catch(IOException e)
+		{
+			throw new IllegalStateException("IOException caught when appending to a " + StringBuilder.class.getName(), e);
+		}
+	}
+
 	public static byte unhexNybble(int c)
 	{
 		if('0'<=c&&c<='9')
