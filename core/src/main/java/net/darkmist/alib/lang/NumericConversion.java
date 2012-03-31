@@ -38,6 +38,39 @@ public class NumericConversion
 		return (byte)l;
 	}
 
+	public static byte checkByte(Byte b)
+	{
+		return b.byteValue();
+	}
+
+	public static byte checkByte(Short s)
+	{
+		return checkByte(s.shortValue());
+	}
+
+	public static byte checkByte(Integer i)
+	{
+		return checkByte(i.intValue());
+	}
+
+	public static byte checkByte(Long l)
+	{
+		return checkByte(l.longValue());
+	}
+
+	public static byte checkByte(Object o)
+	{
+		if(o instanceof Byte)
+			return ((Byte)o).byteValue();
+		if(o instanceof Short)
+			return checkByte(((Short)o).shortValue());
+		if(o instanceof Integer)
+			return checkByte(((Integer)o).intValue());
+		if(o instanceof Long)
+			return checkByte(((Long)o).longValue());
+		throw new IllegalArgumentException("Object " + o + " not of a integer type");
+	}
+
 	public static short checkShort(byte b)
 	{
 		return b;
@@ -66,6 +99,39 @@ public class NumericConversion
 		return (short)l;
 	}
 
+	public static short checkShort(Byte b)
+	{
+		return b.shortValue();
+	}
+
+	public static short checkShort(Short s)
+	{
+		return s.shortValue();
+	}
+
+	public static short checkShort(Integer i)
+	{
+		return checkShort(i.intValue());
+	}
+
+	public static short checkShort(Long l)
+	{
+		return checkShort(l.longValue());
+	}
+
+	public static short checkShort(Object o)
+	{
+		if(o instanceof Byte)
+			return ((Byte)o).shortValue();
+		if(o instanceof Short)
+			return ((Short)o).shortValue();
+		if(o instanceof Integer)
+			return checkShort(((Integer)o).intValue());
+		if(o instanceof Long)
+			return checkShort(((Long)o).longValue());
+		throw new IllegalArgumentException("Object " + o + " not of a integer type");
+	}
+
 	public static int checkInt(byte b)
 	{
 		return b;
@@ -89,4 +155,38 @@ public class NumericConversion
 			throw new IllegalArgumentException("Value " + l + " is smaller than " + Integer.MAX_VALUE);
 		return (int)l;
 	}
+
+	public static int checkInt(Byte b)
+	{
+		return b.intValue();
+	}
+
+	public static int checkInt(Short s)
+	{
+		return s.intValue();
+	}
+
+	public static int checkInt(Integer i)
+	{
+		return i.intValue();
+	}
+
+	public static int checkInt(Long l)
+	{
+		return checkInt(l.longValue());
+	}
+
+	public static int checkInt(Object o)
+	{
+		if(o instanceof Byte)
+			return ((Byte)o).intValue();
+		if(o instanceof Short)
+			return ((Short)o).intValue();
+		if(o instanceof Integer)
+			return ((Integer)o).intValue();
+		if(o instanceof Long)
+			return checkInt(((Long)o).longValue());
+		throw new IllegalArgumentException("Object " + o + " not of a integer type");
+	}
+
 }
