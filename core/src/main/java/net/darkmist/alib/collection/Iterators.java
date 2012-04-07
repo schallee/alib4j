@@ -13,7 +13,7 @@ public class Iterators
 	private static final Class<Iterators> CLASS = Iterators.class;
         private static final Log logger = LogFactory.getLog(CLASS);
 
-	protected Iterators()
+	Iterators()
 	{
 	}
 
