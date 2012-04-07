@@ -6,34 +6,18 @@ import java.util.Iterator;
  * Iterator that iterates over an array. Note that this does NOT make
  * a copy of the array so changes to the passed array may cause issues
  * with iteration.
+ * @deprecated Use {@link Iterators#getArrayIterator(T...)} instead.
  */
-final class ArrayIterator<T> extends NonRemovingIterator<T>
+@Deprecated
+public final class ArrayIterator<T> extends Iterators.ArrayIterator<T>
 {
-	private T[] array;
-	private int i;
-
 	/**
 	 * Given an array, create an iterator.
 	 * @param array The array to iterate over.
 	 * @throws NullPointerException if array is null.
 	 */
-	public ArrayIterator(T[] array)
+	public ArrayIterator(T...array)
 	{
-		if(array == null)
-			throw new NullPointerException("Array was null");
-		this.array = array;
-		this.i = 0;
-	}
-
-	@Override
-	public boolean hasNext()
-	{
-		return (i<array.length);
-	}
-
-	@Override
-	public T next()
-	{
-		return array[i++];
+		super(array);
 	}
 }

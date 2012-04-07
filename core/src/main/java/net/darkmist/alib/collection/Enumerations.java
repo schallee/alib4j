@@ -1,0 +1,78 @@
+package net.darkmist.alib.collection;
+
+import java.util.Enumeration;
+import java.util.NoSuchElementException;
+import java.util.Iterator;
+
+public final class Enumerations
+{
+	private Enumerations()
+	{
+	}
+
+	private static final class EmptyEnumeration<T> implements Enumeration<T>
+	{
+		private static EmptyEnumeration SINGLETON = new EmptyEnumeration();
+
+		private EmptyEnumeration()
+		{
+		}
+
+		static <T> EmptyEnumeration<T> instance()
+		{
+			return SINGLETON;
+		}
+
+		@Override
+		public boolean hasMoreElements()
+		{
+			return false;
+		}
+
+		@Override
+		public T nextElement()
+		{
+			throw new NoSuchElementException("This enumeration is empty");
+		}
+	}
+
+	public static <T> Enumeration<T> getEmptyEnumeration()
+	{
+		return EmptyEnumeration.SINGLETON;
+	}
+
+	private static final class EnumerationIterator<T> extends NonRemovingIterator<T>
+	{
+		private Enumeration<T> e;
+
+		/**
+		 * @param e The enumeration to back the iterator with.
+		 * @throws NullPointerException if e is null
+		 */
+		public EnumerationIterator(Enumeration<T> e)
+		{
+			if(e == null)
+				throw new NullPointerException("Backing enumeration cannot be null");
+			this.e = e;
+		}
+
+		@Override
+		public boolean hasNext()
+		{
+			return e.hasMoreElements();
+		}
+
+		@Override
+		public T next()
+		{
+			return e.nextElement();
+		}
+	}
+
+	public <T> Iterator<T> asIterator(Enumeration<T> e)
+	{
+		if(e == null || !e.hasMoreElements())
+			return Iterators.getEmptyIterator();
+		return new EnumerationIterator<T>(e);
+	}
+}

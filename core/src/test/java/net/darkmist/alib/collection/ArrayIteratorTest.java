@@ -17,7 +17,7 @@ public class ArrayIteratorTest extends TestCase
 	public void testSimple() throws Exception
 	{
 		Integer[] array = new Integer[]{1,2,3,4};
-		Iterator<Integer> i = new ArrayIterator<Integer>(array);
+		Iterator<Integer> i = Iterators.getArrayIterator(array);
 
 		assertEquals("1 is incorrect", 1, i.next().intValue());
 		assertEquals("2 is incorrect", 2, i.next().intValue());

@@ -1,18 +1,23 @@
 package net.darkmist.alib.collection;
 
-import java.util.Set;
+import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Iterators
 {
 	private static final Class<Iterators> CLASS = Iterators.class;
-        private static final Log logger = LogFactory.getLog(CLASS);
+        private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
+	/**
+	 * Package private so deprecated IteratorUtil can subclass...
+	 */
 	Iterators()
 	{
 	}
@@ -27,16 +32,30 @@ public class Iterators
 		return set;
 	}
 
-	public static <T> LinkedHashSet<T> toSet(Iterator<T> i)
+	public static <T> LinkedHashSet<T> toLinkedHashSet(Iterator<T> i)
 	{
 		LinkedHashSet<T> set = new LinkedHashSet<T>();
 		addToSet(set, i);
 		return set;
 	}
-
-	public static <T> LinkedHashSet<T> toSet(Iterator<T> i, int sizeGuess)
+	
+	public static <T> LinkedHashSet<T> toLinkedHashSet(Iterator<T> i, int sizeGuess)
 	{
 		LinkedHashSet<T> set = new LinkedHashSet<T>(sizeGuess);
+		addToSet(set, i);
+		return set;
+	}
+
+	public static <T> Set<T> toSet(Iterator<T> i)
+	{
+		Set<T> set = new HashSet<T>();
+		addToSet(set, i);
+		return set;
+	}
+
+	public static <T> Set<T> toSet(Iterator<T> i, int sizeGuess)
+	{
+		Set<T> set = new HashSet<T>(sizeGuess);
 		addToSet(set, i);
 		return set;
 	}
@@ -44,13 +63,13 @@ public class Iterators
 	@SuppressWarnings("unchecked")
 	public static <T> T[] toSetArray(Iterator<T> i)
 	{
-		return (T[])toSet(i).toArray();
+		return (T[])toLinkedHashSet(i).toArray();
 	}
 
 	@SuppressWarnings("unchecked")
 	public static <T> T[] toSetArray(Iterator<T> i, int sizeGuess)
 	{
-		return (T[])toSet(i, sizeGuess).toArray();
+		return (T[])toLinkedHashSet(i, sizeGuess).toArray();
 	}
 
 	/**
@@ -111,6 +130,42 @@ public class Iterators
 	}
 
 	/**
+	 * Iterator that iterates over an array. Note that this does
+	 * NOT make a copy of the array so changes to the passed array
+	 * may cause issues with iteration.
+	 */
+	static class ArrayIterator<T> extends NonRemovingIterator<T>
+	{
+		private T[] array;
+		private int i;
+
+		/**
+		 * Given an array, create an iterator.
+		 * @param array The array to iterate over.
+		 * @throws NullPointerException if array is null.
+		 */
+		public ArrayIterator(T...array)
+		{
+			if(array == null)
+				throw new NullPointerException("Array was null");
+			this.array = array;
+			this.i = 0;
+		}
+	
+		@Override
+		public boolean hasNext()
+		{
+			return (i<array.length);
+		}
+	
+		@Override
+		public T next()
+		{
+			return array[i++];
+		}
+	}
+
+	/**
 	 * Create an non-modifiable iterator that iterates over an
 	 * array. Note that this does NOT make a copy of the array so
 	 * changes to the passed array may cause issues with iteration.
@@ -123,5 +178,32 @@ public class Iterators
 		if(array == null || array.length == 0)
 			return getEmptyIterator();
 		return new ArrayIterator<T>(array);
+	}
+	
+	static class IteratorEnumeration<E> implements Enumeration<E>
+	{
+		private Iterator<? extends E> i;
+
+		IteratorEnumeration(Iterator<? extends E> i)
+		{
+			this.i = i;
+		}
+
+		public final boolean hasMoreElements()
+		{
+			return i.hasNext();
+		}
+
+		public final E nextElement()
+		{
+			return i.next();
+		}
+	}
+
+	public static <T> Enumeration<T> asEnumeration(Iterator<T> i)
+	{
+		if(i == null || !i.hasNext())
+			return Enumerations.getEmptyEnumeration();
+		return new IteratorEnumeration(i);
 	}
 }

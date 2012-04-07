@@ -14,8 +14,8 @@ public class IteratorIteratorTest extends TestCase
 
 	public void testTwoSubIterators() throws Exception
 	{
-		Iterator<Integer> a = new ArrayIterator<Integer>(new Integer[]{1,2,3,4});
-		Iterator<Integer> b = new ArrayIterator<Integer>(new Integer[]{5,6,7,8});
+		Iterator<Integer> a = Iterators.getArrayIterator(new Integer[]{1,2,3,4});
+		Iterator<Integer> b = Iterators.getArrayIterator(new Integer[]{5,6,7,8});
 		IteratorIterator<Integer,Iterator<Integer>> ii = new IteratorIterator<Integer, Iterator<Integer>>(a,b);
 
 		for(int i=1;i<9;i++)
