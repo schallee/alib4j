@@ -206,4 +206,40 @@ public class Iterators
 			return Enumerations.getEmptyEnumeration();
 		return new IteratorEnumeration(i);
 	}
+
+	/** Iterator for a single item. Why? So items can be trivially added to a IteratorIterator. */
+	static class SingleIterator<U> extends NonRemovingIterator<U>
+	{
+		private U single;
+		private boolean done;	// so we can actually iterate a null value....
+
+		public SingleIterator(U single)
+		{
+			this.single=single;
+			done=false;
+		}
+
+		@Override
+		public boolean hasNext()
+		{
+			return !done;
+		}
+
+		@Override
+		public U next()
+		{
+			U ret;
+	
+			if(done)
+				throw new NoSuchElementException("Single element already iterated over");
+			ret = single;
+			single = null;
+			return ret;
+		}
+	}
+
+	public static <T> Iterator<T> getSingletonIterator(T singleton)
+	{
+		return new SingleIterator<T>(singleton);
+	}
 }

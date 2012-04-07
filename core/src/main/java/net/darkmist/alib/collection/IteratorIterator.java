@@ -4,25 +4,25 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class IteratorIterator<T,U extends Iterator<T>> extends NonRemovingIterator<T>
+public final class IteratorIterator<T> extends NonRemovingIterator<T>
 {
 	private static final Class<IteratorIterator> CLASS = IteratorIterator.class;
-        private static final Log logger = LogFactory.getLog(CLASS);
+        private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
-	private LinkedList<U> iterators = new LinkedList<U>();
-	private U iterator = null;
+	private LinkedList<Iterator<T>> iterators = new LinkedList<Iterator<T>>();
+	private Iterator<T> iterator = null;
 
-	protected U nextIterator()
+	protected Iterator<T> nextIterator()
 	{
 		if(iterators.isEmpty())
 			return (iterator = null);
 		return (iterator = iterators.remove());
 	}
 
-	protected U getCurrentIterator()
+	protected Iterator<T> getCurrentIterator()
 	{
 		return iterator;
 	}
@@ -47,40 +47,55 @@ public class IteratorIterator<T,U extends Iterator<T>> extends NonRemovingIterat
 		return iterator.next();
 	}
 
-	public void prependIterator(U newIterator)
+	public void prependIterator(Iterator<T> newIterator)
 	{
 		iterators.addFirst(iterator);
 		iterator = newIterator;
 	}
 
-	public void appendIterator(U newIterator)
+	public void appendIterator(Iterator<T> newIterator)
 	{
 		iterators.addLast(newIterator);
 	}
 
-	public void prependIterators(U...newIterators)
+	public void prependIterators(Iterator<T>...newIterators)
 	{
 		for(int i=newIterators.length-1;i>=0;i--)
 			prependIterator(newIterators[i]);
 	}
 
-	public void appendIterators(U...newIterators)
+	public void appendIterators(Iterator<T>...newIterators)
 	{
-		for(U i : newIterators)
+		for(Iterator<T> i : newIterators)
 			appendIterator(i);
 	}
 
-	public IteratorIterator()
+	private IteratorIterator()
 	{
 	}
 
-	public IteratorIterator(U newIterator)
+	private IteratorIterator(Iterator<T> newIterator)
 	{
 		appendIterator(newIterator);
 	}
 
-	public IteratorIterator(U...newIterators)
+	private IteratorIterator(Iterator<T>...newIterators)
 	{
 		appendIterators(newIterators);
+	}
+
+	public static <T> IteratorIterator<T> getInstance()
+	{
+		return new IteratorIterator<T>();
+	}
+
+	public static <T> IteratorIterator<T> getInstance(Iterator<T> newIterator)
+	{
+		return new IteratorIterator<T>(newIterator);
+	}
+
+	public static <T> IteratorIterator<T> getInstance(Iterator<T>...newIterators)
+	{
+		return new IteratorIterator<T>(newIterators);
 	}
 }

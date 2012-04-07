@@ -1,5 +1,9 @@
 package net.darkmist.alib.collection;
 
+/**
+ * @deprecated With no replacement. Is anything actually using this?
+ */
+@Deprecated
 public class IteratorException extends RuntimeException
 {
 	static final long serialVersionUID = 3735916997356627464L;

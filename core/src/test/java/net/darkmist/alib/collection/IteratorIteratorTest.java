@@ -16,7 +16,7 @@ public class IteratorIteratorTest extends TestCase
 	{
 		Iterator<Integer> a = Iterators.getArrayIterator(new Integer[]{1,2,3,4});
 		Iterator<Integer> b = Iterators.getArrayIterator(new Integer[]{5,6,7,8});
-		IteratorIterator<Integer,Iterator<Integer>> ii = new IteratorIterator<Integer, Iterator<Integer>>(a,b);
+		IteratorIterator<Integer> ii = IteratorIterator.getInstance(a,b);
 
 		for(int i=1;i<9;i++)
 		{
