@@ -10,9 +10,9 @@ import junit.framework.Test;
 
 import org.apache.log4j.Logger;
 
-public class IteratorUtilTest extends TestCase
+public class IteratorsTest extends TestCase
 {
-	private static final Logger logger = Logger.getLogger(IteratorUtilTest.class);
+	private static final Logger logger = Logger.getLogger(IteratorsTest.class);
 
 	public void testSimple() throws Exception
 	{
@@ -23,7 +23,7 @@ public class IteratorUtilTest extends TestCase
 		set.add(2);
 		set.add(3);
 
-		set2 = IteratorUtil.toSet(set.iterator());
+		set2 = Iterators.toSet(set.iterator());
 
 		assertFalse("0 appeared", set2.contains(0));
 		assertTrue("1 is missing", set2.contains(1));
@@ -34,7 +34,7 @@ public class IteratorUtilTest extends TestCase
 	
 	public static Test suite()
 	{
-		return new TestSuite(IteratorUtilTest.class);
+		return new TestSuite(IteratorsTest.class);
 	}
 
 	public static void main(String[] args)
