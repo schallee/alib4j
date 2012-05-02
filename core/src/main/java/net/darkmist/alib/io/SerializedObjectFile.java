@@ -29,6 +29,7 @@ public class SerializedObjectFile<T extends Serializable> extends AbstractRef<T>
 		objType = GenericFudge.getClass(obj);
 	}
 
+	@Override
 	public void set(T obj) throws RefException
 	{
 		clear();
@@ -43,6 +44,7 @@ public class SerializedObjectFile<T extends Serializable> extends AbstractRef<T>
 		}
 	}
 
+	@Override
 	public T get() throws RefException
 	{
 		T obj;
@@ -64,6 +66,7 @@ public class SerializedObjectFile<T extends Serializable> extends AbstractRef<T>
 		return obj;
 	}
 
+	@Override
 	public void clear() throws RefException
 	{
 		try
@@ -80,6 +83,7 @@ public class SerializedObjectFile<T extends Serializable> extends AbstractRef<T>
 		}
 	}
 
+	@Override
 	protected void finalize() throws Throwable
 	{
 		clear();

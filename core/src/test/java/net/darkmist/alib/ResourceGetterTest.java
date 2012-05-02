@@ -3,8 +3,6 @@ package net.darkmist.alib;
 // not changed since qcomm
 
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.framework.Test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +11,6 @@ public class ResourceGetterTest extends TestCase
 {
 	private static final Class<ResourceGetterTest> CLASS = ResourceGetterTest.class;
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
-
-	protected void setUp()
-	{
-	}
 
 	public void testSQLFixupSimple() throws Exception
 	{
@@ -115,19 +109,5 @@ public class ResourceGetterTest extends TestCase
 		logger.debug("expected=" + expected);
 		logger.debug("result=" + result);
 		assertEquals(expected, result);
-	}
-
-	protected void tearDown()
-	{
-	}
-
-	public static Test suite()
-	{
-		return new TestSuite(ResourceGetterTest.class);
-	}
-
-	public static void main(String[] args)
-	{
-		junit.textui.TestRunner.run(suite());
 	}
 }

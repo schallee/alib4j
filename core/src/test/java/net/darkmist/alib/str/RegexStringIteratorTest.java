@@ -1,18 +1,12 @@
 package net.darkmist.alib.str;
 
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.framework.Test;
 
 import org.apache.log4j.Logger;
 
 public class RegexStringIteratorTest extends TestCase
 {
 	private static final Logger logger = Logger.getLogger(RegexStringIteratorTest.class);
-
-	protected void setUp()
-	{
-	}
 
 	static private class RegIt extends RegexStringIterator 
 	{
@@ -21,6 +15,7 @@ public class RegexStringIteratorTest extends TestCase
 			super(data);
 		}
 
+		@Override
 		protected String getRegex()
 		{
 			return "a";
@@ -34,11 +29,13 @@ public class RegexStringIteratorTest extends TestCase
 			super(data);
 		}
 
+		@Override
 		protected String getRegex()
 		{
 			return "a(.)";
 		}
 
+		@Override
 		protected int getGroup()
 		{
 			return 1;
@@ -81,17 +78,4 @@ public class RegexStringIteratorTest extends TestCase
 		assertEquals(expected,actual);
 	}
 
-	protected void tearDown()
-	{
-	}
-
-	public static Test suite()
-	{
-		return new TestSuite(RegexStringIteratorTest.class);
-	}
-
-	public static void main(String[] args)
-	{
-		junit.textui.TestRunner.run(suite());
-	}
 }

@@ -1,14 +1,9 @@
 package net.darkmist.alib.str;
 
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.framework.Test;
 
 public class URLEscapeTest extends TestCase
 {
-	protected void setUp()
-	{
-	}
 
 	public void testEmpty() throws Exception
 	{
@@ -64,19 +59,5 @@ public class URLEscapeTest extends TestCase
 		String expected = in;
 		String out = URLEscape.URLEscapeNotSlash(in);
 		assertEquals("Slash escaped when it shouldn't have been", expected, out);
-	}
-
-	protected void tearDown()
-	{
-	}
-
-	public static Test suite()
-	{
-		return new TestSuite(URLEscapeTest.class);
-	}
-
-	public static void main(String[] args)
-	{
-		junit.textui.TestRunner.run(suite());
 	}
 }

@@ -62,6 +62,7 @@ public abstract class OutputWrappingHttpServletResponse extends HttpServletRespo
 	/** Check for {@link #getWriter()} having been called.
 	 * @return true if {@link #getWriter()} was called, false otherwise.
 	 */
+	@Override
 	public boolean isUsingWriter()
 	{
 		return (pw != null);
@@ -70,16 +71,18 @@ public abstract class OutputWrappingHttpServletResponse extends HttpServletRespo
 	/** Check for {@link #getOutputStream()} having been called.
 	 * @return true if {@link #getOutputStream()} was called, false otherwise.
 	 */
+	@Override
 	public boolean isUsingOutputStream()
 	{
 		return (os != null);
 	}
 
-	/** Override and prevent the content length from being set.
+	/**
+	 * Override and prevent the content length from being set.
 	 * @param len What the content length was to be set to. Ignored.
 	 */
 	@Override
-	public void setContentLength(int len)
+	public void setContentLength(@SuppressWarnings("unused") int len)
 	{
 	}
 }

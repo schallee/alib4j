@@ -34,11 +34,8 @@ public class JVMLauncher
 			throw new LauncherException("Java executable " + exe + " does not exist.");
 		if(!file.isFile())
 			throw new LauncherException("Java executable " + exe + " is not a file.");
-		// FIXME: added in 1.6
-		/*
 		if(!file.canExecute())
 			throw new LauncherException("Java executable " + exe + " cannot be executed.");
-			*/
 		return exe;
 	}
 

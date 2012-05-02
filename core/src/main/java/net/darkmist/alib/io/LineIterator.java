@@ -18,16 +18,16 @@ public class LineIterator implements Iterator<String>
 	private String line;
 	private IOException previousException;
 
-	private void init(BufferedReader in)
+	private void init(BufferedReader init_in)
 	{
-		this.in = in;
+		this.in = init_in;
 		line = null;
 		previousException = null;
 	}
 
-	private void init(InputStream in)
+	private void init(InputStream init_in)
 	{
-		init(new BufferedReader(new InputStreamReader(in)));
+		init(new BufferedReader(new InputStreamReader(init_in)));
 	}
 
 	public LineIterator(InputStream in)
@@ -56,6 +56,7 @@ public class LineIterator implements Iterator<String>
 	  * interface does not, false is returned instead of it being rethrown. The exception can be
 	  * retrieved via {@link #getIOException()}.
 	  */
+	@Override
 	public boolean hasNext()
 	{
 		if(previousException != null)
@@ -82,6 +83,7 @@ public class LineIterator implements Iterator<String>
 	  * 	by the underlying {@link java.io.IOStream IOStream}. In the latter case the exception can
 	  *	be retrieved via {@link #getIOException()}.
 	  */
+	@Override
 	public String next() throws NoSuchElementException
 	{
 		String ret;
@@ -109,6 +111,7 @@ public class LineIterator implements Iterator<String>
 	/** Not supported.
 	  * @throws UnsupportedOperationException Always thrown.
 	  */
+	@Override
 	public void remove() throws UnsupportedOperationException
 	{
 		throw new UnsupportedOperationException("Remove is not supported");

@@ -8,15 +8,17 @@ import java.util.Iterator;
  */
 public abstract class NonRemovingIterator<T> implements Iterator<T>
 {
+	@Override
 	public abstract boolean hasNext();
 
+	@Override
 	public abstract T next();
 
 	/**
 	 * remove method that always trows an exception.
 	 * @throws UnsupportedOperationException always.
 	 */
-	// no overide interface in 1.5: @Override
+	@Override
 	public final void remove()
 	{
 		throw new UnsupportedOperationException(this.getClass().getName() + " does not support remove()");

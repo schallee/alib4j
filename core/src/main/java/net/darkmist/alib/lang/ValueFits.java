@@ -6,7 +6,7 @@ public class ValueFits
 	{
 	}
 
-	public static boolean fitsByte(byte b)
+	public static boolean fitsByte(@SuppressWarnings("unused") byte b)
 	{
 		return true;
 	}
@@ -26,7 +26,7 @@ public class ValueFits
 		return Byte.MIN_VALUE <= l && l <= Byte.MAX_VALUE;
 	}
 
-	public static boolean fitsByte(Byte b)
+	public static boolean fitsByte(@SuppressWarnings("unused") Byte b)
 	{
 		return true;
 	}
@@ -59,12 +59,12 @@ public class ValueFits
 		return false;
 	}
 
-	public static boolean fitsShort(byte b)
+	public static boolean fitsShort(@SuppressWarnings("unused") byte b)
 	{
 		return true;
 	}
 
-	public static boolean fitsShort(short s)
+	public static boolean fitsShort(@SuppressWarnings("unused") short s)
 	{
 		return true;
 	}
@@ -79,12 +79,12 @@ public class ValueFits
 		return Short.MIN_VALUE <= l && l <= Short.MAX_VALUE;
 	}
 
-	public static boolean fitsShort(Byte b)
+	public static boolean fitsShort(@SuppressWarnings("unused") Byte b)
 	{
 		return true;
 	}
 
-	public static boolean fitsShort(Short s)
+	public static boolean fitsShort(@SuppressWarnings("unused") Short s)
 	{
 		return true;
 	}
@@ -112,17 +112,17 @@ public class ValueFits
 		return false;
 	}
 
-	public static boolean fitsInt(byte b)
+	public static boolean fitsInt(@SuppressWarnings("unused") byte b)
 	{
 		return true;
 	}
 
-	public static boolean fitsInt(short s)
+	public static boolean fitsInt(@SuppressWarnings("unused") short s)
 	{
 		return true;
 	}
 
-	public static boolean fitsInt(int i)
+	public static boolean fitsInt(@SuppressWarnings("unused") int i)
 	{
 		return true;
 	}
@@ -132,17 +132,17 @@ public class ValueFits
 		return Integer.MIN_VALUE <= l && l <= Integer.MAX_VALUE;
 	}
 
-	public static boolean fitsInt(Byte b)
+	public static boolean fitsInt(@SuppressWarnings("unused") Byte b)
 	{
 		return true;
 	}
 
-	public static boolean fitsInt(Short s)
+	public static boolean fitsInt(@SuppressWarnings("unused") Short s)
 	{
 		return true;
 	}
 
-	public static boolean fitsInt(Integer i)
+	public static boolean fitsInt(@SuppressWarnings("unused") Integer i)
 	{
 		return true;
 	}

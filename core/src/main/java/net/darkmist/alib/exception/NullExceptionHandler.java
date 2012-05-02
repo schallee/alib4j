@@ -27,7 +27,8 @@ public class NullExceptionHandler implements ExceptionHandler
 	 * Handle an {@link Exception} by doing nothing.
 	 * @param t The exception to handle.
 	 */
-	public void handleException(Throwable t)
+	@Override
+	public void handleException(@SuppressWarnings("unused") Throwable t)
 	{
 		// drop it on the ground!
 	}

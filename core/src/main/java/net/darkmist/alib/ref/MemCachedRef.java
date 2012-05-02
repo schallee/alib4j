@@ -14,6 +14,7 @@ public abstract class MemCachedRef<T> extends AbstractRef<T>
 	/**
 	 * Get the cached object. If the object is not in memory, it is recreated.
 	 */
+	@Override
 	public synchronized T get()
 	{
 		T val;

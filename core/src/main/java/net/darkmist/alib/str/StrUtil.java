@@ -49,7 +49,7 @@ public class StrUtil
 		for(start=0;start<len && (end = str.indexOf(delim, start))>=0;start=end+1)
 			strs.add(str.substring(start,end));
 		strs.add(str.substring(start));
-		return (String[])strs.toArray(EMPTY_STRING_ARRAY);
+		return strs.toArray(EMPTY_STRING_ARRAY);
 	}
 
 	/**

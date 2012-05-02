@@ -43,6 +43,7 @@ public class OutputStreamBitsOutputTest extends TestCase
 		assertEquals((byte)0x80, result[0]);
 	}
 
+	@SuppressWarnings("null")
 	public void testSingle0Bit() throws IOException
 	{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

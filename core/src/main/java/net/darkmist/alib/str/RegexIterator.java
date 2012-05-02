@@ -19,7 +19,7 @@ public abstract class RegexIterator<T> implements Iterator<T>
 	protected T next;
 	protected boolean hasNext;
 
-	protected abstract T getObj(Matcher matcher);
+	protected abstract T getObj(Matcher matcher_param);
 	protected abstract String getRegex();
 
 	protected Pattern getPattern()
@@ -60,6 +60,7 @@ public abstract class RegexIterator<T> implements Iterator<T>
 		init(data);
 	}
 
+	@Override
 	public boolean hasNext()
 	{
 		if(hasNext)
@@ -67,6 +68,7 @@ public abstract class RegexIterator<T> implements Iterator<T>
 		return advance();
 	}
 
+	@Override
 	public T next() throws NoSuchElementException
 	{
 		T ret;
@@ -82,6 +84,7 @@ public abstract class RegexIterator<T> implements Iterator<T>
 		return ret;
 	}
 
+	@Override
 	public void remove() throws UnsupportedOperationException
 	{
 		throw new UnsupportedOperationException();

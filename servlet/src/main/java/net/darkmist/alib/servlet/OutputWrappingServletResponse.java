@@ -62,6 +62,7 @@ public abstract class OutputWrappingServletResponse extends ServletResponseWrapp
 	/** Check for {@link #getWriter()} having been called.
 	 * @return true if {@link #getWriter()} was called, false otherwise.
 	 */
+	@Override
 	public boolean isUsingWriter()
 	{
 		return (pw != null);
@@ -70,6 +71,7 @@ public abstract class OutputWrappingServletResponse extends ServletResponseWrapp
 	/** Check for {@link #getOutputStream()} having been called.
 	 * @return true if {@link #getOutputStream()} was called, false otherwise.
 	 */
+	@Override
 	public boolean isUsingOutputStream()
 	{
 		return (os != null);

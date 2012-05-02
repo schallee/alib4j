@@ -121,6 +121,15 @@ public class Iterators
 				return false;
 			return !((Iterator<?>)o).hasNext();
 		}
+		
+		/**
+		 *  Always returns zero.
+		 */
+		@Override
+		public int hashCode()
+		{
+				return 0;
+		}
 	}
 
 	/**
@@ -192,11 +201,13 @@ public class Iterators
 			this.i = i;
 		}
 
+		@Override
 		public final boolean hasMoreElements()
 		{
 			return i.hasNext();
 		}
 
+		@Override
 		public final E nextElement()
 		{
 			return i.next();

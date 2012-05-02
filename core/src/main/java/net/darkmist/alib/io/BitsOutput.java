@@ -55,6 +55,7 @@ public interface BitsOutput extends Closeable, Flushable
 	 * {@link #isByteAligning()} returns true will pad any partial
 	 * byte to a full byte with zero bits before writing it.
 	 */
+	@Override
 	public void flush() throws IOException;
 
 	/**
@@ -70,5 +71,6 @@ public interface BitsOutput extends Closeable, Flushable
 	 * where {@link #isByteAligning()} returns true will pad any
 	 * partial byte to a full byte with zero bits before writing it.
 	 */
+	@Override
 	public void close() throws IOException;
 }

@@ -320,7 +320,7 @@ public class BufferUtil
 		public int read() throws IOException
 		{
 			if(buf.hasRemaining())
-				return (int)(buf.get()) & 0xFF;
+				return buf.get() & 0xFF;
 			return -1;
 		}
 
@@ -350,14 +350,17 @@ public class BufferUtil
 			return amount;
 		}
 
+		/**
+		 * @param ignored as the mark is taken from the underlying buffer position.
+		 */
 		@Override
-		public void mark(int ignored)
+		public synchronized void mark(@SuppressWarnings("unused") int ignored)
 		{
 			mark = buf.position();
 		}
 
 		@Override
-		public void reset() throws IOException
+		public synchronized void reset() throws IOException
 		{
 			buf.position(mark);
 		}

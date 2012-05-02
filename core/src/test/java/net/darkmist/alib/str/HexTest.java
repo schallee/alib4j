@@ -4,8 +4,6 @@ import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.framework.Test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +20,6 @@ public class HexTest extends TestCase
 		while(str.length()<len)
 			str = "0" + str;
 		return str;
-	}
-
-	protected void setUp()
-	{
 	}
 
 	public void testIsHexTrue() throws Exception
@@ -225,19 +219,5 @@ public class HexTest extends TestCase
 		logger.debug("expected:\n{}", expected);
 		logger.debug("actual:\n{}", actual);
 		assertEquals(expected, actual);
-	}
-
-	protected void tearDown()
-	{
-	}
-
-	public static Test suite()
-	{
-		return new TestSuite(CLASS);
-	}
-
-	public static void main(String[] args)
-	{
-		junit.textui.TestRunner.run(suite());
 	}
 }

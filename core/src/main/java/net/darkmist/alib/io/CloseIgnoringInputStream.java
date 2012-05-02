@@ -24,6 +24,7 @@ public class CloseIgnoringInputStream extends ProxyInputStream
 	/**
 	 * Do nothing.
 	 */
+	@Override
 	public void close()
 	{
 	}

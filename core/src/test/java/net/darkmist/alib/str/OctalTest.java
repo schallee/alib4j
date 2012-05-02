@@ -1,17 +1,11 @@
 package net.darkmist.alib.str;
 
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.framework.Test;
 
 public class OctalTest extends TestCase
 {
+	@SuppressWarnings("unused")
 	private static final Class<OctalTest> CLASS = OctalTest.class;
-
-
-	protected void setUp()
-	{
-	}
 
 	public void testIsOctalTrue() throws Exception
 	{
@@ -60,19 +54,5 @@ public class OctalTest extends TestCase
 		int expected = 042;
 		int result = Octal.unoctInt("042");
 		assertEquals(expected, result);
-	}
-
-	protected void tearDown()
-	{
-	}
-
-	public static Test suite()
-	{
-		return new TestSuite(CLASS);
-	}
-
-	public static void main(String[] args)
-	{
-		junit.textui.TestRunner.run(suite());
 	}
 }

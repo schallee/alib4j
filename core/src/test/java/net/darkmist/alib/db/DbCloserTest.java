@@ -29,6 +29,7 @@ public class DbCloserTest extends TestCase
 	private Statement stmt;
 	private SQLException sqlE;
 
+	@Override
 	protected void setUp()
 	{
 		ctrl = EasyMock.createStrictControl();
@@ -40,6 +41,7 @@ public class DbCloserTest extends TestCase
 		sqlE = new SQLException("sqlexception toast is yummy");
 	}
 
+	@Override
 	protected void tearDown()
 	{
 		ctrl = null;

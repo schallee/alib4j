@@ -9,9 +9,10 @@ public abstract class RegexStringIterator extends RegexIterator<String>
 		return 0;
 	}
 
-	protected String getObj(Matcher matcher)
+	@Override
+	protected String getObj(Matcher matcher_param)
 	{
-		return matcher.group(getGroup());
+		return matcher_param.group(getGroup());
 	}
 
 	public RegexStringIterator(byte[] data)

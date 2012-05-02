@@ -3,22 +3,16 @@ package net.darkmist.alib.str;
 import java.util.Random;
 
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.framework.Test;
 
 import static net.darkmist.alib.str.Escape.escape;
 import static net.darkmist.alib.str.Escape.unescape;
 
 public class EscapeTest extends TestCase
 {
+	@SuppressWarnings("unused")
 	private static final Class<EscapeTest> CLASS = EscapeTest.class;
 	private static final Random rand = new Random();
 	private static final int NUM_RAND_TESTS = 100;
-
-
-	protected void setUp()
-	{
-	}
 
 	private static String zeroPad(String str, int len)
 	{
@@ -204,18 +198,5 @@ public class EscapeTest extends TestCase
 		String result = Escape.joinEscaped(':', "", "ab:c", "", "de:f", "");
 		assertEquals(expected, result);
 	}
-
-	protected void tearDown()
-	{
-	}
-
-	public static Test suite()
-	{
-		return new TestSuite(CLASS);
-	}
-
-	public static void main(String[] args)
-	{
-		junit.textui.TestRunner.run(suite());
-	}
+	
 }

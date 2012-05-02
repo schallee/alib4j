@@ -1,13 +1,12 @@
 package net.darkmist.alib.str;
 
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.framework.Test;
 
 public class BackSlashEscapeTest extends TestCase
 {
 	private BackSlashEscape escape;
 
+	@Override
 	protected void setUp()
 	{
 		escape = BackSlashEscape.getInstance();
@@ -69,17 +68,4 @@ public class BackSlashEscapeTest extends TestCase
 		assertEquals("Improperly escaped", expected, out);
 	}
 
-	protected void tearDown()
-	{
-	}
-
-	public static Test suite()
-	{
-		return new TestSuite(BackSlashEscapeTest.class);
-	}
-
-	public static void main(String[] args)
-	{
-		junit.textui.TestRunner.run(suite());
-	}
 }

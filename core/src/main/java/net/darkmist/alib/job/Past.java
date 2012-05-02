@@ -39,8 +39,8 @@ public class Past<T> implements Future<T>
 	 * @param mayInterruptIfRunning unused
 	 * @return false
 	 */
-	// no overide interface in 1.5: @Override
-	public boolean cancel(boolean mayInterruptIfRunning)
+	@Override
+	public boolean cancel(@SuppressWarnings("unused") boolean mayInterruptIfRunning)
 	{
 		return false;
 	}
@@ -48,7 +48,7 @@ public class Past<T> implements Future<T>
 	/** Always returns false as the task has always completed.
 	 * @returns false
 	 */
-	// no overide interface in 1.5: @Override
+	@Override
 	public boolean isCancelled()
 	{
 		return false;
@@ -57,13 +57,13 @@ public class Past<T> implements Future<T>
 	/** Always returns true as the task has always completed.
 	 * @returns true
 	 */
-	// no overide interface in 1.5: @Override
+	@Override
 	public boolean isDone()
 	{
 		return true;
 	}
 
-	// no overide interface in 1.5: @Override
+	@Override
 	public T get() throws InterruptedException, ExecutionException
 	{
 		if(exception != null)
@@ -71,8 +71,14 @@ public class Past<T> implements Future<T>
 		return returnValue;
 	}
 
-	// no overide interface in 1.5: @Override
-	public T get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException
+	/**
+	 * @Inherit
+	 * Returns immediately
+	 * @param timeout ignored
+	 * @param unit ignored
+	 */
+	@Override
+	public T get(@SuppressWarnings("unused") long timeout, @SuppressWarnings("unused") TimeUnit unit) throws InterruptedException, ExecutionException
 	{
 		if(exception != null)
 			throw new ExecutionException(exception);

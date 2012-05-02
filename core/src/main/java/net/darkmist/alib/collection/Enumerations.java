@@ -25,13 +25,13 @@ public final class Enumerations
 			return SINGLETON;
 		}
 
-		// in 1.6: @Override
+		@Override
 		public boolean hasMoreElements()
 		{
 			return false;
 		}
 
-		// in 1.6: @Override
+		@Override
 		public T nextElement()
 		{
 			throw new NoSuchElementException("This enumeration is empty");
@@ -71,7 +71,7 @@ public final class Enumerations
 		}
 	}
 
-	public <T> Iterator<T> asIterator(Enumeration<T> e)
+	public static <T> Iterator<T> asIterator(Enumeration<T> e)
 	{
 		if(e == null || !e.hasMoreElements())
 			return Iterators.getEmptyIterator();

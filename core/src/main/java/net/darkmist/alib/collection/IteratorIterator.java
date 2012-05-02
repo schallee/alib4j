@@ -29,6 +29,7 @@ public final class IteratorIterator<T> extends NonRemovingIterator<T>
 		return iterator;
 	}
 
+	@Override
 	public boolean hasNext()
 	{
 		if(iterator==null && nextIterator() == null)
@@ -42,6 +43,7 @@ public final class IteratorIterator<T> extends NonRemovingIterator<T>
 		} while(true);
 	}
 
+	@Override
 	public T next()
 	{
 		if(!hasNext())

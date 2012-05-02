@@ -204,6 +204,7 @@ public class ResultSetIterator<E> implements Iterator<E>
 
 	/** More data to retrieve?
 	  * @return true if there is more data to retrieve. */
+	@Override
 	public boolean hasNext()
 	{
 		return more;
@@ -215,6 +216,7 @@ public class ResultSetIterator<E> implements Iterator<E>
 	  * {@link Row2Obj#resultSetIteratorRow2Obj(ResultSet)} method.
 	  * @throws NoSuchElementException if there are no more results.
 	  * @throws IllegalStateException For other exceptions caught from {@link Row2Obj#resultSetIteratorRow2Obj(ResultSet)} or an {@link java.sql.SQLException} from {@link java.sql.ResultSet#next()}. */
+	@Override
 	public E next() throws NoSuchElementException
 	{
 		if(!more)
@@ -241,6 +243,7 @@ public class ResultSetIterator<E> implements Iterator<E>
 
 	/** Unsupported remove operation.
 	  * @throws UnsupportedOperationException always */
+	@Override
 	public void remove() throws UnsupportedOperationException
 	{
 		throw new UnsupportedOperationException("remove is not implemented for ResultSetIterator");

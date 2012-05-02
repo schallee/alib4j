@@ -48,6 +48,7 @@ public class LoggingExceptionHandler implements ExceptionHandler
 	 {
 	 }
 
+	@Override
 	public void handleException(Throwable t)
 	{
 		Log localLog;

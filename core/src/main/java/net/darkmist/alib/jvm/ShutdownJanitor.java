@@ -18,6 +18,7 @@ public class ShutdownJanitor implements Runnable
 	{
 	}
 
+	@Override
 	public void run()
 	{
 		NeedsCleanup[] objs = getObjects();

@@ -13,7 +13,7 @@ import java.util.concurrent.Callable;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
-public abstract class Slurp
+public final class Slurp
 {
 	private Slurp()
 	{
@@ -117,6 +117,7 @@ public abstract class Slurp
 			this.in = in;
 		}
 
+		@Override
 		public String call() throws Exception
 		{
 			String ret;
@@ -129,12 +130,12 @@ public abstract class Slurp
 		}
 	}
 
-	public Callable<String> callableToString(InputStream in)
+	public static Callable<String> callableToString(InputStream in)
 	{
 		return new ReaderToStringCallable(new InputStreamReader(in));
 	}
 
-	public Callable<String> callableToString(Reader in)
+	public static Callable<String> callableToString(Reader in)
 	{
 		return new ReaderToStringCallable(in);
 	}

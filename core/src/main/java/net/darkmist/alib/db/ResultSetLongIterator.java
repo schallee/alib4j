@@ -37,6 +37,7 @@ public class ResultSetLongIterator extends ResultSetIterator<Long> implements Re
 		setConverter(this);
 	}
 
+	@Override
 	public Long resultSetIteratorRow2Obj(ResultSet rs) throws SQLException
 	{
 		return rs.getLong(1);

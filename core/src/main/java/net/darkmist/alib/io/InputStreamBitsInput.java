@@ -49,6 +49,7 @@ public class InputStreamBitsInput implements BitsInput
 			addBits(buf[i]);
 	}
 
+	@Override
 	public int readBits(int num) throws IOException
 	{
 		long out;
@@ -91,11 +92,13 @@ public class InputStreamBitsInput implements BitsInput
 		return (int)out;
 	}
 
+	@Override
 	public boolean readBit() throws IOException
 	{
 		return (readBits(1)!=0x0);
 	}
 
+	@Override
 	public void close()throws IOException
 	{
 		eof = true;

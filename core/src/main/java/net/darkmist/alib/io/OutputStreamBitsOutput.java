@@ -160,7 +160,7 @@ public class OutputStreamBitsOutput implements BitsOutput
 	}
 
 	/** {@inheritDoc} */
-	// no overide of interface in 1.5: @Override
+	@Override
 	public void writeBits(int num, int bits) throws IOException
 	{
 		if(num > Integer.SIZE)
@@ -172,7 +172,7 @@ public class OutputStreamBitsOutput implements BitsOutput
 	}
 
 	/** {@inheritDoc} */
-	// no overide of interface in 1.5: @Override
+	@Override
 	public void writeBit(boolean bit) throws IOException
 	{
 		writeBits(1,bit ? 1 : 0);
@@ -190,7 +190,7 @@ public class OutputStreamBitsOutput implements BitsOutput
 	}
 
 	/** {@inheritDoc} */
-	// no overide of interface in 1.5: @Override
+	@Override
 	public void writeTillByte(boolean bit) throws IOException
 	{
 		checkState();
@@ -202,14 +202,14 @@ public class OutputStreamBitsOutput implements BitsOutput
 	 * @return true always as this implementation writes to a byte
 	 * 	stream and always knows the alignment.
 	 */
-	// no overide of interface in 1.5: @Override
+	@Override
 	public boolean isWriteTillByteSupported()
 	{
 		return true;
 	}
 
 	/** {@inheritDoc} */
-	// no overide of interface in 1.5: @Override
+	@Override
 	public void flush() throws IOException
 	{
 		checkState();
@@ -226,7 +226,7 @@ public class OutputStreamBitsOutput implements BitsOutput
 	}
 
 	/** {@inheritDoc} */
-	// no overide of interface in 1.5: @Override
+	@Override
 	public void close() throws IOException
 	{
 		if(closed)
@@ -254,7 +254,7 @@ public class OutputStreamBitsOutput implements BitsOutput
 	 * @return true always as this implementation writes to a byte
 	 * 	stream and always has to write full bytes.
 	 */
-	 // no overide of interface in 1.5: @Override
+	 @Override
 	 public boolean isByteAligning()
 	 {
 	 	return true;

@@ -217,7 +217,7 @@ public class Escape
 					dst.append('r');
 					continue srcloop;
 			}
-			c=((int)ch)&0xffff;	// positive ch
+			c=ch&0xffff;	// positive ch
 			if(c>0xff)
 			{
 				dst.append(escapeChar);

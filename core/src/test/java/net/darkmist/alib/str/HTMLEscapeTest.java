@@ -1,14 +1,9 @@
 package net.darkmist.alib.str;
 
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.framework.Test;
 
 public class HTMLEscapeTest extends TestCase
 {
-	protected void setUp()
-	{
-	}
 
 	@Deprecated
 	public void testEmpty() throws Exception
@@ -58,18 +53,5 @@ public class HTMLEscapeTest extends TestCase
 		assertEquals("One high bit not escaped properly", expected, out);
 	}
 	*/
-
-	protected void tearDown()
-	{
-	}
-
-	public static Test suite()
-	{
-		return new TestSuite(HTMLEscapeTest.class);
-	}
-
-	public static void main(String[] args)
-	{
-		junit.textui.TestRunner.run(suite());
-	}
+	
 }

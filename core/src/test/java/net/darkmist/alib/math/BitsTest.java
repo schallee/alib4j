@@ -8,6 +8,7 @@ public class BitsTest extends TestCase
 {
 	private static final Class<BitsTest> CLASS = BitsTest.class;
 
+	@Override
 	protected void setUp()
 	{
 	}
