@@ -14,9 +14,11 @@ import org.apache.commons.logging.LogFactory;
 public class ResultSetIterator<E> implements Iterator<E>
 {
 	/** Class object for this class. */
+	@SuppressWarnings("rawtypes")
 	private static final Class<ResultSetIterator> CLASS = ResultSetIterator.class;
 	/** commons logging logger */
-        private static final Log logger = LogFactory.getLog(CLASS);
+	@SuppressWarnings("unused")
+	private static final Log logger = LogFactory.getLog(CLASS);
 
 	/** The {@link java.sql.ResultSet} to iterate through. */
 	private ResultSet rs = null;
@@ -181,7 +183,7 @@ public class ResultSetIterator<E> implements Iterator<E>
 		}
 	}
 
-	public ResultSetIterator setExclusive(boolean exclusive) throws SQLException
+	public ResultSetIterator<E> setExclusive(boolean exclusive) throws SQLException
 	{
 		this.exclusive = exclusive;
 		if(stmt != null)
@@ -191,7 +193,7 @@ public class ResultSetIterator<E> implements Iterator<E>
 		return this;
 	}
 
-	public ResultSetIterator setExclusive() throws SQLException
+	public ResultSetIterator<E> setExclusive() throws SQLException
 	{
 		return setExclusive(true);
 	}

@@ -2,7 +2,6 @@ package net.darkmist.alib.str;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Formatter;
 
 public class Hex
 {

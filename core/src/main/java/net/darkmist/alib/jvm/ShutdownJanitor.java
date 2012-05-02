@@ -7,8 +7,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class ShutdownJanitor implements Runnable
 {
-	private static final Class CLASS = ShutdownJanitor.class;
-	private static final String CLASS_NAME = CLASS.getName();
+	private static final Class<ShutdownJanitor> CLASS = ShutdownJanitor.class;
 	private static final Log logger = LogFactory.getLog(CLASS);
 	private static Thread thread = null;
 	private static final Object lock = new Object();

@@ -1,6 +1,6 @@
 package net.darkmist.alib.str;
 
-import java.security.SecureRandom;
+import java.util.Random;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -11,8 +11,8 @@ import static net.darkmist.alib.str.Escape.unescape;
 
 public class EscapeTest extends TestCase
 {
-	private static final Class CLASS = EscapeTest.class;
-	private static final SecureRandom rand = new SecureRandom();
+	private static final Class<EscapeTest> CLASS = EscapeTest.class;
+	private static final Random rand = new Random();
 	private static final int NUM_RAND_TESTS = 100;
 
 

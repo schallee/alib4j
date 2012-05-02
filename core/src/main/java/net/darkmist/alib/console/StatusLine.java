@@ -7,7 +7,6 @@ public class StatusLine
 {
 	private static boolean enabled = false;
 	private static int lastLineLength = 0;
-	private static boolean inLine = false;
 	private static Object lock = new Object();
 
 	public static void update(CharSequence msg)
@@ -28,7 +27,6 @@ public class StatusLine
 					System.err.print('\b');
 			}
 			System.err.flush();
-			inLine = true;
 			lastLineLength = msg.length();
 		}
 	}
@@ -41,7 +39,6 @@ public class StatusLine
 				return;
 			update(msg);
 			System.err.print('\n');
-			inLine = false;
 		}
 	}
 

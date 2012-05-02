@@ -2,10 +2,6 @@ package net.darkmist.alib.str;
 
 // we may be able to use org.apache.commons.lang.StringEscapeUtils.escapeJava(String)
 
-import java.util.Map;
-import java.lang.Character;
-import java.lang.Boolean;
-
 public class BackSlashEscape
 {
 	private static BackSlashEscape singleton = new BackSlashEscape();

@@ -7,9 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -37,14 +36,14 @@ public class CurrentThreadExecutor implements ExecutorService
 	 * return when done.
 	 * @param cmd The Runnable to run.
 	 */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public void execute(Runnable cmd)
 	{
 		cmd.run();
 	}
 
 	/** Does nothing. */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public void shutdown()
 	{
 	}
@@ -52,7 +51,7 @@ public class CurrentThreadExecutor implements ExecutorService
 	/** Does nothing. 
 	 * @return A empty list.
 	 */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public List<Runnable> shutdownNow()
 	{
 		return Collections.emptyList();
@@ -61,7 +60,7 @@ public class CurrentThreadExecutor implements ExecutorService
 	/** Always true.
 	 * @return true
 	 */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public boolean isShutdown()
 	{
 		return true;
@@ -70,7 +69,7 @@ public class CurrentThreadExecutor implements ExecutorService
 	/** Always true.
 	 * @return true
 	 */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public boolean isTerminated()
 	{
 		return true;
@@ -81,7 +80,7 @@ public class CurrentThreadExecutor implements ExecutorService
 	 * @param unit unused
 	 * @return true
 	 */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public boolean awaitTermination(long timeout, TimeUnit unit)
 	{
 		return true;
@@ -117,7 +116,7 @@ public class CurrentThreadExecutor implements ExecutorService
 	 * @param task The task to run
 	 * @return A @{link Past} containing the result.
 	 */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public <T> Future<T> submit(Callable<T> task)
 	{
 		return run(task);
@@ -128,7 +127,7 @@ public class CurrentThreadExecutor implements ExecutorService
 	 * @param result The result the @{link Past} returns.
 	 * @return A @{link Past} containing the result.
 	 */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public <T> Future<T> submit(Runnable task, T result)
 	{
 		return run(task, result);
@@ -138,14 +137,14 @@ public class CurrentThreadExecutor implements ExecutorService
 	 * @param task The task to run
 	 * @return A @{link Past} containing the result.
 	 */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public Future<?> submit(Runnable task)
 	{
 		return run(task);
 	}
 
-	@Override
-	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException
+	// no overide of interface in 1.5: @Override
+	public <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks) throws InterruptedException
 	{
 		List<Future<T>> results = new ArrayList<Future<T>>(tasks.size());
 
@@ -155,8 +154,8 @@ public class CurrentThreadExecutor implements ExecutorService
 	}
 
 	/** Implements @{link Executorservice#InvokeAll(Collection, long, TimeUnit)} by executing each task sequentially in the current thread until all are finished or the timeout has occured. The timeout is <b>NOT</b> at all percise. The current time in milliseconds is chcekced against the timout before each task is run. This has the potential of returning the longest task execution time after the timeout occurs in the worst case. */
-	@Override
-	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException
+	// no overide of interface in 1.5: @Override
+	public <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException
 	{
 		long end = System.currentTimeMillis() + unit.toMillis(timeout);
 		List<Future<T>> results = new ArrayList<Future<T>>(tasks.size());
@@ -167,7 +166,7 @@ public class CurrentThreadExecutor implements ExecutorService
 		return results;
 	}
 
-	public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException
+	public <T> T invokeAny(Collection<Callable<T>> tasks) throws InterruptedException, ExecutionException
 	{
 		ExecutionException last = null;
 
@@ -185,7 +184,7 @@ public class CurrentThreadExecutor implements ExecutorService
 		throw last;
 	}
 
-	public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException, ExecutionException
+	public <T> T invokeAny(Collection<Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException, ExecutionException
 	{
 		long end = System.currentTimeMillis() + unit.toMillis(timeout);
 		Iterator<? extends Callable<T>> i = tasks.iterator();

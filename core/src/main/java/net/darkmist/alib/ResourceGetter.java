@@ -1,7 +1,5 @@
 package net.darkmist.alib;
 
-// not changed since qcomm
-
 import java.lang.Class;
 import java.io.InputStream;
 import java.io.IOException;
@@ -15,7 +13,7 @@ import java.util.regex.Pattern;
 public class ResourceGetter
 {
 	/** The class to get resources for */
-	protected Class src;
+	protected Class<?> src;
 
 	// sql fixup stuff:
 	// seperate vars for readablility
@@ -48,7 +46,7 @@ public class ResourceGetter
 	/** Construct a resource getter for a class.
 	 * @param src_n Class to get resources for.
 	 */
-	public ResourceGetter(Class src_n)
+	public ResourceGetter(Class<?> src_n)
 	{
 		src = src_n;
 	}
@@ -62,7 +60,7 @@ public class ResourceGetter
 		return getResourceNameFor(name, src);
 	}
 
-	static public String getResourceNameFor(String name, Class src)
+	static public String getResourceNameFor(String name, Class<?> src)
 	{
 		return src.getSimpleName() + "." + name;
 	}
@@ -77,7 +75,7 @@ public class ResourceGetter
 		return getFor(name, src);
 	}
 
-	static public InputStream getFor(String name, Class src)
+	static public InputStream getFor(String name, Class<?> src)
 	{
 		return src.getResourceAsStream(getResourceNameFor(name, src));
 	}
@@ -87,7 +85,7 @@ public class ResourceGetter
 		return getFor(name, src.getClass());
 	}
 
-	static public String getStringFor(String name, Class src)
+	static public String getStringFor(String name, Class<?> src)
 	{
 		try
 		{
@@ -119,7 +117,6 @@ public class ResourceGetter
 
 	public static String sqlFixup(CharSequence in)
 	{
-		int ch;
 		StringBuffer out = new StringBuffer();
 		Matcher matcher = sqlfix_pat.matcher(in);
 
@@ -144,13 +141,13 @@ public class ResourceGetter
 		return matcher.appendTail(out).toString();
 	}
 
-	static public String getSQLFor(String name, Class src)
+	static public String getSQLFor(String name, Class<?> src)
 	{
 		String sql;
 	       
 		if((sql	= getStringFor(name + ".sql", src))==null)
 			return null;
-		return sqlFixup(getStringFor(name + ".sql", src));
+		return sqlFixup(sql);
 	}
 
 	static public String getSQLFor(String name, Object src)

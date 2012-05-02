@@ -10,8 +10,10 @@ import org.apache.commons.logging.LogFactory;
 
 public abstract class RegexIterator<T> implements Iterator<T>
 {
+	@SuppressWarnings("rawtypes")
 	private static final Class<RegexIterator> CLASS = RegexIterator.class;
-        private static final Log logger = LogFactory.getLog(CLASS);
+	@SuppressWarnings("unused")
+	private static final Log logger = LogFactory.getLog(CLASS);
 
 	protected Matcher matcher;
 	protected T next;

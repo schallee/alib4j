@@ -11,8 +11,9 @@ public abstract class HTMLEscape
 	}
 
 	/** @deprecated Use {@link org.apache.commons.lang.StringEscapeUtils#escapeHtml(java.lang.String)} instead. */
+	// FIXME: we don't trust either of these...
 	@Deprecated
-	public static String HTMLEscape(String in)
+	public static String escape(String in)
 	{
 		return StringEscapeUtils.escapeHtml(in);
 		/*

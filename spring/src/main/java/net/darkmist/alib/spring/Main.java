@@ -5,7 +5,7 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class Main
 {
-	private static final Class CLASS = Main.class;
+	private static final Class<Main> CLASS = Main.class;
 	private static final String CLASS_NAME = CLASS.getName();
 	private static final int ERROR_EXIT = 1;
 	private static final String MAIN_BEAN = "main";

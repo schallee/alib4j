@@ -1,6 +1,5 @@
 package net.darkmist.alib.collection;
 
-import java.util.Enumeration;
 import java.util.Iterator;
 
 /**

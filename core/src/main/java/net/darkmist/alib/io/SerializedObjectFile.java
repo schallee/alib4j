@@ -16,8 +16,10 @@ import static net.darkmist.alib.io.Serializer.serializeToTempFile;
 
 public class SerializedObjectFile<T extends Serializable> extends AbstractRef<T>
 {
+	@SuppressWarnings("rawtypes")
 	private static final Class<SerializedObjectFile> CLASS = SerializedObjectFile.class;
-        private static final Log logger = LogFactory.getLog(CLASS);
+	@SuppressWarnings("unused")
+	private static final Log logger = LogFactory.getLog(CLASS);
 	private File file;
 	private Class<? extends T> objType;
 

@@ -1,7 +1,5 @@
 package net.darkmist.alib.collection;
 
-import java.util.NoSuchElementException;
-
 /**
  * Iterator for a single item. Why? So items can be trivially added to
  * a IteratorIterator.

@@ -6,7 +6,7 @@ import junit.framework.Test;
 
 public class OctalTest extends TestCase
 {
-	private static final Class CLASS = OctalTest.class;
+	private static final Class<OctalTest> CLASS = OctalTest.class;
 
 
 	protected void setUp()

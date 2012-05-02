@@ -13,7 +13,8 @@ import org.slf4j.LoggerFactory;
 public class Iterators
 {
 	private static final Class<Iterators> CLASS = Iterators.class;
-        private static final Logger logger = LoggerFactory.getLogger(CLASS);
+	@SuppressWarnings("unused")
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	/**
 	 * Package private so deprecated IteratorUtil can subclass...
@@ -77,12 +78,14 @@ public class Iterators
 	 */
 	private static final class EmptyIterator<T> extends NonRemovingIterator<T>
 	{
+		@SuppressWarnings("rawtypes")
 		private static EmptyIterator SINGLETON = new EmptyIterator();
 
 		private EmptyIterator()
 		{
 		}
 
+		@SuppressWarnings("unchecked")
 		static <T> EmptyIterator<T> instance()
 		{
 			return SINGLETON;
@@ -116,7 +119,7 @@ public class Iterators
 				return false;
 			if(!(o instanceof Iterator))
 				return false;
-			return !((Iterator)o).hasNext();
+			return !((Iterator<?>)o).hasNext();
 		}
 	}
 
@@ -204,7 +207,7 @@ public class Iterators
 	{
 		if(i == null || !i.hasNext())
 			return Enumerations.getEmptyEnumeration();
-		return new IteratorEnumeration(i);
+		return new IteratorEnumeration<T>(i);
 	}
 
 	/** Iterator for a single item. Why? So items can be trivially added to a IteratorIterator. */

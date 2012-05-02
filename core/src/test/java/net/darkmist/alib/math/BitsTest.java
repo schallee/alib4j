@@ -6,7 +6,7 @@ import junit.framework.Test;
 
 public class BitsTest extends TestCase
 {
-	private static final Class CLASS = BitsTest.class;
+	private static final Class<BitsTest> CLASS = BitsTest.class;
 
 	protected void setUp()
 	{

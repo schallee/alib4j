@@ -15,7 +15,7 @@ public abstract class URLEscape
 	{
 	}
 
-	public static final String URLEscape(int b)
+	public static final String escape(int b)
 	{
 		String ret;
 
@@ -58,12 +58,12 @@ public abstract class URLEscape
 		}
 	}
 
-	public static final String URLEscape(byte[] in)
+	public static final String escape(byte[] in)
 	{
 		StringBuilder ret = new StringBuilder(in.length);
 		for(int i=0;i<in.length;i++)
 		{
-			ret.append(URLEscape(in[i]));
+			ret.append(escape(in[i]));
 			logger.debug("ret=" + ret + "=");
 		}
 		return ret.toString();
@@ -81,16 +81,16 @@ public abstract class URLEscape
 		}
 	}
 
-	public static final String URLEscape(String in)
+	public static final String escape(String in)
 	{
-		return URLEscape(str2Bytes(in));
+		return escape(str2Bytes(in));
 	}
 
 	public static final String URLEscapeNotSlash(int b)
 	{
 		if((char)b == '/')
 			return "/";
-		return URLEscape(b);
+		return escape(b);
 	}
 
 	public static final String URLEscapeNotSlash(byte[] in)

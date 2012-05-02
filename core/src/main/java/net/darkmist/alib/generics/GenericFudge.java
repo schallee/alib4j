@@ -22,10 +22,10 @@ public class GenericFudge
 	}
 
 	/**
-	 * Fudge a ungenericified map to be one.
+	 * Force a non generic map to be one.
 	 */
-	static public <K,V> Map<K,V> map(Map map)
+	static public <K,V> Map<K,V> map(Map<?,?> map)
 	{
-		return map;
+		return (Map<K,V>)map;
 	}
 }

@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 
 public final class IteratorIterator<T> extends NonRemovingIterator<T>
 {
+	@SuppressWarnings("rawtypes")
 	private static final Class<IteratorIterator> CLASS = IteratorIterator.class;
-        private static final Logger logger = LoggerFactory.getLogger(CLASS);
+	@SuppressWarnings("unused")
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	private LinkedList<Iterator<T>> iterators = new LinkedList<Iterator<T>>();
 	private Iterator<T> iterator = null;

@@ -21,7 +21,7 @@ public class PkgRes
 	private ClassLoader loader;
 	private String prefix;
 
-	public PkgRes(Class cls)
+	public PkgRes(Class<?> cls)
 	{
 		if(cls == null)
 			throw new NullPointerException("cls is null");
@@ -31,7 +31,7 @@ public class PkgRes
 
 	public PkgRes(Object obj)
 	{
-		Class cls;
+		Class<?> cls;
 
 		if(obj == null)
 			throw new NullPointerException("obj is null");
@@ -73,7 +73,7 @@ public class PkgRes
 	 * @returns the class's pacakge name.
 	 * @throws NullPointerException if cls is null.
 	 */
-	public static String getPackageName(Class cls)
+	public static String getPackageName(Class<?> cls)
 	{
 		Package pkg;
 		String str;
@@ -135,7 +135,7 @@ public class PkgRes
 	 * 	prefixed by the package name.
 	 * @throws NullPointerException if cls is null.
 	 */
-	protected static StringBuilder appendResourcePathPrefixFor(StringBuilder sb, Class cls)
+	protected static StringBuilder appendResourcePathPrefixFor(StringBuilder sb, Class<?> cls)
 	{
 		if(cls == null)
 			throw new NullPointerException("cls is null");
@@ -165,10 +165,9 @@ public class PkgRes
 	 * @return Path of a resource prefixed by the class package name.
 	 * @throws NullPointerException if name or cls are null.
 	 */
-	public static String getResourcePathFor(CharSequence name, Class cls)
+	public static String getResourcePathFor(CharSequence name, Class<?> cls)
 	{
 		int nameLen;
-		String pkgName;
 		StringBuilder sb;
 
 		if(name==null)
@@ -211,7 +210,7 @@ public class PkgRes
 	 * @throws NullPointerException if name or cls are null.
 	 * 	ResourceException if the resource cannot be found.
 	 */
-	public static InputStream getFor(String name, Class cls)
+	public static InputStream getFor(String name, Class<?> cls)
 	{
 		InputStream ret;
 
@@ -232,9 +231,6 @@ public class PkgRes
 	 */
 	public static InputStream getFor(String name, Object obj)
 	{
-		Class cls;
-		InputStream ret;
-
 		if(obj == null)
 			throw new NullPointerException("obj is null");
 		return getFor(name,obj.getClass());
@@ -267,7 +263,7 @@ public class PkgRes
 	 * @throws NullPointerException if name or cls are null.
 	 * 	ResourceException if the resource cannot be found.
 	 */
-	public static String getStringFor(String name, Class cls)
+	public static String getStringFor(String name, Class<?> cls)
 	{
 		InputStream in = null;
 
@@ -342,7 +338,7 @@ public class PkgRes
 	 * @throws NullPointerException if name or cls are null.
 	 * 	ResourceException if the resource cannot be found.
 	 */
-	public static byte[] getBytesFor(String name, Class cls)
+	public static byte[] getBytesFor(String name, Class<?> cls)
 	{
 		InputStream in = null;
 

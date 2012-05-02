@@ -16,7 +16,7 @@ public abstract class NonRemovingIterator<T> implements Iterator<T>
 	 * remove method that always trows an exception.
 	 * @throws UnsupportedOperationException always.
 	 */
-	@Override
+	// no overide interface in 1.5: @Override
 	public final void remove()
 	{
 		throw new UnsupportedOperationException(this.getClass().getName() + " does not support remove()");

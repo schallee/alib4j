@@ -14,7 +14,7 @@ public class URLEscapeTest extends TestCase
 	{
 		String in = "";
 		String expected = in;
-		String out = URLEscape.URLEscape(in);
+		String out = URLEscape.escape(in);
 		assertEquals("Empty string not returned as is.", expected, out);
 	}
 
@@ -22,7 +22,7 @@ public class URLEscapeTest extends TestCase
 	{
 		String in = "toast";
 		String expected = in;
-		String out = URLEscape.URLEscape(in);
+		String out = URLEscape.escape(in);
 		assertEquals("String not needing encoding not returned as is", expected, out);
 	}
 
@@ -30,7 +30,7 @@ public class URLEscapeTest extends TestCase
 	{
 		String in = "toast is yummy";
 		String expected = "toast+is+yummy";
-		String out = URLEscape.URLEscape(in);
+		String out = URLEscape.escape(in);
 		assertEquals("Space not encoded as expected", expected, out);
 	}
 
@@ -38,7 +38,7 @@ public class URLEscapeTest extends TestCase
 	{
 		String in = "one\u0000null";
 		String expected = "one%00null";
-		String out = URLEscape.URLEscape(in);
+		String out = URLEscape.escape(in);
 		assertEquals("One null not encoded properly", expected, out);
 	}
 
@@ -46,7 +46,7 @@ public class URLEscapeTest extends TestCase
 	{
 		String in = "one\uFFFFhighbit";
 		String expected = "one%EF%BF%BFhighbit";
-		String out = URLEscape.URLEscape(in);
+		String out = URLEscape.escape(in);
 		assertEquals("One high bit not escaped properly", expected, out);
 	}
 
@@ -54,7 +54,7 @@ public class URLEscapeTest extends TestCase
 	{
 		String in = "slash/between";
 		String expected = "slash%2Fbetween";
-		String out = URLEscape.URLEscape(in);
+		String out = URLEscape.escape(in);
 		assertEquals("Slash not escaped", expected, out);
 	}
 

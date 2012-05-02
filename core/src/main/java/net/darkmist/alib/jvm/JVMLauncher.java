@@ -9,9 +9,8 @@ import org.apache.commons.logging.LogFactory;
 
 public class JVMLauncher
 {
-        private static final Class CLASS = JVMLauncher.class;
-        private static final String CLASS_NAME = CLASS.getName();
-        private static final Log logger = LogFactory.getLog(CLASS);
+	private static final Class<JVMLauncher> CLASS = JVMLauncher.class;
+	private static final Log logger = LogFactory.getLog(CLASS);
 
 	public static String getJavaPath() throws LauncherException
 	{
@@ -35,8 +34,11 @@ public class JVMLauncher
 			throw new LauncherException("Java executable " + exe + " does not exist.");
 		if(!file.isFile())
 			throw new LauncherException("Java executable " + exe + " is not a file.");
+		// FIXME: added in 1.6
+		/*
 		if(!file.canExecute())
 			throw new LauncherException("Java executable " + exe + " cannot be executed.");
+			*/
 		return exe;
 	}
 
@@ -45,7 +47,7 @@ public class JVMLauncher
 		return System.getProperty("java.class.path");
 	}
 
-	public static ProcessBuilder getProcessBuilder(Class mainClass, String... args) throws LauncherException
+	public static ProcessBuilder getProcessBuilder(Class<?> mainClass, String... args) throws LauncherException
 	{
 		return getProcessBuilder(mainClass.getName(), args);
 	}
@@ -76,7 +78,7 @@ public class JVMLauncher
 		return getProcessBuilder(mainClass, args).start();
 	}
 
-	public static Process getProcess(Class mainClass, String... args) throws LauncherException, IOException
+	public static Process getProcess(Class<?> mainClass, String... args) throws LauncherException, IOException
 	{
 		return getProcess(mainClass.getName(), args);
 	}

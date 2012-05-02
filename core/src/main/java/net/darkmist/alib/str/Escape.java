@@ -58,16 +58,14 @@ public class Escape
 					left = srcLen - i;
 
 					// check for just one octal
-					char ch2;
-					if(!(left>=2 && isOctal(ch2=src.charAt(i+1))))
+					if(!(left>=2 && isOctal(src.charAt(i+1))))
 					{	// only one octal
 						dst.append((char)unoctByte(src,i,1));
 						continue srcloop;
 					}
 
 					// check for two octals
-					char ch3;
-					if(!(left>=3 && isOctal(ch3=src.charAt(i+2))))
+					if(!(left>=3 && isOctal(src.charAt(i+2))))
 					{	// two octal chars
 						dst.append((char)unoctByte(src,i,2));
 						i++;
@@ -339,7 +337,6 @@ public class Escape
 	public static Appendable joinEscaped(Appendable dst, char delim, char escapeChar, String... strs) throws IOException
 	{
 		char[] alsoEscape;
-		int len = 0;
 		int i;
 
 		if(strs == null || strs.length==0)

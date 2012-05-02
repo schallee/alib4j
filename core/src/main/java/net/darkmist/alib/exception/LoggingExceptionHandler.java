@@ -8,8 +8,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class LoggingExceptionHandler implements ExceptionHandler
 {
-	private static final Class CLASS = LoggingExceptionHandler.class;
-	private static final String CLASS_NAME = CLASS.getName();
+	private static final Class<LoggingExceptionHandler> CLASS = LoggingExceptionHandler.class;
 	private static final Log logger = LogFactory.getLog(CLASS);
 
 	private volatile Log log = null;

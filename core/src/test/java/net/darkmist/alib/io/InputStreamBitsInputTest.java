@@ -1,15 +1,12 @@
 package net.darkmist.alib.io;
 
 
-import java.io.IOException;
-import java.io.EOFException;
 import java.io.ByteArrayInputStream;
+import java.io.EOFException;
+import java.io.IOException;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.framework.Test;
-
 import net.darkmist.alib.str.Binary;
 
 import org.slf4j.Logger;

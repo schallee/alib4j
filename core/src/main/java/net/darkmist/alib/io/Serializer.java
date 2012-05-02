@@ -19,7 +19,8 @@ import org.apache.commons.logging.LogFactory;
 public abstract class Serializer
 {
 	private static final Class<Serializer> CLASS = Serializer.class;
-        private static final Log logger = LogFactory.getLog(CLASS);
+	@SuppressWarnings("unused")
+	private static final Log logger = LogFactory.getLog(CLASS);
 
 	/** Read one serialized object from a input stream.
 	 * @param in InputStream to read from. This will be closed!

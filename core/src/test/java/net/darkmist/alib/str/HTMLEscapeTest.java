@@ -15,7 +15,7 @@ public class HTMLEscapeTest extends TestCase
 	{
 		String in = "";
 		String expected = in;
-		String out = HTMLEscape.HTMLEscape(in);
+		String out = HTMLEscape.escape(in);
 		assertEquals("Empty string not returned as is.", expected, out);
 	}
 
@@ -24,7 +24,7 @@ public class HTMLEscapeTest extends TestCase
 	{
 		String in = "toast";
 		String expected = in;
-		String out = HTMLEscape.HTMLEscape(in);
+		String out = HTMLEscape.escape(in);
 		assertEquals("String not needing encoding not returned as is", expected, out);
 	}
 
@@ -33,7 +33,7 @@ public class HTMLEscapeTest extends TestCase
 	{
 		String in = "toast is yummy";
 		String expected = "toast is yummy";
-		String out = HTMLEscape.HTMLEscape(in);
+		String out = HTMLEscape.escape(in);
 		assertEquals("Space not encoded as expected", expected, out);
 	}
 

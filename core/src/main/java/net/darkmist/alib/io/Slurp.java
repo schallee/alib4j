@@ -4,23 +4,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
 import java.io.EOFException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.Iterator;
-import java.util.List;
-import java.util.LinkedList;
 import java.util.concurrent.Callable;
-import static java.lang.System.arraycopy;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 public abstract class Slurp
 {
-	private static final int buf_size = 1024;
 	private Slurp()
 	{
 	}
@@ -32,48 +26,6 @@ public abstract class Slurp
 	public static byte[] slurp(InputStream stream) throws IOException
 	{
 		return IOUtils.toByteArray(stream);
-		/*
-		byte[] read_buf = new byte[buf_size];
-		byte[] tmp_buf;
-		List<byte[]> bufs = new LinkedList<byte[]>();
-		int total=0;
-		int amount_read;
-		int pos;
-
-		while((amount_read = stream.read(read_buf)) >= 0)
-		{
-			if(amount_read == 0)
-				continue;
-			if(amount_read < buf_size)
-			{
-				tmp_buf = new byte[amount_read];
-				arraycopy(read_buf, 0, tmp_buf, 0, amount_read);
-				bufs.add(tmp_buf);
-			}
-			else
-			{
-				bufs.add(read_buf);
-				read_buf = new byte[buf_size];
-			}
-			total += amount_read;
-		}
-		switch(bufs.size())
-		{
-			case 0:
-				return new byte[0];
-			case 1:
-				return bufs.iterator().next();
-		}
-		read_buf = new byte[total];
-		pos = 0;
-		for(Iterator<byte[]> i=bufs.iterator();i.hasNext();)
-		{
-			tmp_buf = i.next();
-			arraycopy(tmp_buf, 0, read_buf, pos, tmp_buf.length);
-			pos += tmp_buf.length;
-		}
-		return read_buf;
-		*/
 	}
 
 	public static byte[] slurp(InputStream stream, int amount) throws IOException
@@ -142,18 +94,6 @@ public abstract class Slurp
 	@Deprecated
 	public static byte[] slurp(File file) throws IOException
 	{
-		/*
-		InputStream stream = new FileInputStream(file);
-
-		try
-		{
-			return slurp(stream,(int)(file.length()));
-		}
-		finally
-		{
-			stream.close();
-		}
-		*/
 		return FileUtils.readFileToByteArray(file);
 	}
 
@@ -175,12 +115,6 @@ public abstract class Slurp
 		public void setReader(Reader in)
 		{
 			this.in = in;
-		}
-
-		private void close()
-		{
-			IOUtils.closeQuietly(in);
-			in = null;
 		}
 
 		public String call() throws Exception

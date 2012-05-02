@@ -10,7 +10,8 @@ import org.apache.commons.logging.LogFactory;
 public class StrUtil
 {
 	private static final Class<StrUtil> CLASS = StrUtil.class;
-        private static final Log logger = LogFactory.getLog(CLASS);
+	@SuppressWarnings("unused")
+	private static final Log logger = LogFactory.getLog(CLASS);
 	private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
 	private StrUtil()
@@ -36,7 +37,7 @@ public class StrUtil
 	 */
 	public static String[] split(String str, char delim)
 	{
-		List strs;
+		List<String> strs;
 		int len;
 		int start,end;
 		
@@ -44,7 +45,7 @@ public class StrUtil
 			return EMPTY_STRING_ARRAY;
 		if((len = str.length())==0)
 			return new String[]{""};
-		strs = new ArrayList(len);
+		strs = new ArrayList<String>(len);
 		for(start=0;start<len && (end = str.indexOf(delim, start))>=0;start=end+1)
 			strs.add(str.substring(start,end));
 		strs.add(str.substring(start));
@@ -58,7 +59,7 @@ public class StrUtil
 	 * @param replacement The string to replace match with
 	 * @return src with occurances of match replaced with replacement
 	 */
-	private static final String replace(String src, String match, String replacement)
+	public static final String replace(String src, String match, String replacement)
 	{
 		return replaceToStringBuffer(new StringBuffer(), src, match, replacement).toString();
 	}

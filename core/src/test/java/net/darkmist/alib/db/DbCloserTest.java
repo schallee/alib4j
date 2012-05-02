@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 public class DbCloserTest extends TestCase
 {
 	private static final Class<DbCloserTest> CLASS = DbCloserTest.class;
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 	private IMocksControl ctrl;
 	private Connection conn;

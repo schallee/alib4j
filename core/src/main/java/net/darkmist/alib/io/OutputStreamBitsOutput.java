@@ -3,8 +3,6 @@ package net.darkmist.alib.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import net.darkmist.alib.str.Binary;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +13,7 @@ import org.slf4j.LoggerFactory;
 public class OutputStreamBitsOutput implements BitsOutput
 {
 	private static final Class<OutputStreamBitsOutput> CLASS = OutputStreamBitsOutput.class;
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	/** Stream to write to. */
@@ -161,7 +160,7 @@ public class OutputStreamBitsOutput implements BitsOutput
 	}
 
 	/** {@inheritDoc} */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public void writeBits(int num, int bits) throws IOException
 	{
 		if(num > Integer.SIZE)
@@ -173,7 +172,7 @@ public class OutputStreamBitsOutput implements BitsOutput
 	}
 
 	/** {@inheritDoc} */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public void writeBit(boolean bit) throws IOException
 	{
 		writeBits(1,bit ? 1 : 0);
@@ -191,7 +190,7 @@ public class OutputStreamBitsOutput implements BitsOutput
 	}
 
 	/** {@inheritDoc} */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public void writeTillByte(boolean bit) throws IOException
 	{
 		checkState();
@@ -203,14 +202,14 @@ public class OutputStreamBitsOutput implements BitsOutput
 	 * @return true always as this implementation writes to a byte
 	 * 	stream and always knows the alignment.
 	 */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public boolean isWriteTillByteSupported()
 	{
 		return true;
 	}
 
 	/** {@inheritDoc} */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public void flush() throws IOException
 	{
 		checkState();
@@ -227,7 +226,7 @@ public class OutputStreamBitsOutput implements BitsOutput
 	}
 
 	/** {@inheritDoc} */
-	@Override
+	// no overide of interface in 1.5: @Override
 	public void close() throws IOException
 	{
 		if(closed)
@@ -255,7 +254,7 @@ public class OutputStreamBitsOutput implements BitsOutput
 	 * @return true always as this implementation writes to a byte
 	 * 	stream and always has to write full bytes.
 	 */
-	 @Override
+	 // no overide of interface in 1.5: @Override
 	 public boolean isByteAligning()
 	 {
 	 	return true;

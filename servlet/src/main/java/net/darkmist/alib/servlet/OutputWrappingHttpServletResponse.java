@@ -5,9 +5,7 @@ import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletRequest;
 
 /** Extended HttpServletResponseWrapper that allows easy wrapping of servlet output */
 public abstract class OutputWrappingHttpServletResponse extends HttpServletResponseWrapper implements OutputMethodServletResponse

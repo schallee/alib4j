@@ -2,15 +2,12 @@ package net.darkmist.alib.io;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Queue;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.Arrays;
-import java.util.zip.ZipInputStream;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import net.darkmist.alib.collection.Sets;
 
@@ -23,7 +20,6 @@ public class ZipDirTraverser extends DirTraverser
 	private static final Class<ZipDirTraverser> CLASS = ZipDirTraverser.class;
 	@SuppressWarnings("unused")
 	private static final String CLASS_NAME = CLASS.getName();
-	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 	private static final Set<String> ZIP_EXTS = Sets.newUnmodifiableSet("jar", "war", "ear", "zip", "rar", "car", "pak");
 	private NamedInputStreamHandler inputStreamHandler;

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 public class Binary
 {
 	private static final Class<Binary> CLASS = Binary.class;
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	/**

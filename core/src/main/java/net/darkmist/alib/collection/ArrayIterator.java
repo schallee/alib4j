@@ -1,6 +1,5 @@
 package net.darkmist.alib.collection;
 
-import java.util.Iterator;
 
 /**
  * Iterator that iterates over an array. Note that this does NOT make

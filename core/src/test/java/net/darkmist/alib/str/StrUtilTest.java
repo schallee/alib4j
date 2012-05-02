@@ -3,12 +3,11 @@ package net.darkmist.alib.str;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.framework.Test;
 
 public class StrUtilTest extends TestCase
 {
-	private static final Class CLASS = StrUtilTest.class;
+	@SuppressWarnings("unused")
+	private static final Class<StrUtilTest> CLASS = StrUtilTest.class;
 
 	private void doSimpleSplitTest(String input, char delim, String[] expected)
 	{

@@ -1,17 +1,17 @@
 package net.darkmist.alib.collection;
 
-import java.util.Set;
-import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Set;
 
+import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.Test;
 
 import org.apache.log4j.Logger;
 
 public class IteratorsTest extends TestCase
 {
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(IteratorsTest.class);
 
 	public void testSimple() throws Exception

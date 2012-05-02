@@ -3,11 +3,9 @@ package net.darkmist.alib.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.ServletResponseWrapper;
-import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.ServletResponseWrapper;
 
 /** Extended ServletResponseWrapper that allows easy wrapping of servlet output */
 public abstract class OutputWrappingServletResponse extends ServletResponseWrapper implements OutputMethodServletResponse

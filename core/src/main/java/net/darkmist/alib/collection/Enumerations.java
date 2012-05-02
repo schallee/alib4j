@@ -12,24 +12,26 @@ public final class Enumerations
 
 	private static final class EmptyEnumeration<T> implements Enumeration<T>
 	{
+		@SuppressWarnings("rawtypes")
 		private static EmptyEnumeration SINGLETON = new EmptyEnumeration();
 
 		private EmptyEnumeration()
 		{
 		}
 
+		@SuppressWarnings("unchecked")
 		static <T> EmptyEnumeration<T> instance()
 		{
 			return SINGLETON;
 		}
 
-		@Override
+		// in 1.6: @Override
 		public boolean hasMoreElements()
 		{
 			return false;
 		}
 
-		@Override
+		// in 1.6: @Override
 		public T nextElement()
 		{
 			throw new NoSuchElementException("This enumeration is empty");
@@ -38,7 +40,7 @@ public final class Enumerations
 
 	public static <T> Enumeration<T> getEmptyEnumeration()
 	{
-		return EmptyEnumeration.SINGLETON;
+		return EmptyEnumeration.instance();
 	}
 
 	private static final class EnumerationIterator<T> extends NonRemovingIterator<T>
