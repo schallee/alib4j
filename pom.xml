@@ -9,7 +9,6 @@
 	<artifactId>alib</artifactId>
 	<packaging>pom</packaging>
 	<name>alib</name>
-	<url>http://www.darkmist.net/alib/</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<shortGroupName>alib</shortGroupName>
@@ -190,4 +189,14 @@
 		</pluginManagement>
 		-->
 	</reporting>
+	<description>A library of java utils...</description>
+	<url>https://github.com/schallee/alib4j</url>
+	<scm>
+		<developerConnection>ssh://git@github.com/schallee/alib4j.git</developerConnection>
+		<connection>git://github.com/schallee/alib4j.git</connection>
+		<url>https://github.com/schallee/alib4j.git</url>
+	</scm>
+	<issueManagement>
+		<url>https://github.com/schallee/alib4j/issues</url>
+	</issueManagement>
 </project>
