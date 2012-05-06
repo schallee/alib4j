@@ -12,7 +12,6 @@
 	<artifactId>getpass</artifactId>
 	<packaging>jar</packaging>
 	<name>${shortGroupName}.${project.artifactId}</name>
-	<url>http://www.darkmist.net/alib/</url>
 	<build>
 		<finalName>${shortGroupName}-${project.artifactId}-${project.version}</finalName>
 		<plugins>
