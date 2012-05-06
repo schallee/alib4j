@@ -70,7 +70,7 @@ public class PkgRes
 
 	/**
 	 * Retrieve the prefix used for resource paths.
-	 * @returns the resource path prefix used.
+	 * @return the resource path prefix used.
 	 */
 	public String getResourcePathPrefix()
 	{
@@ -88,7 +88,7 @@ public class PkgRes
 	/**
 	 * Get the package name for a class.
 	 * @param cls The class to get the package name for.
-	 * @returns the class's pacakge name.
+	 * @return the class's pacakge name.
 	 * @throws NullPointerException if cls is null.
 	 */
 	public static String getPackageName(Class<?> cls)
@@ -110,7 +110,7 @@ public class PkgRes
 	/**
 	 * Get the package name for a object.
 	 * @param obj The object to get the package name for.
-	 * @returns the object's class's pacakge name.
+	 * @return the object's class's pacakge name.
 	 * @throws NullPointerException if obj is null.
 	 */
 	public static String getPackageName(Object obj)
@@ -304,7 +304,6 @@ public class PkgRes
 	/**
 	 * Get a resource as a String.
 	 * @param name The name of the resource
-	 * @param cls the class to use for the package name
 	 * @return The contents of the resource converted to a string
 	 * 	with the default encoding.
 	 * @throws NullPointerException if name or obj are null.
@@ -379,7 +378,6 @@ public class PkgRes
 	/**
 	 * Get a resource as a byte array.
 	 * @param name The name of the resource
-	 * @param cls the class to use for the package name
 	 * @return The contents of the resource as a byte array.
 	 * @throws NullPointerException if name or obj are null.
 	 * 	ResourceException if the resource cannot be found.

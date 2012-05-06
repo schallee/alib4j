@@ -23,7 +23,7 @@ package net.darkmist.alib.collection;
  * Iterator that iterates over an array. Note that this does NOT make
  * a copy of the array so changes to the passed array may cause issues
  * with iteration.
- * @deprecated Use {@link Iterators#getArrayIterator(T...)} instead.
+ * @deprecated Use {@link Iterators#getArrayIterator(Object[])} instead.
  */
 @Deprecated
 public final class ArrayIterator<T> extends Iterators.ArrayIterator<T>

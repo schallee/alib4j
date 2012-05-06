@@ -36,7 +36,7 @@ public class Binary
 
 	/**
 	 * Convert a long to a binary string.
-	 * This is similar to {@Long.toString(bits,2)} except that bits
+	 * This is similar to {@link Long#toString(long,int) Long.toString(bits,2)} except that bits
 	 * is handled as unsigned and the result is zero padded to the
 	 * full number of bits.
 	 * @param bits The long to convert
@@ -58,7 +58,7 @@ public class Binary
 
 	/**
 	 * Convert a long to a binary string.
-	 * This is similar to {@Long.toString(bits,2)} except that bits
+	 * This is similar to {@link Long#toString(long,int) Long.toString(bits,2)} except that bits
 	 * is handled as unsigned and the result is zero padded to the
 	 * full number of bits.
 	 * @param bits The long to convert
@@ -71,7 +71,7 @@ public class Binary
 
 	/**
 	 * Convert a int to a binary string.
-	 * This is similar to {@Integer.toString(bits,2)} except that bits
+	 * This is similar to {@link Integer#toString(int,int) Integer.toString(bits,2)} except that bits
 	 * is handled as unsigned and the result is zero padded to the
 	 * full number of bits.
 	 * @param bits The int to convert
@@ -93,7 +93,7 @@ public class Binary
 
 	/**
 	 * Convert a int to a binary string.
-	 * This is similar to {@Integer.toString(bits,2)} except that
+	 * This is similar to {@link Integer#toString(int,int) Integer.toString(bits,2)} except that
 	 * bits is handled as unsigned and the result is zero padded to
 	 * the full number of bits.
 	 * @param bits The int to convert
@@ -106,7 +106,7 @@ public class Binary
 
 	/**
 	 * Convert a short to a binary string.
-	 * This is similar to {@Integer.toString(bits,2)} except that bits
+	 * This is similar to {@link Integer#toString(int,int) Integer.toString(bits,2)} except that bits
 	 * is handled as unsigned and the result is zero padded to the
 	 * full number of bits.
 	 * @param bits The short to convert
@@ -128,7 +128,7 @@ public class Binary
 
 	/**
 	 * Convert a short to a binary string.
-	 * This is similar to {@Integer.toString(bits,2)} except that
+	 * This is similar to {@link Integer#toString(int,int) Integer.toString(bits,2)} except that
 	 * bits is handled as unsigned and the result is zero padded to
 	 * the full number of bits.
 	 * @param bits The short to convert
@@ -141,7 +141,7 @@ public class Binary
 
 	/**
 	 * Convert a byte to a binary string.
-	 * This is similar to {@Integer.toString(bits,2)} except that bits
+	 * This is similar to {@link Integer#toString(int,int) Integer.toString(bits,2)} except that bits
 	 * is handled as unsigned and the result is zero padded to the
 	 * full number of bits.
 	 * @param bits The byte to convert
@@ -163,7 +163,7 @@ public class Binary
 
 	/**
 	 * Convert a byte to a binary string.
-	 * This is similar to {@Integer.toString(bits,2)} except that
+	 * This is similar to {@link Integer#toString(int,int) Integer.toString(bits,2)} except that
 	 * bits is handled as unsigned and the result is zero padded to
 	 * the full number of bits.
 	 * @param bits The byte to convert

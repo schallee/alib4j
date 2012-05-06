@@ -29,7 +29,7 @@ public class Past<T> implements Future<T>
 
 	/** 
 	 * @param value The value to return.
-	 * @param exception The exception to wrap and throw
+	 * @param e The exception to wrap and throw
 	 */
 	public Past(T value, Exception e)
 	{
@@ -46,7 +46,7 @@ public class Past<T> implements Future<T>
 	}
 	
 	/** 
-	 * @param exception The exception to wrap and throw
+	 * @param e The exception to wrap and throw
 	 */
 	public Past(Exception e)
 	{
@@ -64,7 +64,7 @@ public class Past<T> implements Future<T>
 	}
 
 	/** Always returns false as the task has always completed.
-	 * @returns false
+	 * @return false
 	 */
 	@Override
 	public boolean isCancelled()
@@ -73,7 +73,7 @@ public class Past<T> implements Future<T>
 	}
 
 	/** Always returns true as the task has always completed.
-	 * @returns true
+	 * @return true
 	 */
 	@Override
 	public boolean isDone()
@@ -90,7 +90,6 @@ public class Past<T> implements Future<T>
 	}
 
 	/**
-	 * @Inherit
 	 * Returns immediately
 	 * @param timeout ignored
 	 * @param unit ignored

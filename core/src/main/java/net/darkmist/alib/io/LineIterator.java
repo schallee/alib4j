@@ -69,7 +69,7 @@ public class LineIterator implements Iterator<String>
 
 	/** {@link java.util.Iterator#hasNext()} implementation.
 	  * @return True if more lines are availible, false if not.
-	  * @note As this can cause the underlying {@link java.io.InputStream InputStream} to throw
+	  * As this can cause the underlying {@link java.io.InputStream InputStream} to throw
 	  * a {@link java.io.IOException IOException} but the {@link java.util.Iterator#hasNext()}
 	  * interface does not, false is returned instead of it being rethrown. The exception can be
 	  * retrieved via {@link #getIOException()}.
@@ -98,7 +98,7 @@ public class LineIterator implements Iterator<String>
 	/** {@link java.util.Iterator#next()} implementation.
 	  * @return Next line of the source stream.
 	  * @throws NoSuchElementException in the case of a end of file or a {@link java.io.IOException}
-	  * 	by the underlying {@link java.io.IOStream IOStream}. In the latter case the exception can
+	  * 	by the underlying {@link java.io.InputStream InputStream}. In the latter case the exception can
 	  *	be retrieved via {@link #getIOException()}.
 	  */
 	@Override

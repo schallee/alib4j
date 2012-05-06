@@ -79,7 +79,7 @@ public interface BitsOutput extends Closeable, Flushable
 	/**
 	 * Report wether {@link #flush()} and {@link #close()} pad output
 	 * to a full byte using zero bits. This returning true implies
-	 * {@link isWriteTillByteSupported()} also returns true.
+	 * {@link #isWriteTillByteSupported()} also returns true.
 	 * @return true if padding will occur. false otherwise.
 	 */
 	public boolean isByteAligning();

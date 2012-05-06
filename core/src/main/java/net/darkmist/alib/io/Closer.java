@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Static methods to convinently close {@Closeable}s.
+ * Static methods to convinently close {@link Closeable}s.
  */
 public class Closer
 {

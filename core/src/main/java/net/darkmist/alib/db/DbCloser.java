@@ -68,7 +68,7 @@ public class DbCloser
 
 	/**
 	 * Handle closing a statment. Calls
-	 * {@link #close(Statement,Logger,Object} with null for the name
+	 * {@link #close(Statement,Logger,Object)} with null for the name
 	 * @param stmt The statement to close.
 	 * @param logExceptionTo The log to log any {@link SQLException}
 	 *	to. If this is null, the logger for the DbCloser class
@@ -82,7 +82,7 @@ public class DbCloser
 
 	/**
 	 * Handle closing a statment. Calls
-	 * {@link #close(Statement,Logger,Object} with null for
+	 * {@link #close(Statement,Logger,Object)} with null for
 	 * logExceptionTo and name
 	 * @param stmt The statement to close.
 	 * @return null as a convinence to null out the closed object.
@@ -121,7 +121,7 @@ public class DbCloser
 
 	/**
 	 * Handle closing a prepared statment. Calls
-	 * {@link #close(PreparedStatement,Logger,Object} with null for
+	 * {@link #close(PreparedStatement,Logger,Object)} with null for
 	 * the name.
 	 * @param stmt The statement to close.
 	 * @param logExceptionTo The log to log any {@link SQLException}
@@ -135,7 +135,7 @@ public class DbCloser
 
 	/**
 	 * Handle closing a prepared statment. Calls
-	 * {@link #close(PreparedStatement,Logger,Object} with null for
+	 * {@link #close(PreparedStatement,Logger,Object)} with null for
 	 * logExceptionTo and name.
 	 * @param stmt The statement to close.
 	 */
@@ -189,10 +189,6 @@ public class DbCloser
 	 * {@link #close(ResultSet,Logger,Object)} with null for
 	 * logExceptionTo and name
 	 * @param rs The result set to close.
-	 * @param logExceptionTo The log to log any {@link SQLException}
-	 *	to. If this is null, the logger for the DbCloser class
-	 *	will be used.
-	 * @return null as a convinence to null out the closed object.
 	 */
 	public static ResultSet close(ResultSet rs)
 	{
@@ -201,8 +197,8 @@ public class DbCloser
 
 	/**
 	 * Handle closing a result set and a prepared statment. This
-	 * calls {@ #close(ResultSet,Logger,Object)} followed by
-	 * {@ #close(PreparedStatement,Logger,Object)}.
+	 * calls {@link #close(ResultSet,Logger,Object)} followed by
+	 * {@link #close(PreparedStatement,Logger,Object)}.
 	 * @param rs The result set to close.
 	 * @param stmt The statement to close.
 	 * @param logExceptionTo The log to log any {@link SQLException}
@@ -222,7 +218,7 @@ public class DbCloser
 
 	/**
 	 * Handle closing a result set and a prepared statment. This
-	 * calls {@ #close(ResultSet,PreparedStatement,Logger,Object)}
+	 * calls {@link #close(ResultSet,PreparedStatement,Logger,Object)}
 	 * with null for name.
 	 * @param rs The result set to close.
 	 * @param stmt The statement to close.
@@ -238,13 +234,10 @@ public class DbCloser
 
 	/**
 	 * Handle closing a result set and a prepared statment. This
-	 * calls {@ #close(ResultSet,PreparedStatement,Logger,Object)}
+	 * calls {@link #close(ResultSet,PreparedStatement,Logger,Object)}
 	 * with null for logException to and name.
 	 * @param rs The result set to close.
 	 * @param stmt The statement to close.
-	 * @param logExceptionTo The log to log any {@link SQLException}
-	 *	to. If this is null, the logger for the DbCloser class
-	 *	will be used.
 	 * @return null as a convinence to null out the closed objects.
 	 */
 	public static ResultSet close(ResultSet rs, PreparedStatement stmt)
@@ -306,9 +299,9 @@ public class DbCloser
 
 	/**
 	 * Handle closing a result set and a prepared statment. This
-	 * calls {@ #close(ResultSet,Logger,Object)},
-	 * {@ #close(PreparedStatement,Logger,Object)} and finally
-	 * {@ #close(Connection,Logger,Object)}.
+	 * calls {@link #close(ResultSet,Logger,Object)},
+	 * {@link #close(PreparedStatement,Logger,Object)} and finally
+	 * {@link #close(Connection,Logger,Object)}.
 	 * @param rs The result set to close.
 	 * @param stmt The statement to close.
 	 * @param conn The connection to close.
@@ -328,7 +321,7 @@ public class DbCloser
 
 	/**
 	 * Handle closing a result set and a prepared statment. This calls
-	 * {@ #close(ResultSet,PreparedStatement,Connection,Logger,Object)}
+	 * {@link #close(ResultSet,PreparedStatement,Connection,Logger,Object)}
 	 * with null for name.
 	 * @param rs The result set to close.
 	 * @param stmt The statement to close.
@@ -345,7 +338,7 @@ public class DbCloser
 	
 	/**
 	 * Handle closing a result set and a prepared statment. This calls
-	 * {@ #close(ResultSet,PreparedStatement,Connection,Logger,Object)}
+	 * {@link #close(ResultSet,PreparedStatement,Connection,Logger,Object)}
 	 * with null for logExceptionTo and name.
 	 * @param rs The result set to close.
 	 * @param stmt The statement to close.
