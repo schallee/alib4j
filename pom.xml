@@ -22,7 +22,7 @@
 		<reporting.javadoc.conf.serialwarn>true</reporting.javadoc.conf.serialwarn>
 		<reporting.javadoc.conf.verbose>true</reporting.javadoc.conf.verbose>
 		<reporting.pmd.version>2.4</reporting.pmd.version>
-		<reporting.pmd.linkXref>true</reporting.pmd.linkXref>
+		<reporting.pmd.linkXref>false</reporting.pmd.linkXref>
 		<reporting.pmd.sourceEncoding>${project.build.sourceEncoding}</reporting.pmd.sourceEncoding>
 		<reporting.pmd.targetJdk>${source.version}</reporting.pmd.targetJdk>
 	</properties>
