@@ -8,7 +8,7 @@
 	<parent>
 		<artifactId>parent</artifactId>
 		<groupId>net.darkmist.alib</groupId>
-		<version>1.0.0</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
 	<properties>
 		<spring.version>2.5.6</spring.version>
@@ -16,6 +16,20 @@
 	<name>${shortGroupName}.${project.artifactId}</name>
 	<build>
 		<finalName>${shortGroupName}-${project.artifactId}-${project.version}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+							<goal>cpd-check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 	<dependencies>
 		<dependency>
@@ -30,4 +44,29 @@
 			<version>${spring.version}</version>
 		</dependency>
 	</dependencies>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${reporting.javadoc.version}</version>
+				<configuration>
+					<detectJavaApiLink>${reporting.javadoc.conf.detectJavaApiLink}</detectJavaApiLink>
+					<detectLinks>${reporting.javadoc.conf.detectLink}</detectLinks>
+					<serialwarn>${reporting.javadoc.conf.serialwarn}</serialwarn>
+					<verbose>${reporting.javadoc.conf.vebose}</verbose>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>${reporting.pmd.version}</version>
+				<configuration>
+					<linkXref>${reporting.pmd.linkXref}</linkXref>
+					<sourceEncoding>${reporting.pmd.sourceEncoding}</sourceEncoding>
+					<targetJdk>${reporting.pmd.targetJdk}</targetJdk>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
