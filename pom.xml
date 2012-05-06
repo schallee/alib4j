@@ -16,16 +16,16 @@
 		<source.version>1.6</source.version>
 
 		<!-- reporting stuff as there is no central management -->
-		<reporting.javadoc.version>2.5</reporting.javadoc.version>
+		<reporting.javadoc.version>2.8.1</reporting.javadoc.version>
 		<reporting.javadoc.conf.detectJavaApiLink>true</reporting.javadoc.conf.detectJavaApiLink>
 		<reporting.javadoc.conf.detectLinks>true</reporting.javadoc.conf.detectLinks>
 		<reporting.javadoc.conf.serialwarn>true</reporting.javadoc.conf.serialwarn>
 		<reporting.javadoc.conf.verbose>true</reporting.javadoc.conf.verbose>
-		<reporting.pmd.version>2.4</reporting.pmd.version>
+		<reporting.pmd.version>2.7.1</reporting.pmd.version>
 		<reporting.pmd.linkXref>false</reporting.pmd.linkXref>
 		<reporting.pmd.sourceEncoding>${project.build.sourceEncoding}</reporting.pmd.sourceEncoding>
 		<reporting.pmd.targetJdk>${source.version}</reporting.pmd.targetJdk>
-		<reporting.versions.version>1.1</reporting.versions.version>
+		<reporting.versions.version>1.3.1</reporting.versions.version>
 	</properties>
 	<modules>
 		<module>core</module>
@@ -41,7 +41,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.0.2</version>
+					<version>2.3.2</version>
 					<configuration>
 						<source>${source.version}</source>
 						<target>${source.version}</target>
@@ -61,6 +61,11 @@
 							</goals>
 						</execution>
 					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.1</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
