@@ -22,9 +22,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class DbUtil
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public final class DbUtil
 {
-	public static final void cleanup(PreparedStatement stmt)
+	private static final Class<DbUtil> CLASS = DbUtil.class;
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
+
+	/**
+	 * Only static methods so no public construtor
+	 */
+	private DbUtil()
+	{
+	}
+
+	public static void cleanup(PreparedStatement stmt)
 	{
 		if(stmt == null)
 			return;
@@ -32,17 +45,21 @@ public abstract class DbUtil
 		{
 			stmt.clearParameters();
 		}
-		catch(SQLException ignored)
-		{}
+		catch(SQLException e)
+		{
+			logger.warn("Exception clearing paramaters from prepared statement", e);
+		}
 		try
 		{
 			stmt.close();
 		}
-		catch(SQLException ignored)
-		{}
+		catch(SQLException e)
+		{
+			logger.warn("Exception closing prepared statement", e);
+		}
 	}
 	
-	public static final void cleanup(ResultSet rs)
+	public static void cleanup(ResultSet rs)
 	{
 		if(rs == null)
 			return;
@@ -50,17 +67,19 @@ public abstract class DbUtil
 		{
 			rs.close();
 		}
-		catch(SQLException ignored)
-		{}
+		catch(SQLException e)
+		{
+			logger.warn("Exception closing result set", e);
+		}
 	}
 
-	public static final void cleanup(ResultSet rs, PreparedStatement stmt)
+	public static void cleanup(ResultSet rs, PreparedStatement stmt)
 	{
 		cleanup(rs);
 		cleanup(stmt);
 	}
 
-	public static final void cleanup(PreparedStatement stmt, ResultSet rs)
+	public static void cleanup(PreparedStatement stmt, ResultSet rs)
 	{
 		cleanup(rs,stmt);
 	}

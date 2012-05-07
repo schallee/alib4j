@@ -22,14 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.darkmist.alib.str.Hex.hexByte;
-import static net.darkmist.alib.str.Hex.hexShort;
-import static net.darkmist.alib.str.Hex.unhexByte;
-import static net.darkmist.alib.str.Hex.unhexShort;
-import static net.darkmist.alib.str.Octal.isOctal;
-import static net.darkmist.alib.str.Octal.unoctByte;
-import static net.darkmist.alib.str.Octal.unoctShort;
-
 public class Escape
 {
 	private static final char DEFAULT_ESCAPE = '\\';
@@ -76,23 +68,23 @@ public class Escape
 					left = srcLen - i;
 
 					// check for just one octal
-					if(!(left>=2 && isOctal(src.charAt(i+1))))
+					if(!(left>=2 && Octal.isOctal(src.charAt(i+1))))
 					{	// only one octal
-						dst.append((char)unoctByte(src,i,1));
+						dst.append((char)Octal.unoctByte(src,i,1));
 						continue srcloop;
 					}
 
 					// check for two octals
-					if(!(left>=3 && isOctal(src.charAt(i+2))))
+					if(!(left>=3 && Octal.isOctal(src.charAt(i+2))))
 					{	// two octal chars
-						dst.append((char)unoctByte(src,i,2));
+						dst.append((char)Octal.unoctByte(src,i,2));
 						i++;
 						continue srcloop;
 					}
 
 					// three octal chars (ha ha ha)
 					//System.err.println("escaped=" + src.subSequence(i,i+3));
-					dst.append((char)unoctShort(src,i,3));
+					dst.append((char)Octal.unoctShort(src,i,3));
 					i+=2;
 					continue srcloop;
 				case 'a':
@@ -125,7 +117,7 @@ public class Escape
 						else
 							throw new EscapeException("String to escape ends in truncated hex escape");
 					i++;
-					dst.append((char)(unhexByte(src,i,2)&0xff));
+					dst.append((char)(Hex.unhexByte(src,i,2)&0xff));
 					i++;
 					continue srcloop;
 				case 'u':
@@ -139,7 +131,7 @@ public class Escape
 					i++;
 					//System.err.println("unescaped=" + src.subSequence(i,i+4));
 					//System.err.println("unhexShort=" + Integer.toHexString(unhexShort(src,i,4)) + '=');
-					dst.append((char)(unhexShort(src,i,4)&0xffff));
+					dst.append((char)(Hex.unhexShort(src,i,4)&0xffff));
 					i+=3;
 					continue srcloop;
 				default:
@@ -240,14 +232,14 @@ public class Escape
 			{
 				dst.append(escapeChar);
 				dst.append("u");
-				hexShort(dst, c);
+				Hex.hexShort(dst, c);
 				continue srcloop;
 			}
 			if(c>=0x7f||c<0x20)
 			{
 				dst.append(escapeChar);
 				dst.append('x');
-				hexByte(dst,c);
+				Hex.hexByte(dst,c);
 				continue srcloop;
 			}
 			if(ch==escapeChar)

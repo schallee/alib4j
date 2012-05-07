@@ -89,11 +89,8 @@ public class SerializedObjectFile<T extends Serializable> extends AbstractRef<T>
 	{
 		try
 		{
-			if(file != null && file.exists())
-			{
-				if(!file.delete())
-					file.deleteOnExit();
-			}
+			if(file != null && file.exists() && !file.delete())
+				file.deleteOnExit();
 		}
 		finally
 		{

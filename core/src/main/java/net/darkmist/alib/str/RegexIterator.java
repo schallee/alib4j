@@ -91,11 +91,8 @@ public abstract class RegexIterator<T> implements Iterator<T>
 	{
 		T ret;
 
-		if(!hasNext)
-		{
-			if(!advance())
-				throw new NoSuchElementException();
-		}
+		if(!hasNext && !advance())
+			throw new NoSuchElementException();
 		ret = next;
 		next = null;	// don't keep a reference
 		hasNext = false;

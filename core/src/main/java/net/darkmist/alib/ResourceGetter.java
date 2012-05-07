@@ -18,7 +18,6 @@
 
 package net.darkmist.alib;
 
-import java.lang.Class;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.regex.Matcher;

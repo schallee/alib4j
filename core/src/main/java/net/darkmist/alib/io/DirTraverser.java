@@ -20,20 +20,16 @@ package net.darkmist.alib.io;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.NoSuchElementException;
-import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Queue;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DirTraverser
 {
 	private static final Class<DirTraverser> CLASS = DirTraverser.class;
-	@SuppressWarnings("unused")
-	private static final String CLASS_NAME = CLASS.getName();
-	@SuppressWarnings("unused")
-	private static final Log logger = LogFactory.getLog(CLASS);
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	private FileHandler fileHandler;
 	private Queue<File> frontier;
@@ -93,24 +89,22 @@ public class DirTraverser
 	{
 		File dir;
 
-		try
+		while(frontier.size() > 0 && (dir = frontier.remove())!=null)
 		{
-			while((dir = frontier.remove())!=null)
+			if((dir = frontier.remove())==null)
 			{
-				if(dir.isDirectory())
-				{
-					File[] files = dir.listFiles();
-					if(files != null)
-						for(File file : sort(dir.listFiles()))
-							onRawFile(file);
-				}
-				else
-					onFile(dir);
+				logger.warn("Frontier queue contained unepected null element! Ignoring");
+				continue;
 			}
-		}
-		catch(NoSuchElementException ignored)
-		{
-			// we're done
+			if(dir.isDirectory())
+			{
+				File[] files = dir.listFiles();
+				if(files != null)
+					for(File file : sort(dir.listFiles()))
+						onRawFile(file);
+			}
+			else
+				onFile(dir);
 		}
 	}
 }

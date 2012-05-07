@@ -22,260 +22,305 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-class LittleEndian
+public final class LittleEndian
 {
+	/**
+	 * Static only class
+	 */
+	private LittleEndian()
+	{
+	}
+
+	private static class LittleEndianDataOutput implements DataOutput
+	{
+		private DataOutput toWrap;
+
+		LittleEndianDataOutput(DataOutput toWrap_)
+		{
+			this.toWrap = toWrap_;
+		}
+
+		@Override
+		public void write(int i) throws IOException
+		{
+			toWrap.write(i);
+		}
+
+		@Override
+		public void write(byte[] b) throws IOException
+		{
+			toWrap.write(b);
+		}
+
+		@Override
+		public void write(byte[] b, int off, int len) throws IOException
+		{
+			toWrap.write(b,off,len);
+		}
+
+		@Override
+		public void writeBoolean(boolean b) throws IOException
+		{
+			toWrap.writeBoolean(b);
+		}
+
+		@Override
+		public void writeByte(int i) throws IOException
+		{
+			toWrap.writeByte(i);
+		}
+
+		@Override
+		public void writeShort(int i) throws IOException
+		{
+			toWrap.writeShort(Short.reverseBytes((short)i));
+		}
+
+		@Override
+		public void writeChar(int i) throws IOException
+		{
+			toWrap.writeChar(i);
+		}
+
+		@Override
+		public void writeInt(int i) throws IOException
+		{
+			toWrap.writeInt(Integer.reverseBytes(i));
+		}
+
+		@Override
+		public void writeLong(long l) throws IOException
+		{
+			toWrap.writeLong(Long.reverseBytes(l));
+		}
+
+		/**
+		 * @throws UnsupportedOperationException always.
+		 */
+		@Override
+		public void writeFloat(@SuppressWarnings("unused") float f) throws IOException
+		{
+			throw new UnsupportedOperationException();
+		}
+
+		/**
+		 * @throws UnsupportedOperationException always
+		 */
+		@Override
+		public void writeDouble(@SuppressWarnings("unused") double d) throws IOException
+		{
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void writeBytes(String s) throws IOException
+		{
+			toWrap.writeBytes(s);
+		}
+
+		@Override
+		public void writeChars(String s) throws IOException
+		{
+			toWrap.writeChars(s);
+		}
+
+		@Override
+		public void writeUTF(String s) throws IOException
+		{
+			toWrap.writeUTF(s);
+		}
+
+		@SuppressWarnings("unused")
+		public DataOutput getWrapped()
+		{
+			return toWrap;
+		}
+
+		@Override
+		protected Object clone() throws CloneNotSupportedException
+		{
+			throw new CloneNotSupportedException();
+		}
+
+		@Override
+		public String toString()
+		{
+			return "Little endian wrapped " + toWrap.toString();
+		}
+
+		@Override
+		public int hashCode()
+		{
+			return ~(toWrap.hashCode());
+		}
+
+		@Override
+		public boolean equals(Object o)
+		{
+			if(o == this)
+				return true;
+			if(!(o instanceof LittleEndianDataOutput))
+				return false;
+			return toWrap.equals(((LittleEndianDataOutput)o).toWrap);
+		}
+	};
+
 	/**
 	 * Wraps a DataOutput so that short, int &amp; long are written
 	 * in little endian. Note that the float &amp; double throw
 	 * {@link java.lang.UnsupportedOperationException}.
 	 */
-	public static DataOutput wrap(final DataOutput toWrap)
+	public static DataOutput wrap(DataOutput toWrap)
 	{
-		return new DataOutput()
-		{
-			@Override
-			public void write(int i) throws IOException
-			{
-				toWrap.write(i);
-			}
-
-			@Override
-			public void write(byte[] b) throws IOException
-			{
-				toWrap.write(b);
-			}
-
-			@Override
-			public void write(byte[] b, int off, int len) throws IOException
-			{
-				toWrap.write(b,off,len);
-			}
-
-			@Override
-			public void writeBoolean(boolean b) throws IOException
-			{
-				toWrap.writeBoolean(b);
-			}
-
-			@Override
-			public void writeByte(int i) throws IOException
-			{
-				toWrap.writeByte(i);
-			}
-
-			@Override
-			public void writeShort(int i) throws IOException
-			{
-				toWrap.writeShort(Short.reverseBytes((short)i));
-			}
-
-			@Override
-			public void writeChar(int i) throws IOException
-			{
-				toWrap.writeChar(i);
-			}
-
-			@Override
-			public void writeInt(int i) throws IOException
-			{
-				toWrap.writeInt(Integer.reverseBytes(i));
-			}
-
-			@Override
-			public void writeLong(long l) throws IOException
-			{
-				toWrap.writeLong(Long.reverseBytes(l));
-			}
-
-			/**
-			 * @throws UnsupportedOperationException always.
-			 */
-			@Override
-			public void writeFloat(@SuppressWarnings("unused") float f) throws IOException
-			{
-				throw new UnsupportedOperationException();
-			}
-
-			/**
-			 * @throws UnsupportedOperationException always
-			 */
-			@Override
-			public void writeDouble(@SuppressWarnings("unused") double d) throws IOException
-			{
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public void writeBytes(String s) throws IOException
-			{
-				toWrap.writeBytes(s);
-			}
-
-			@Override
-			public void writeChars(String s) throws IOException
-			{
-				toWrap.writeChars(s);
-			}
-
-			@Override
-			public void writeUTF(String s) throws IOException
-			{
-				toWrap.writeUTF(s);
-			}
-
-			@SuppressWarnings("unused")
-			public DataOutput getWrapped()
-			{
-				return toWrap;
-			}
-
-			@Override
-			protected Object clone() throws CloneNotSupportedException
-			{
-				throw new CloneNotSupportedException();
-			}
-	
-			@Override
-			public String toString()
-			{
-				return "Little endian wrapped " + toWrap.toString();
-			}
-
-			@Override
-			public int hashCode()
-			{
-				return ~(toWrap.hashCode());
-			}
-		};
+		return new LittleEndianDataOutput(toWrap);
 	}
 
-	public static DataInput wrap(final DataInput toWrap)
+	private static class LittleEndianDataInput implements DataInput
 	{
-		return new DataInput()
+		private DataInput toWrap;
+
+		LittleEndianDataInput(DataInput toWrap_)
 		{
-			@Override
-			public void readFully(byte[] b) throws IOException
-			{
-				toWrap.readFully(b);
-			}
-	
-			@Override
-			public void readFully(byte[] b, int off, int len) throws IOException
-			{
-				toWrap.readFully(b,off,len);
-			}
-	
-			@Override
-			public int skipBytes(int n) throws IOException
-			{
-				return toWrap.skipBytes(n);
-			}
-	
-			@Override
-			public boolean readBoolean() throws IOException
-			{
-				return toWrap.readBoolean();
-			}
-	
-			@Override
-			public byte readByte() throws IOException
-			{
-				return toWrap.readByte();
-			}
-	
-			@Override
-			public int readUnsignedByte() throws IOException
-			{
-				return toWrap.readUnsignedByte();
-			}
-	
-			@Override
-			public short readShort() throws IOException
-			{
-				return Short.reverseBytes(toWrap.readShort());
-			}
-	
-			@Override
-			public int readUnsignedShort() throws IOException
-			{
-				int a;
-				int b;
-	
-				a = readByte();
-				b = readByte();
-	
-				// reverse of what the java doc says:
-				return (((b & 0xff) << 8) | (a & 0xff));
-			}
-	
-			@Override
-			public char readChar() throws IOException
-			{
-				return toWrap.readChar();
-			}
-	
-			@Override
-			public int readInt() throws IOException
-			{
-				return Integer.reverseBytes(toWrap.readInt());
-			}
-	
-			@Override
-			public long readLong() throws IOException
-			{
-				return Long.reverseBytes(toWrap.readLong());
-			}
-	
-			@Override
-			public float readFloat() throws IOException
-			{
-				throw new UnsupportedOperationException();
-			}
-	
-			@Override
-			public double readDouble() throws IOException
-			{
-				throw new UnsupportedOperationException();
-			}
+			this.toWrap = toWrap_;
+		}
 
-			@Override
-			public String readLine() throws IOException
-			{
-				return toWrap.readLine();
-			}
+		@Override
+		public void readFully(byte[] b) throws IOException
+		{
+			toWrap.readFully(b);
+		}
 	
-			@Override
-			public String readUTF() throws IOException
-			{
-				return toWrap.readUTF();
-			}
+		@Override
+		public void readFully(byte[] b, int off, int len) throws IOException
+		{
+			toWrap.readFully(b,off,len);
+		}
 	
-			@Override
-			public String toString()
-			{
-				return "Little endian wrapped " + toWrap.toString();
-			}
+		@Override
+		public int skipBytes(int n) throws IOException
+		{
+			return toWrap.skipBytes(n);
+		}
+	
+		@Override
+		public boolean readBoolean() throws IOException
+		{
+			return toWrap.readBoolean();
+		}
+	
+		@Override
+		public byte readByte() throws IOException
+		{
+			return toWrap.readByte();
+		}
+	
+		@Override
+		public int readUnsignedByte() throws IOException
+		{
+			return toWrap.readUnsignedByte();
+		}
 
-			@Override
-			public int hashCode()
-			{
-				return ~(toWrap.hashCode());
-			}
+		@Override
+		public short readShort() throws IOException
+		{
+			return Short.reverseBytes(toWrap.readShort());
+		}
+	
+		@Override
+		public int readUnsignedShort() throws IOException
+		{
+			int a;
+			int b;
 
-			/**
-			 * @throws CloneNotSupportedException always
-			 */
-			@Override
-			protected Object clone() throws CloneNotSupportedException
-			{
-				throw new CloneNotSupportedException();
-			}
+			a = readByte();
+			b = readByte();
 
-			@SuppressWarnings("unused")
-			public DataInput getWrapped()
-			{
-				return toWrap;
-			}
-		};
+			// reverse of what the java doc says:
+			return (((b & 0xff) << 8) | (a & 0xff));
+		}
+	
+		@Override
+		public char readChar() throws IOException
+		{
+			return toWrap.readChar();
+		}
+	
+		@Override
+		public int readInt() throws IOException
+		{
+			return Integer.reverseBytes(toWrap.readInt());
+		}
+	
+		@Override
+		public long readLong() throws IOException
+		{
+			return Long.reverseBytes(toWrap.readLong());
+		}
+
+		@Override
+		public float readFloat() throws IOException
+		{
+			throw new UnsupportedOperationException();
+		}
+	
+		@Override
+		public double readDouble() throws IOException
+		{
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public String readLine() throws IOException
+		{
+			return toWrap.readLine();
+		}
+	
+		@Override
+		public String readUTF() throws IOException
+		{
+			return toWrap.readUTF();
+		}
+	
+		@Override
+		public String toString()
+		{
+			return "Little endian wrapped " + toWrap.toString();
+		}
+
+		@Override
+		public int hashCode()
+		{
+			return ~(toWrap.hashCode());
+		}
+
+		/**
+		 * @throws CloneNotSupportedException always
+		 */
+		@Override
+		protected Object clone() throws CloneNotSupportedException
+		{
+			throw new CloneNotSupportedException();
+		}
+
+		@SuppressWarnings("unused")
+		public DataInput getWrapped()
+		{
+			return toWrap;
+		}
+
+		@Override
+		public boolean equals(Object o)
+		{
+			if(this == o)
+				return true;
+			if(!(o instanceof LittleEndianDataInput))
+				return false;
+			return toWrap.equals(((LittleEndianDataInput)o).toWrap);
+		}
+	}
+
+	public static DataInput wrap(DataInput toWrap)
+	{
+		return new LittleEndianDataInput(toWrap);
 	}
 }
