@@ -21,7 +21,6 @@ package net.darkmist.alib.console;
 // not changed since qcomm
 
 import jline.ConsoleReader;
-import java.lang.Character;
 import java.io.IOException;
 
 public class GetPass
