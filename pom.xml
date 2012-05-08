@@ -243,7 +243,7 @@
 	<url>https://github.com/schallee/alib4j</url>
 	<scm>
 		<connection>scm:git://github.com/schallee/alib4j.git</connection>
-		<developerConnection>scm:git:git@github.com/schallee/alib4j.git</developerConnection>
+		<developerConnection>scm:git:ssh://git@github.com/schallee/alib4j.git</developerConnection>
 		<url>http://github.com/schallee/alib4j.git</url>
 	</scm>
 	<issueManagement>
