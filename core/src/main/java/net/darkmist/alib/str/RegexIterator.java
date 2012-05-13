@@ -23,15 +23,15 @@ import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class RegexIterator<T> implements Iterator<T>
 {
 	@SuppressWarnings("rawtypes")
 	private static final Class<RegexIterator> CLASS = RegexIterator.class;
 	@SuppressWarnings("unused")
-	private static final Log logger = LogFactory.getLog(CLASS);
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	protected Matcher matcher;
 	protected T next;

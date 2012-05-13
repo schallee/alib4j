@@ -20,13 +20,13 @@ package net.darkmist.alib.jvm;
 
 import java.util.WeakHashMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ShutdownJanitor implements Runnable
 {
 	private static final Class<ShutdownJanitor> CLASS = ShutdownJanitor.class;
-	private static final Log logger = LogFactory.getLog(CLASS);
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 	private static Thread thread = null;
 	private static final Object lock = new Object();
 	private static boolean open = true;

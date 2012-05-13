@@ -20,13 +20,13 @@ package net.darkmist.alib.str;
 
 import java.io.UnsupportedEncodingException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class URLEscape
 {
 	private static final Class<URLEscape> CLASS = URLEscape.class;
-        private static final Log logger = LogFactory.getLog(CLASS);
+        private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	private static String urlByte2Str[] = new String[256];
 	private URLEscape()

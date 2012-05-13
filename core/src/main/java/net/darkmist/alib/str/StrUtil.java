@@ -22,14 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class StrUtil
 {
 	private static final Class<StrUtil> CLASS = StrUtil.class;
 	@SuppressWarnings("unused")
-	private static final Log logger = LogFactory.getLog(CLASS);
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 	private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
 	private StrUtil()

@@ -30,15 +30,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // should look at org.apache.commons.lang.SerializationUtils
 public abstract class Serializer
 {
 	private static final Class<Serializer> CLASS = Serializer.class;
 	@SuppressWarnings("unused")
-	private static final Log logger = LogFactory.getLog(CLASS);
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	/** Read one serialized object from a input stream.
 	 * @param in InputStream to read from. This will be closed!

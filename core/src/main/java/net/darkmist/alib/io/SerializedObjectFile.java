@@ -22,8 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.darkmist.alib.generics.GenericFudge;
 import net.darkmist.alib.ref.AbstractRef;
@@ -37,7 +37,7 @@ public class SerializedObjectFile<T extends Serializable> extends AbstractRef<T>
 	@SuppressWarnings("rawtypes")
 	private static final Class<SerializedObjectFile> CLASS = SerializedObjectFile.class;
 	@SuppressWarnings("unused")
-	private static final Log logger = LogFactory.getLog(CLASS);
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 	private File file;
 	private Class<? extends T> objType;
 

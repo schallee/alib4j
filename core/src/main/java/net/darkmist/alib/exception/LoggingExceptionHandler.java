@@ -18,8 +18,8 @@
 
 package net.darkmist.alib.exception;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * {@link ExceptionHandler} that just logs the exception.
@@ -27,16 +27,16 @@ import org.apache.commons.logging.LogFactory;
 public class LoggingExceptionHandler implements ExceptionHandler
 {
 	private static final Class<LoggingExceptionHandler> CLASS = LoggingExceptionHandler.class;
-	private static final Log logger = LogFactory.getLog(CLASS);
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
-	private volatile Log log = null;
+	private volatile Logger log = null;
 
 	/**
-	 * Set the Log to log exceptions to.
+	 * Set the Logger to log exceptions to.
 	 * @param log_ the log to log exceptions to.
 	 */
 	// final as constructor calls this.
-	public final void setLogger(Log log_)
+	public final void setLogger(Logger log_)
 	{
 		log = log_;
 	}
@@ -45,7 +45,7 @@ public class LoggingExceptionHandler implements ExceptionHandler
 	 * Get the current logger.
 	 * @return The current logger.
 	 */
-	public Log getLogger()
+	public Logger getLogger()
 	{
 		return log;
 	}
@@ -54,7 +54,7 @@ public class LoggingExceptionHandler implements ExceptionHandler
 	 * Create using the given logger.
 	 * @param log_ The logger to use.
 	 */
-	public LoggingExceptionHandler(Log log_)
+	public LoggingExceptionHandler(Logger log_)
 	{
 		setLogger(log_);
 	}
@@ -69,10 +69,10 @@ public class LoggingExceptionHandler implements ExceptionHandler
 	@Override
 	public void handleException(Throwable t)
 	{
-		Log localLog;
+		Logger localLog;
 
 		if((localLog = getLogger())==null)
 			localLog = logger;
-		localLog.error(t);
+		localLog.error("Handling exception", t);
 	}
 }

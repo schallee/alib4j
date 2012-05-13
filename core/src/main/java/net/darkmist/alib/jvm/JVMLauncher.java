@@ -22,13 +22,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JVMLauncher
 {
 	private static final Class<JVMLauncher> CLASS = JVMLauncher.class;
-	private static final Log logger = LogFactory.getLog(CLASS);
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	public static String getJavaPath() throws LauncherException
 	{
