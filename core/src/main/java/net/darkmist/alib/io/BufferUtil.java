@@ -80,6 +80,7 @@ public class BufferUtil
 
 	public static byte[] asBytes(ByteBuffer buf)
 	{
+		buf = buf.duplicate();
 		/* To use buf.array() the buffer must:
 		 * 	be writable as the array will be writable
 		 * 	have arrayOffset() == 0 or the array will not start at the right location
