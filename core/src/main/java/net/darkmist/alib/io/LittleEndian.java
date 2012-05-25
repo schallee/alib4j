@@ -163,7 +163,7 @@ public final class LittleEndian
 				return false;
 			return toWrap.equals(((LittleEndianDataOutput)o).toWrap);
 		}
-	};
+	}
 
 	/**
 	 * Wraps a DataOutput so that short, int &amp; long are written

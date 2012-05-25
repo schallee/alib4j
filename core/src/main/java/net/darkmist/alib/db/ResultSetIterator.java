@@ -156,6 +156,7 @@ public class ResultSetIterator<E> implements Iterator<E>
 		advance();
 	}
 
+	@SuppressWarnings("unused")
 	protected void setConverter(Row2Obj<E> converter) throws SQLException
 	{
 		this.converter = converter;

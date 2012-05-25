@@ -27,6 +27,7 @@ import net.darkmist.alib.ref.MemCachedRef;
 public abstract class AbstractMemCachedStaticSet<T> extends MemCachedRef<Set<T>> implements Set<T>
 {
 
+	@Override
 	protected abstract Set<T> make();
 
 	// set

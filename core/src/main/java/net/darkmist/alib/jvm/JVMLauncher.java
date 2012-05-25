@@ -57,6 +57,7 @@ public class JVMLauncher
 		return exe;
 	}
 
+	@SuppressWarnings("unused")
 	public static String getClassPath() throws LauncherException
 	{
 		return System.getProperty("java.class.path");
