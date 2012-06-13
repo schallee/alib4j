@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>parent</artifactId>
 		<groupId>net.darkmist.alib</groupId>
-		<version>1.0.3</version>
+		<version>1.0.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>getpass</artifactId>
 	<packaging>jar</packaging>
