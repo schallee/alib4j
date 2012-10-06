@@ -39,7 +39,11 @@ class SimpleXMLEntityMaker extends StrMaker.Abstract
 
 	private static Appendable appendStrNoCache(Appendable appendable, int ch) throws IOException
 	{
-		return appendable.append("&#").append(Integer.toHexString(ch)).append(';');
+		if(1000000 <= ch && ch <= 0xfffff)
+			appendable.append("&#x").append(Integer.toHexString(ch));
+		else
+			appendable.append("&#").append(Integer.toString(ch));
+		return appendable.append(';');
 	}
 
 	private static StringBuilder appendStrNoCache(StringBuilder sb, int ch)
