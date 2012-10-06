@@ -4,8 +4,23 @@ import java.io.IOException;
 
 class Util
 {
+	public static final String STRING_BUILDER_IO_EXCEPTION = "IOException appending to StringBuilder cast to Appendable?";
+	public static final String STRING_BUFFER_IO_EXCEPTION = "IOException appending to StringBuffer cast to Appendable?";
+	private static final int DEFAULT_CACHE_SIZE = 128;
+	private static final String CACHE_SIZE_PROP_NAME = "cacheSize";
+
 	private Util()
 	{
+	}
+
+	static int getCacheSizeDefault()
+	{
+		return DEFAULT_CACHE_SIZE;
+	}
+
+	static String getCacheSizePropName()
+	{
+		return CACHE_SIZE_PROP_NAME;
 	}
 
 	static boolean isAlpha(int ch)
@@ -256,8 +271,37 @@ class Util
 		}
 	}
 
-	static Appendable xmlEntityEscape(Appendable appendable, int ch) throws IOException
+	static int getIntProp(Class<?> cls, String name, int def)
 	{
-		return appendable.append("&#").append(Integer.toHexString(ch)).append(';');
+		String prop;
+
+		try
+		{
+			prop = System.getProperty(cls.getName() + '.' + name);
+		}
+		catch(SecurityException ignored)
+		{
+			return def;
+		}
+		if(prop == null)
+			return def;
+		try
+		{
+			return Integer.parseInt(prop);
+		}
+		catch(NumberFormatException e)
+		{
+			return def;
+		}
 	}
+
+	static int getPositiveIntProp(Class<?> cls, String name, int def)
+	{
+		int val;
+
+		if((val = getIntProp(cls, name, def))<0)
+			return def;
+		return val;
+	}
+
 }

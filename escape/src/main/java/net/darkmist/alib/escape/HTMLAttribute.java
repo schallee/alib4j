@@ -2,16 +2,15 @@ package net.darkmist.alib.escape;
 
 import java.io.IOException;
 
-public class HTML extends Escaper.Abstract
+public class HTMLAttribute extends Escaper.Abstract
 {
-	private static final HTML SINGLETON = new HTML();
-	private static final StrMaker MAKER = XMLEntityMaker.instance();
+	private static final HTMLAttribute SINGLETON = new HTMLAttribute();
  
-	private HTML()
+	private HTMLAttribute()
 	{
 	}
 
-	public static HTML instance()
+	public static HTMLAttribute instance()
 	{
 		return SINGLETON;
 	}
@@ -83,14 +82,10 @@ public class HTML extends Escaper.Abstract
 			case '7':
 			case '8':
 			case '9':
-			case ' ':
-			case '\t':
-			case '\r':
-			case '\n':
 				return appendable.append((char)ch);
 		}
 		if(ch < 0)
 			throw new IllegalArgumentException("Negative code point " + ch);
-		return MAKER.appendStr(appendable, ch);
+		return Util.xmlEntityEscape(appendable, ch);
 	}
 }

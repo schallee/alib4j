@@ -65,7 +65,7 @@ public interface Escaper
 			}
 			catch(IOException e)
 			{
-				throw new IllegalStateException("IOException appending to StringBuilder cast to Appendable?", e);
+				throw new IllegalStateException("IOException appending to StringBuffer cast to Appendable?", e);
 			}
 		}
 
@@ -79,7 +79,7 @@ public interface Escaper
 			}
 			catch(IOException e)
 			{
-				throw new IllegalStateException("IOException appending to StringBuilder cast to Appendable?", e);
+				throw new IllegalStateException("IOException appending to StringBuffer cast to Appendable?", e);
 			}
 		}
 
