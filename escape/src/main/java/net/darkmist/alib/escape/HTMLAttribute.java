@@ -5,6 +5,7 @@ import java.io.IOException;
 public class HTMLAttribute extends Escaper.Abstract
 {
 	private static final HTMLAttribute SINGLETON = new HTMLAttribute();
+	private static final StrMaker MAKER = XMLEntityMaker.instance();
  
 	private HTMLAttribute()
 	{
@@ -86,6 +87,6 @@ public class HTMLAttribute extends Escaper.Abstract
 		}
 		if(ch < 0)
 			throw new IllegalArgumentException("Negative code point " + ch);
-		return XMLEntityMaker.instance().appendStr(appendable, ch);
+		return MAKER.appendStr(appendable, ch);
 	}
 }
