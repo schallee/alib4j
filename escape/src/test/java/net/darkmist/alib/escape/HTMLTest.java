@@ -115,8 +115,6 @@ public class HTMLTest extends TestCase
 
 		start = System.currentTimeMillis();
 		encoded = html.escape(bigText);
-		encoded = html.escape(bigText);
-		encoded = html.escape(bigText);
 		end = System.currentTimeMillis();
 		System.out.println("BigText time: " + (end-start));
 	}
@@ -135,8 +133,6 @@ public class HTMLTest extends TestCase
 			{
 				public void run()
 				{
-					html.escape(text);
-					html.escape(text);
 					html.escape(text);
 				}
 			});

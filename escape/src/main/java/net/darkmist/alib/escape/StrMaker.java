@@ -45,31 +45,4 @@ interface StrMaker
 			}
 		}
 	}
-
-	abstract class CachingAbstract extends Abstract
-	{
-		private final StrCache cache;
-
-		protected CachingAbstract(StrMaker maker)
-		{
-			cache = new StrCache(maker);
-		}
-
-		protected StrCache getCache()
-		{
-			return cache;
-		}
-
-		@Override
-		public String makeStr(int code)
-		{
-			return cache.getOrMake(code);
-		}
-
-		@Override
-		public Appendable appendStr(Appendable appendable, int code) throws IOException
-		{
-			return appendable.append(cache.getOrMake(code));
-		}
-	}
 }

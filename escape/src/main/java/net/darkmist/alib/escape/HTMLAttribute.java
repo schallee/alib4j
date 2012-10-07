@@ -86,6 +86,6 @@ public class HTMLAttribute extends Escaper.Abstract
 		}
 		if(ch < 0)
 			throw new IllegalArgumentException("Negative code point " + ch);
-		return SimpleXMLEntityMaker.instance().appendStr(appendable, ch);
+		return XMLEntityMaker.instance().appendStr(appendable, ch);
 	}
 }

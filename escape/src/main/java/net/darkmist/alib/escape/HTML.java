@@ -5,9 +5,7 @@ import java.io.IOException;
 public class HTML extends Escaper.Abstract
 {
 	private static final HTML SINGLETON = new HTML();
-	//private static final StrMaker MAKER = XMLEntityMaker.instance();
-	private static final StrMaker MAKER = SimpleXMLEntityMaker.instance();
-	//private static final StrMaker MAKER = CachingXMLEntityMaker.instance();
+	private static final StrMaker MAKER = XMLEntityMaker.instance();
  
 	private HTML()
 	{
