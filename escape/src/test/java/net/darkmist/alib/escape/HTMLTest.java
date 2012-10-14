@@ -106,7 +106,8 @@ public class HTMLTest extends TestCase
 		}
 	}
 
-	public void testBigText()
+	/*
+	public void testBigTextSpeed()
 	{
 		String encoded;
 		long start;
@@ -118,8 +119,10 @@ public class HTMLTest extends TestCase
 		end = System.currentTimeMillis();
 		System.out.println("BigText time: " + (end-start));
 	}
+	*/
 	
-	public void testBigTextThreaded() throws InterruptedException
+	/*
+	public void testBigTextThreadedSpeed() throws InterruptedException
 	{
 		Thread threads[] = new Thread[Runtime.getRuntime().availableProcessors()];
 		long start;
@@ -145,4 +148,5 @@ public class HTMLTest extends TestCase
 		end = System.currentTimeMillis();
 		System.out.println("BigText threaded time: " + (end-start));
 	}
+	*/
 }
