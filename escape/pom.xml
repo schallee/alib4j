@@ -16,6 +16,7 @@
 	<modules>
 		<module>core</module>
 		<module>jsp</module>
+		<module>jsptestwar</module>
 	</modules>
 	<description>Escaping library</description>
 </project>

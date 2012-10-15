@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xml:lang="en"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:esc="https://github.com/schallee/alib4j/escape"
+	xsi:schemaLocation="http://www.w3.org/1999/xhtml
+       		http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd"
+	>
+	<jsp:directive.page contentType="text/html;charset=UTF-8"/>
+	<jsp:directive.page session="false"/>
+	<jsp:output
+		doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.1//EN"
+		doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"
+		/>
+	<head>
+		<title>Taglib Test</title>
+		<style type="text/css">
+			table, td, th
+			{
+				border-width: 2px;
+				border-style: solid;
+				border-collapse: collapse;
+			}
+
+			td, th
+			{
+				border-width: 1px;
+				border-style: solid;
+				border-collapse: collapse;
+			}
+
+			th
+			{
+				text-align: right;
+			}
+
+			table tr:first-child th
+			{
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Taglib Test</h1>
+		<p><a href="index.12.jspx">JSP 1.2 version</a></p>
+		<p><form action="index.jspx" method="POST">
+			Value for encoding:
+			<jsp:element name="input">
+				<jsp:attribute name="type">text</jsp:attribute>
+				<jsp:attribute name="name">value</jsp:attribute>
+				<jsp:attribute name="value"><esc:htmlAttr>${param.value}</esc:htmlAttr></jsp:attribute>
+			</jsp:element>
+			<input name="submit" value="submit" type="submit"/>
+		</form></p>
+
+		<h2>Tags</h2>
+
+		<table>
+			<tr>
+				<th>Tag:</th><th>Result</th>
+			</tr>
+			<tr>
+				<th>html:</th>
+				<td><pre>
+					<esc:html>
+						<esc:html>${param.value}</esc:html>
+					</esc:html>
+				</pre></td>
+			</tr>
+			<tr>
+				<th>htmlAttr:</th>
+				<td><pre>
+					<esc:html>
+						<esc:htmlAttr>${param.value}</esc:htmlAttr>
+					</esc:html>
+				</pre></td>
+			</tr>
+			<tr>
+				<th>js:</th>
+				<td><pre>
+					<esc:html>
+						<esc:js>${param.value}</esc:js>
+					</esc:html>
+				</pre></td>
+			</tr>
+			<tr>
+				<th>css:</th>
+				<td><pre>
+					<esc:html>
+						<esc:css>${param.value}</esc:css>
+					</esc:html>
+				</pre></td>
+			</tr>
+			<!-- FIXME
+			<tr>
+				<th>encodeForURL:</th>
+				<td><pre>
+					<esc:html>
+						<esc:encodeForURL>${param.value}</esc:encodeForURL>
+					</esc:html>
+				</pre></td>
+			</tr>
+			<tr>
+				<th>encodeForXMLAttribute:</th>
+				<td><pre>
+					<esc:html>
+						<esc:encodeForXMLAttribute>${param.value}</esc:encodeForXMLAttribute>
+					</esc:html>
+				</pre></td>
+			</tr>
+			<tr>
+				<th>encodeForXML:</th>
+				<td><pre>
+					<esc:html>
+						<esc:encodeForXML>${param.value}</esc:encodeForXML>
+					</esc:html>
+				</pre></td>
+			</tr>
+			-->
+		</table>
+
+		<h2>EL Functions</h2>
+
+		<table>
+			<tr>
+				<th>Function:</th><th>Result</th>
+			</tr>
+			<tr>
+				<th>css:</th>
+				<td><pre>
+					<esc:html>${esc:css(param.value)}</esc:html>
+				</pre></td>
+			</tr>
+			<tr>
+				<th>html:</th>
+				<td><pre>
+					<esc:html>${esc:html(param.value)}</esc:html>
+				</pre></td>
+			</tr>
+			<tr>
+				<th>htmlAttr:</th>
+				<td><pre>
+					<esc:html>${esc:htmlAttr(param.value)}</esc:html>
+				</pre></td>
+			</tr>
+			<tr>
+				<th>js:</th>
+				<td><pre>
+					<esc:html>${esc:js(param.value)}</esc:html>
+				</pre></td>
+			</tr>
+			<!-- FIXME:
+			<tr>
+				<th>encodeForURL:</th>
+				<td><pre>
+					<esc:html>${esc:encodeForURL(param.value)}</esc:html>
+				</pre></td>
+			</tr>
+			<tr>
+				<th>encodeForXML:</th>
+				<td><pre>
+					<esc:html>${esc:encodeForXML(param.value)}</esc:html>
+				</pre></td>
+			</tr>
+			<tr>
+				<th>encodeForXMLAttribute:</th>
+				<td><pre>
+					<esc:html>${esc:encodeForXMLAttribute(param.value)}</esc:html>
+				</pre></td>
+			</tr>
+			-->
+		</table>
+	</body>
+</html>
