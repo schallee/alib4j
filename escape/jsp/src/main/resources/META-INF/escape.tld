@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<taglib
+	xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://java.sun.com/xml/ns/j2ee
+		http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+	<description>
+		JSP Tags for escaping characters.
+	</description>
+	<display-name>alib4j.escape.jsp</display-name>
+	<tlib-version>2.0</tlib-version>
+	<short-name>esc</short-name>
+	<!-- FIXME -->
+	<uri>
+		https://github.com/schallee/alib4j/escape
+	</uri>
+
+	<tag>
+		<description>
+			Escape tag content for CSS
+		</description>
+		<display-name>CSS escaping</display-name>
+		<name>css</name>
+		<tag-class>net.darkmist.alib.escape.jsp.CSSTag</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+	<tag>
+		<description>
+			Escape tag content for JS
+		</description>
+		<display-name>JS escaping</display-name>
+		<name>js</name>
+		<tag-class>net.darkmist.alib.escape.jsp.JSTag</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+	<tag>
+		<description>
+			Escape tag content for HTML
+		</description>
+		<display-name>HTML escaping</display-name>
+		<name>html</name>
+		<tag-class>net.darkmist.alib.escape.jsp.HTMLTag</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+	<tag>
+		<description>
+			Escape tag content for HTML attributes
+		</description>
+		<display-name>HTML attribute escaping</display-name>
+		<name>htmlAttr</name>
+		<tag-class>net.darkmist.alib.escape.jsp.HTMLAttributeTag</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+
+	<function>
+		<description>
+			Escapes argument for CSS use.
+		</description>
+		<display-name>escape for CSS</display-name>
+		<name>css</name>
+		<function-class>
+			net.darkmist.alib.escape.jsp.CSSTag
+		</function-class>
+		<function-signature>
+			java.lang.String escape(java.lang.String)
+		</function-signature>
+	</function>
+	<function>
+		<description>
+			Escapes argument for Java Script use.
+		</description>
+		<display-name>escape for Java Script</display-name>
+		<name>js</name>
+		<function-class>
+			net.darkmist.alib.escape.jsp.JSTag
+		</function-class>
+		<function-signature>
+			java.lang.String escape(java.lang.String)
+		</function-signature>
+	</function>
+	<function>
+		<description>
+			Escapes argument for HTML use.
+		</description>
+		<display-name>escape for HTML</display-name>
+		<name>html</name>
+		<function-class>
+			net.darkmist.alib.escape.jsp.HTMLTag
+		</function-class>
+		<function-signature>
+			java.lang.String escape(java.lang.String)
+		</function-signature>
+	</function>
+	<function>
+		<description>
+			Escapes argument for HTML attribute use.
+		</description>
+		<display-name>escape for HTML attribute</display-name>
+		<name>htmlAttr</name>
+		<function-class>
+			net.darkmist.alib.escape.jsp.HTMLAttributeTag
+		</function-class>
+		<function-signature>
+			java.lang.String escape(java.lang.String)
+		</function-signature>
+	</function>
+
+</taglib>
