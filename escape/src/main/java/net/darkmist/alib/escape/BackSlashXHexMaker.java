@@ -2,14 +2,20 @@ package net.darkmist.alib.escape;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 class BackSlashXHexMaker extends StrMaker.PreCachedSingletonAbstract
 {
 	private static final Class<BackSlashXHexMaker> CLASS = BackSlashXHexMaker.class;
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 	private static final BackSlashXHexMaker SINGLETON = new BackSlashXHexMaker();
-	private static final StrMaker TWO_CHAR_HEX = TwoCharHexMaker.instance();
+	// not static to avoid initialization races...
+	private final StrMaker TWO_CHAR_HEX = TwoCharHexMaker.instance();
 
 	private BackSlashXHexMaker()
 	{
+		makeCache();
 	}
 
 	static BackSlashXHexMaker instance()

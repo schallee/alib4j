@@ -2,15 +2,22 @@ package net.darkmist.alib.escape;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 class JSEscapeMaker extends StrMaker.PreCachedSingletonAbstract
 {
 	private static final Class<JSEscapeMaker> CLASS = JSEscapeMaker.class;
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 	private static final JSEscapeMaker SINGLETON = new JSEscapeMaker();
-	private static final StrMaker BACKSLASH_X_HEX = BackSlashXHexMaker.instance();
-	private static final StrMaker BACKSLASH_U_HEX = BackSlashUHexMaker.instance();
+	// not static to avoid initialization races...
+	private final StrMaker BACKSLASH_X_HEX = BackSlashXHexMaker.instance();
+	// not static to avoid initialization races...
+	private final StrMaker BACKSLASH_U_HEX = BackSlashUHexMaker.instance();
 
 	private JSEscapeMaker()
 	{
+		makeCache();
 	}
 
 	static JSEscapeMaker instance()

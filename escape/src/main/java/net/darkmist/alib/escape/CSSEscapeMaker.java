@@ -9,6 +9,7 @@ class CSSEscapeMaker extends StrMaker.PreCachedSingletonAbstract
 
 	private CSSEscapeMaker()
 	{
+		makeCache();
 	}
 
 	static CSSEscapeMaker instance()

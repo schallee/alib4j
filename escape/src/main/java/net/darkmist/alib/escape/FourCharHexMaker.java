@@ -9,6 +9,7 @@ class FourCharHexMaker extends StrMaker.PreCachedSingletonAbstract
 
 	private FourCharHexMaker()
 	{
+		makeCache();
 	}
 
 	static FourCharHexMaker instance()
@@ -21,8 +22,8 @@ class FourCharHexMaker extends StrMaker.PreCachedSingletonAbstract
 	{
 		if(ch < 0)
 			throw new IllegalArgumentException("Negative code point.");
-		if(ch > 0xFF)
-			throw new IllegalArgumentException("Char code is too large for two hex digits.");
+		if(ch > 0xFFFF)
+			throw new IllegalArgumentException("Char code is too large for four hex digits.");
 		if(ch < 0x10)
 			appendable.append("000");
 		else if(ch < 0x100)

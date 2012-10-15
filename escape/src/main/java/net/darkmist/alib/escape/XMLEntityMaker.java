@@ -12,6 +12,7 @@ class XMLEntityMaker extends StrMaker.PreCachedSingletonAbstract
 
 	private XMLEntityMaker()
 	{
+		makeCache();
 	}
 
 	static XMLEntityMaker instance()

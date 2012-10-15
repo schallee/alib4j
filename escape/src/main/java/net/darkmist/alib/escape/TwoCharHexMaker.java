@@ -9,6 +9,7 @@ class TwoCharHexMaker extends StrMaker.PreCachedSingletonAbstract
 
 	private TwoCharHexMaker()
 	{
+		makeCache();
 	}
 
 	static TwoCharHexMaker instance()

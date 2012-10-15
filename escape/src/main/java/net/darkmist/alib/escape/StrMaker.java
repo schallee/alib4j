@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 interface StrMaker
 {
 	public String makeStr(int code);
@@ -14,6 +17,13 @@ interface StrMaker
 
 	abstract class Abstract implements StrMaker
 	{
+		private static final Class<Abstract> CLASS = Abstract.class;
+		private static final Logger logger = LoggerFactory.getLogger(CLASS);
+
+		protected Abstract()
+		{
+		}
+
 		@Override
 		public String makeStr(int code)
 		{
@@ -52,9 +62,21 @@ interface StrMaker
 	// note cache is on the instance level not static!
 	abstract class PreCachedSingletonAbstract extends Abstract
 	{
-		private final List<String> cache;
+		private static final Class<PreCachedSingletonAbstract> CLASS = PreCachedSingletonAbstract.class;
+		private static final Logger logger = LoggerFactory.getLogger(CLASS);
+
+		// cannot be final as we're not setting it in the
+		// constructor
+		private List<String> cache;
 
 		protected PreCachedSingletonAbstract()
+		{
+			// we CANNOT call makeCache here as the extending
+			// class has not had time to do it's own
+			// construction yet
+		}
+
+		protected final void makeCache()
 		{
 			int size;
 			String[] cacheArray;
@@ -90,7 +112,9 @@ interface StrMaker
 		{
 			if(ch < 0)
 				throw new IllegalArgumentException("Character code was less than zero");
-			if(ch<cache.size())
+			if(cache == null)
+				logger.warn("Cache was never initialized for {}", this);
+			else if(ch<cache.size())
 				return cache.get(ch);
 			return makeStrNoCache(ch);
 		}
@@ -100,7 +124,9 @@ interface StrMaker
 		{
 			if(ch < 0)
 				throw new IllegalArgumentException("Character code was less than zero");
-			if(ch<cache.size())
+			if(cache == null)
+				logger.warn("Cache was never initialized for {}", this);
+			else if(ch<cache.size())
 				return appendable.append(cache.get(ch));
 			return appendStrNoCache(appendable, ch);
 		}
