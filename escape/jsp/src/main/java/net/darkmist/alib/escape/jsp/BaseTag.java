@@ -3,22 +3,19 @@ package net.darkmist.alib.escape.jsp;
 import java.io.IOException;
 
 import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.Tag;
+import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import net.darkmist.alib.escape.Escaper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-abstract class BaseTag implements Tag
+abstract class BaseTag extends BodyTagSupport
 {
 	private static final Class<BaseTag> CLASS = BaseTag.class;
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	private Escaper escaper;
-	private PageContext pc;
-	private Tag parent;
 
 	protected BaseTag(Escaper escaper)
 	{
@@ -26,41 +23,19 @@ abstract class BaseTag implements Tag
 	}
 
 	@Override
-	public void setPageContext(PageContext pc_)
+	public int doAfterBody() throws JspTagException
 	{
-		this.pc = pc_;
+		try
+		{
+			escaper.escape(getPreviousOut(), bodyContent.getString());
+		}
+		catch (IOException e)
+		{
+			throw new JspTagException("IOException writing encoded output.", e);
+		}
+
+		bodyContent.clearBody();
+		return SKIP_BODY;
 	}
 
-	@Override
-	public void setParent(Tag t)
-	{
-		parent = t;
-	}
-
-	@Override
-	public Tag getParent()
-	{
-		return parent;
-	}
-
-	@Override
-	public int doStartTag() throws JspTagException
-	{
-		pc.pushBody(escaper.escape(pc.getOut()));
-		return EVAL_BODY_INCLUDE;
-	}
-
-	@Override
-	public int doEndTag() throws JspTagException
-	{
-		pc.popBody();
-		return EVAL_PAGE;
-	}
-
-	@Override
-	public void release()
-	{
-		pc = null;
-		parent = null;
-	}
 }
