@@ -19,15 +19,13 @@
 		<!--<finalName>${shortGroupName}.${project.artifactId}-${project.version}</finalName>-->
 		<finalName>jsptest</finalName>
 		<plugins>
-			<!--
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<outputFileNameMapping>@{project.groupId}@.@{project.artifactId}@-@{project.version}@.@{project.packaging}@</outputFileNameMapping>
+					<outputFileNameMapping>@{groupId}@-@{artifactId}@@{dashClassifier}@-@{version}@.@{extension}@</outputFileNameMapping>
 				</configuration>
 			</plugin>
-			-->
 			<!--
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
