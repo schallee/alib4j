@@ -54,6 +54,33 @@
 		<tag-class>net.darkmist.alib.escape.jsp.HTMLAttributeTag</tag-class>
 		<body-content>JSP</body-content>
 	</tag>
+	<tag>
+		<description>
+			Escape tag content for URLs
+		</description>
+		<display-name>URL escaping</display-name>
+		<name>url</name>
+		<tag-class>net.darkmist.alib.escape.jsp.URLTag</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+	<tag>
+		<description>
+			Escape tag content for XML
+		</description>
+		<display-name>XML escaping</display-name>
+		<name>xml</name>
+		<tag-class>net.darkmist.alib.escape.jsp.XMLTag</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+	<tag>
+		<description>
+			Escape tag content for XML attributes
+		</description>
+		<display-name>XML attribute escaping</display-name>
+		<name>xmlAttr</name>
+		<tag-class>net.darkmist.alib.escape.jsp.XMLAttributeTag</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
 
 	<function>
 		<description>
@@ -102,6 +129,45 @@
 		<name>htmlAttr</name>
 		<function-class>
 			net.darkmist.alib.escape.jsp.HTMLAttributeTag
+		</function-class>
+		<function-signature>
+			java.lang.String escape(java.lang.String)
+		</function-signature>
+	</function>
+	<function>
+		<description>
+			Escapes argument for URL use.
+		</description>
+		<display-name>escape for URL</display-name>
+		<name>url</name>
+		<function-class>
+			net.darkmist.alib.escape.jsp.URLTag
+		</function-class>
+		<function-signature>
+			java.lang.String escape(java.lang.String)
+		</function-signature>
+	</function>
+	<function>
+		<description>
+			Escapes argument for XML use.
+		</description>
+		<display-name>escape for XML</display-name>
+		<name>xml</name>
+		<function-class>
+			net.darkmist.alib.escape.jsp.XMLTag
+		</function-class>
+		<function-signature>
+			java.lang.String escape(java.lang.String)
+		</function-signature>
+	</function>
+	<function>
+		<description>
+			Escapes argument for XML attribute use.
+		</description>
+		<display-name>escape for XML attribute</display-name>
+		<name>xmlAttr</name>
+		<function-class>
+			net.darkmist.alib.escape.jsp.XMLAttributeTag
 		</function-class>
 		<function-signature>
 			java.lang.String escape(java.lang.String)
