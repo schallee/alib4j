@@ -4,6 +4,7 @@ import java.io.IOException;
 
 class FourCharHexMaker extends StrMaker.PreCachedSingletonAbstract
 {
+	@SuppressWarnings("unused")
 	private static final Class<FourCharHexMaker> CLASS = FourCharHexMaker.class;
 	private static final FourCharHexMaker SINGLETON = new FourCharHexMaker();
 

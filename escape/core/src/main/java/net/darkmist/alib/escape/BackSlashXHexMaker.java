@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 class BackSlashXHexMaker extends StrMaker.PreCachedSingletonAbstract
 {
 	private static final Class<BackSlashXHexMaker> CLASS = BackSlashXHexMaker.class;
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 	private static final BackSlashXHexMaker SINGLETON = new BackSlashXHexMaker();
 	// not static to avoid initialization races...

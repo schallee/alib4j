@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 abstract class BaseTag extends BodyTagSupport
 {
 	private static final Class<BaseTag> CLASS = BaseTag.class;
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	private Escaper escaper;

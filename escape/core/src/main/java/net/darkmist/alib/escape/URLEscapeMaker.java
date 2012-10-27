@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 class URLEscapeMaker extends StrMaker.PreCachedSingletonAbstract
 {
 	private static final Class<URLEscapeMaker> CLASS = URLEscapeMaker.class;
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 	private static final URLEscapeMaker SINGLETON = new URLEscapeMaker();
 	// not static to avoid initialization races...

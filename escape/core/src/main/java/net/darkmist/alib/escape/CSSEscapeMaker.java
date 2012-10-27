@@ -4,6 +4,7 @@ import java.io.IOException;
 
 class CSSEscapeMaker extends StrMaker.PreCachedSingletonAbstract
 {
+	@SuppressWarnings("unused")
 	private static final Class<CSSEscapeMaker> CLASS = CSSEscapeMaker.class;
 	private static final CSSEscapeMaker SINGLETON = new CSSEscapeMaker();
 

@@ -1,12 +1,10 @@
 package net.darkmist.alib.escape;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 class XMLEntityMaker extends StrMaker.PreCachedSingletonAbstract
 {
+	@SuppressWarnings("unused")
 	private static final Class<XMLEntityMaker> CLASS = XMLEntityMaker.class;
 	private static final XMLEntityMaker SINGLETON = new XMLEntityMaker();
 

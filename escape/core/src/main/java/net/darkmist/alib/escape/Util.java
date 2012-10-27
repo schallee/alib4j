@@ -1,7 +1,5 @@
 package net.darkmist.alib.escape;
 
-import java.io.IOException;
-
 class Util
 {
 	public static final String STRING_BUILDER_IO_EXCEPTION = "IOException appending to StringBuilder cast to Appendable?";

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 class JSEscapeMaker extends StrMaker.PreCachedSingletonAbstract
 {
 	private static final Class<JSEscapeMaker> CLASS = JSEscapeMaker.class;
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 	private static final JSEscapeMaker SINGLETON = new JSEscapeMaker();
 	// not static to avoid initialization races...

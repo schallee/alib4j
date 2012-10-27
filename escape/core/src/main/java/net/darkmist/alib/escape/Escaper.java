@@ -50,6 +50,7 @@ public interface Escaper
 	public abstract class Abstract implements Escaper
 	{
 		private static final Class<Abstract> CLASS = Abstract.class;
+		@SuppressWarnings("unused")
 		private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 		@Override

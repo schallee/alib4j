@@ -18,6 +18,7 @@ interface StrMaker
 	abstract class Abstract implements StrMaker
 	{
 		private static final Class<Abstract> CLASS = Abstract.class;
+		@SuppressWarnings("unused")
 		private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 		protected Abstract()
