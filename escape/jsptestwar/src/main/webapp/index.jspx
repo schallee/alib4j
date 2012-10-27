@@ -51,7 +51,14 @@
 			<jsp:element name="input">
 				<jsp:attribute name="type">text</jsp:attribute>
 				<jsp:attribute name="name">value</jsp:attribute>
-				<jsp:attribute name="value"><esc:htmlAttr>${param.value}</esc:htmlAttr></jsp:attribute>
+				<jsp:attribute name="value">
+					<esc:htmlAttr>
+						<c:choose>
+							<c:when test="${param.value == null || param.value == ''}"> !@#$%^&amp;*()_+1234567890-=[]\{}|;':",./&lt;&gt;?</c:when>
+							<c:otherwise>${param.value}</c:otherwise>
+						</c:choose>
+					</esc:htmlAttr>
+				</jsp:attribute>
 			</jsp:element>
 			<input name="submit" value="submit" type="submit"/>
 			<input name="reset" value="reset" type="reset"/>
