@@ -14,7 +14,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<shortGroupName>alib</shortGroupName>
-		<slf4j.version>1.5.10</slf4j.version>
+		<slf4j.version>1.7.2</slf4j.version>
 		<source.version>1.6</source.version>
 
 		<!-- reporting stuff as there is no central management -->
@@ -232,7 +232,7 @@
 			<dependency>
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
-				<version>1.2.13</version>
+				<version>1.2.17</version>
 			</dependency>
 
 			<!-- easymock -->
@@ -253,7 +253,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring</artifactId>
-				<version>2.5.6</version>
+				<version>2.5.6.SEC03</version>
 			</dependency>
 
 			<!-- standard -->
