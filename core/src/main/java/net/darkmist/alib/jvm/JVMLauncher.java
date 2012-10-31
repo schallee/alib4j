@@ -130,7 +130,7 @@ public class JVMLauncher
 	/**
 	 * Get the system property java.class.path.
 	 * @return The value of the system property java.class.path
-	 * @Deprecated Use {@link System#getProperty(String)} directly.
+	 * @deprecated Use {@link System#getProperty(String)} directly.
 	 */
 	@Deprecated
 	public static String getClassPath() throws LauncherException
@@ -164,8 +164,8 @@ public class JVMLauncher
 	 * @param mainClass Fully qualified class name of the main class
 	 * @param args Additional command line parameters
 	 * @return ProcessBuilder that has not been started.
-	 * @Deprecated This acquires the mainClass class by using the
-	 * @{Thread#getContextClassLoader() thread context class loader}
+	 * @deprecated This acquires the mainClass class by using the
+	 * {@link Thread#getContextClassLoader() thread context class loader}
 	 * or this class's class loader. Depending on where mainClass
 	 * was loaded from neither of these may work.
 	 * @see #getProcessBuilder(Class, String[])
@@ -247,8 +247,8 @@ public class JVMLauncher
 	 * @param mainClass Fully qualified class name of the main class
 	 * @param args Additional command line parameters
 	 * @return ProcessBuilder that has not been started.
-	 * @Deprecated This acquires the mainClass class by using the
-	 * @{Thread#getContextClassLoader() thread context class loader}
+	 * @deprecated This acquires the mainClass class by using the
+	 * {@link Thread#getContextClassLoader() thread context class loader}
 	 * or this class's class loader. Depending on where mainClass
 	 * was loaded from neither of these may work.
 	 * @see #getProcessBuilder(Class, String[])
@@ -265,7 +265,7 @@ public class JVMLauncher
 	 * @param mainClass Fully qualified class name of the main class
 	 * @param args Additional command line parameters
 	 * @return ProcessBuilder that has not been started.
-	 * @Deprecated Use {@link #getProcessBuilder(Class,String[])}
+	 * @deprecated Use {@link #getProcessBuilder(Class,String[])}
 	 * 	instead.
 	 */
 	@Deprecated
