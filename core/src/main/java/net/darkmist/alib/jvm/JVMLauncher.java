@@ -112,11 +112,6 @@ public class JVMLauncher
 		return urls;
 	}
 
-	private static String getClassPathFor(Class<?> cls)
-	{
-		return mkPath(getClassPathURLsFor(cls));
-	}
-
 	private static String mkPath(List<URL> urls)
 	{
 		String delim = System.getProperty("path.separator", ":");
@@ -154,6 +149,7 @@ public class JVMLauncher
 			}
 			catch(ClassNotFoundException ignored)
 			{
+				logger.debug("Ignoring ClassNotFound exception looking for class.", ignored);
 			}
 		throw new LauncherException("Unable to find class " + name + " via either the thread context class loader nor our own class loader.");
 	}
