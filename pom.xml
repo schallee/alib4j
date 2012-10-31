@@ -16,6 +16,7 @@
 		<shortGroupName>alib</shortGroupName>
 		<slf4j.version>1.7.2</slf4j.version>
 		<source.version>1.6</source.version>
+		<server.name>weed</server.name>
 
 		<!-- reporting stuff as there is no central management -->
 		<reporting.javadoc.version>2.8.1</reporting.javadoc.version>
@@ -28,6 +29,7 @@
 		<reporting.pmd.sourceEncoding>${project.build.sourceEncoding}</reporting.pmd.sourceEncoding>
 		<reporting.pmd.targetJdk>${source.version}</reporting.pmd.targetJdk>
 		<reporting.versions.version>1.3.1</reporting.versions.version>
+		<reporting.jxr.version>2.3</reporting.jxr.version>
 	</properties>
 	<modules>
 		<module>core</module>
@@ -74,7 +76,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>3.1</version>
+					<version>3.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -362,6 +364,11 @@
 		</profile>
 	</profiles>
 	<distributionManagement>
+		<site>
+			<id>${server.name}</id>
+			<name>${server.name}</name>
+			<url>scp://${server.name}/public_html/alib4j/</url>
+		</site>
 		<snapshotRepository>
 			<id>sonatype-nexus-snapshots</id>
 			<name>Sonatype Nexus Snapshots</name>
@@ -373,4 +380,48 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${reporting.javadoc.version}</version>
+				<configuration>
+					<detectJavaApiLink>${reporting.javadoc.conf.detectJavaApiLink}</detectJavaApiLink>
+					<detectLinks>${reporting.javadoc.conf.detectLink}</detectLinks>
+					<serialwarn>${reporting.javadoc.conf.serialwarn}</serialwarn>
+					<verbose>${reporting.javadoc.conf.vebose}</verbose>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>${reporting.versions.version}</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>dependency-updates-report</report>
+							<report>plugin-updates-report</report>
+							<report>property-updates-report</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>${reporting.pmd.version}</version>
+				<configuration>
+					<linkXref>${reporting.pmd.linkXref}</linkXref>
+					<sourceEncoding>${reporting.pmd.sourceEncoding}</sourceEncoding>
+					<targetJdk>${reporting.pmd.targetJdk}</targetJdk>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>${reporting.jxr.version}</version>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>

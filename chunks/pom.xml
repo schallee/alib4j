@@ -4,9 +4,9 @@
 	<parent>
 		<artifactId>parent</artifactId>
 		<groupId>net.darkmist.alib</groupId>
-		<version>1.0.5-SNAPSHOT</version>
+		<version>1.0.4-SNAPSHOT</version>
 	</parent>
-	<artifactId>handler</artifactId>
+	<artifactId>chunks</artifactId>
 	<packaging>jar</packaging>
 	<name>${shortGroupName}.${project.artifactId}</name>
 	<build>

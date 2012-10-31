@@ -85,6 +85,11 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>${reporting.jxr.version}</version>
+			</plugin>
 		</plugins>
 	</reporting>
 </project>
