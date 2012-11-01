@@ -394,7 +394,7 @@
 		<site>
 			<id>${server.name}</id>
 			<name>${server.name}</name>
-			<url>scp://${server.name}/public_html/alib4j/</url>
+			<url>scp://${server.name}/home/schallee/public_html/alib4j/</url>
 		</site>
 		<snapshotRepository>
 			<id>sonatype-nexus-snapshots</id>
