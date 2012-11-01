@@ -16,7 +16,7 @@
 		<shortGroupName>alib</shortGroupName>
 		<slf4j.version>1.7.2</slf4j.version>
 		<source.version>1.6</source.version>
-		<server.name>weed</server.name>
+		<server.name>weed.darkmist.net</server.name>
 		<wagon.ssh.version>2.2</wagon.ssh.version>
 
 		<!-- reporting stuff as there is no central management -->
