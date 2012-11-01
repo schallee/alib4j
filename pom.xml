@@ -31,6 +31,9 @@
 		<reporting.versions.version>1.3.1</reporting.versions.version>
 		<reporting.jxr.version>2.3</reporting.jxr.version>
 	</properties>
+	<prerequisites>
+		<maven>2.2.1</maven>
+	</prerequisites>
 	<modules>
 		<module>core</module>
 		<module>servlet</module>
@@ -87,6 +90,7 @@
 						<tagNameFormat>@{project.version}</tagNameFormat>
 						<releaseProfiles>release</releaseProfiles>
 						<!--<preparationGoals>clean verify</preparationGoals>-->
+						<preparationGoals>clean install</preparationGoals>
 						<!--<goals>deploy assembly:assembly</goals>-->
 					</configuration>
 				</plugin>
