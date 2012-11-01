@@ -18,6 +18,8 @@
 		<source.version>1.6</source.version>
 		<server.name>weed.darkmist.net</server.name>
 		<wagon.ssh.version>2.2</wagon.ssh.version>
+		<nexus.url>https://oss.sonatype.org</nexus.url>
+		<nexus.serverAuthId>sonatype-nexus-staging</nexus.serverAuthId>
 
 		<!-- reporting stuff as there is no central management -->
 		<reporting.javadoc.version>2.9</reporting.javadoc.version>
@@ -71,7 +73,7 @@
 						<execution>
 							<goals>
 								<goal>check</goal>
-							<!-- cpd correctly thinks OutputWrapping{,Http}ServletResponse.java are too similar. Unless there is some way I am not aware they always will be... -->
+								<!-- cpd correctly thinks OutputWrapping{,Http}ServletResponse.java are too similar. Unless there is some way I am not aware they always will be... -->
 								<!--<goal>cpd-check</goal>-->
 							</goals>
 						</execution>
@@ -188,6 +190,16 @@
 					<artifactId>maven-enforcer-plugin</artifactId>
 					<version>1.1.1</version>
 				</plugin>
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-maven-plugin</artifactId>
+					<version>2.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>1.1</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -301,7 +313,7 @@
 				<artifactId>standard</artifactId>
 				<version>1.1.2</version>
 			</dependency>
-			<dependency><!-- add support for ssh/scp -->
+			<dependency>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-ssh</artifactId>
 				<version>${wagon.ssh.version}</version>
@@ -405,7 +417,7 @@
 		<repository>
 			<id>sonatype-nexus-staging</id>
 			<name>Nexus Release Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<url>${nexus.url}/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
 	<reporting>
