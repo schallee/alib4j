@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>parent</artifactId>
 		<groupId>net.darkmist.alib.escape</groupId>
-		<version>1.0.5</version>
+		<version>1.0.6-SNAPSHOT</version>
 	</parent>
 	<artifactId>jsptestwar</artifactId>
 	<packaging>war</packaging>
