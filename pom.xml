@@ -17,6 +17,7 @@
 		<slf4j.version>1.7.2</slf4j.version>
 		<source.version>1.6</source.version>
 		<server.name>weed</server.name>
+		<wagon.ssh.version>2.2</wagon.ssh.version>
 
 		<!-- reporting stuff as there is no central management -->
 		<reporting.javadoc.version>2.9</reporting.javadoc.version>
@@ -80,6 +81,13 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.2</version>
+					<dependencies>
+						<dependency><!-- add support for ssh/scp -->
+							<groupId>org.apache.maven.wagon</groupId>
+							<artifactId>wagon-ssh</artifactId>
+							<version>${wagon.ssh.version}</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -292,6 +300,11 @@
 				<groupId>taglibs</groupId>
 				<artifactId>standard</artifactId>
 				<version>1.1.2</version>
+			</dependency>
+			<dependency><!-- add support for ssh/scp -->
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>${wagon.ssh.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
