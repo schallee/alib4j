@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.darkmist.alib</groupId>
-	<version>1.0.6</version>
+	<version>1.0.7-SNAPSHOT</version>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
 	<name>alib</name>
@@ -334,7 +334,7 @@
 		<connection>scm:git://github.com/schallee/alib4j.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/schallee/alib4j.git</developerConnection>
 		<url>http://github.com/schallee/alib4j.git</url>
-	  <tag>1.0.6</tag>
+	  <tag>HEAD</tag>
   </scm>
 	<issueManagement>
 		<url>https://github.com/schallee/alib4j/issues</url>
