@@ -7,11 +7,21 @@
 		<version>1.0.6-SNAPSHOT</version>
 	</parent>
 	<artifactId>servlet</artifactId>
-	<packaging>jar</packaging>
+	<packaging>bundle</packaging>
 	<name>${shortGroupName}.${project.artifactId}</name>
 	<build>
 		<finalName>${shortGroupName}-${project.artifactId}-${project.version}</finalName>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Export-Package>net.darkmist.alib.servlet</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>

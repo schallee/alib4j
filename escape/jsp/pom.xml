@@ -7,11 +7,21 @@
 		<version>1.0.6-SNAPSHOT</version>
 	</parent>
 	<artifactId>jsp</artifactId>
-	<packaging>jar</packaging>
+	<packaging>bundle</packaging>
 	<name>${shortGroupName}.${project.artifactId}</name>
 	<build>
 		<finalName>${shortGroupName}.${project.artifactId}-${project.version}</finalName>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Export-Package>net.darkmist.alib.escape.jsp</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>net.sourceforge.maven-taglib</groupId>
 				<artifactId>maven-taglib-plugin</artifactId>
