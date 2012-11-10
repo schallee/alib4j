@@ -39,6 +39,7 @@
 	</prerequisites>
 	<modules>
 		<module>core</module>
+		<module>db</module>
 		<module>servlet</module>
 		<module>getpass</module>
 		<module>handler</module>
