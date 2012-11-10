@@ -24,12 +24,14 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ArrayIteratorTest extends TestCase
 {
+	private static final Class<ArrayIteratorTest> CLASS = ArrayIteratorTest.class;
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(ArrayIteratorTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	public void testSimple() throws Exception
 	{

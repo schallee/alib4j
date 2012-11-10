@@ -24,11 +24,13 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.framework.Test;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IteratorIteratorTest extends TestCase
 {
-	private static final Logger logger = Logger.getLogger(IteratorIteratorTest.class);
+	private static final Class<IteratorIteratorTest> CLASS = IteratorIteratorTest.class;
+	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	public void testTwoSubIterators() throws Exception
 	{
