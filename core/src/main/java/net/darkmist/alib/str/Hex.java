@@ -305,6 +305,11 @@ public class Hex
 		}
 	}
 
+	public static String hex(ByteBuffer buf)
+	{
+		return hex(new StringBuilder(), buf).toString();
+	}
+
 	public static byte unhexNybble(int c)
 	{
 		if('0'<=c&&c<='9')
