@@ -27,6 +27,7 @@
 				<artifactId>maven-pmd-plugin</artifactId>
 				<executions>
 					<execution>
+						<phase>process-classes</phase>
 						<goals>
 							<goal>check</goal>
 							<!-- cpd correctly thinks OutputWrapping{,Http}ServletResponse.java are too similar. Unless there is some way I am not aware they always will be... -->
