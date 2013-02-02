@@ -18,6 +18,7 @@
 
 package net.darkmist.alib.collection;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,6 +41,18 @@ public class Sets
 	public static <T> Set<T> newSet()
 	{
 		return new HashSet<T>();
+	}
+
+	/**
+	 * Duplicate set.
+	 * This allow's the default Set implementation to be swapped
+	 * easily.
+	 * @param set The set to dupplicate.
+	 * @return a new empty set.
+	 */
+	public static <T> Set<T> dup(Collection<T> collection)
+	{
+		return new HashSet<T>(collection);
 	}
 
 	/**
@@ -86,5 +99,19 @@ public class Sets
 		set = newSet(contents.length);
 		Collections.addAll(set, contents);
 		return Collections.unmodifiableSet(set);
+	}
+
+	/**
+	 * Create a unmodifiable set with contents.
+	 * @param contents The contents of the set.
+	 * @return A unmodifiable set containing contents.
+	 */
+	public static <T> Set<T> newUnmodifiableSet(Collection<T> contents)
+	{
+		if(contents == null || contents.size()==0)
+			return Collections.emptySet();
+		if(contents.size() == 1)
+			return Collections.singleton(contents.iterator().next());
+		return Collections.unmodifiableSet(dup(contents));
 	}
 }
