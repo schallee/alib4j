@@ -19,6 +19,7 @@
 package net.darkmist.alib.generics;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Static methods to get around issues with generics... 
@@ -45,5 +46,13 @@ public class GenericFudge
 	static public <K,V> Map<K,V> map(Map<?,?> map)
 	{
 		return (Map<K,V>)map;
+	}
+
+	/**
+	 * Force a non generic set to be one.
+	 */
+	static public <T> Set<T> set(Set<?> set)
+	{
+		return (Set<T>)set;
 	}
 }
