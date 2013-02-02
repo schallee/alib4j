@@ -19,6 +19,8 @@
 package net.darkmist.alib.collection;
 
 import java.util.Collection;
+import java.util.Set;
+import net.darkmist.alib.generics.GenericFudge;
 
 /**
  * Static utils for {@link Collection}s.
@@ -43,5 +45,12 @@ public class Collections
 	{
 		java.util.Collections.addAll(c,elements);
 		return c;
+	}
+
+	public static <T> Set<? extends T> cast(Class<T> cls, Set<?> set)
+	{
+		for(Object o : set)
+			cls.cast(o);
+		return GenericFudge.set(set);
 	}
 }
