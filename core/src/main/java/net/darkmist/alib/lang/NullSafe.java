@@ -24,6 +24,9 @@ public class NullSafe
 	{
 	}
 
+	/**
+	 * Equals that properly handles null values.
+	 */
 	public static boolean equals(Object a, Object b)
 	{
 		if(a==b)
@@ -34,10 +37,62 @@ public class NullSafe
 			return false;
 		return a.equals(b);
 	}
+	
+	/**
+	 * Compare each odd and even object for equality.
+	 * @param objs Pairs of objects. objs.length &gt; 0 and objs.length % 2 == 0.
+	 * @return true if each pair is equal, false otherwise.
+	 */
+	public static boolean pairsEquals(Object...objs)
+	{
+		if(objs==null || objs.length == 0 || objs.length %2 != 0)
+			throw new IllegalArgumentException("Object pairs must be passed.");
+		for(int i=0;i<objs.length;i+=2)
+			if(!equals(objs[i],objs[i+1]))
+				return false;
+		return true;
+	}
 
+	/**
+	 * Get a object's hash code and handle null.
+	 * @return 0 if o is null. o.hashCode() otherwise.
+	 */
 	public static int hashCode(Object o)
 	{
 		return (o==null ? 0 : o.hashCode());
+	}
+
+	/**
+	 * Compute a hash code from a combination of each object's
+	 * hash code. Null objects will have a zero hash code.
+	 * @param objs Objects to get hash codes from.
+	 * @return Hashcode appropriate for an object containing each
+	 * 	object in objs.
+	 */
+	public static int hashCode(Object first, Object...objs)
+	{
+		int ret;
+
+		ret = hashCode(first);
+		for(Object o : objs)
+			ret = ret*31 + hashCode(o);
+		return ret;
+	}
+
+	public static String toString(Object o, String ifNull)
+	{
+		String ret;
+
+		if(o==null)
+			return ifNull;
+		if((ret = o.toString())==null)
+			return ifNull;
+		return ret;
+	}
+
+	public static String toString(Object o)
+	{
+		return toString(o,"");
 	}
 
 	public static <T extends Comparable<T>> int compare(T a, T b)
