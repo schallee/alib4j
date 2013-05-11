@@ -88,11 +88,11 @@ public class BufferUtil
 		 */
 		if(!buf.isReadOnly() && buf.hasArray() && buf.arrayOffset() == 0)
 		{
-			logger.debug("read-only, hasArray && offset is 0");
+			logger.debug("!read-only, hasArray && offset is 0");
 			byte[] ret = buf.array();
 
 			if(ret.length == buf.limit())
-				return buf.array();
+				return ret;
 			logger.debug("length of array !=limit, doing copy...");
 		}
 
