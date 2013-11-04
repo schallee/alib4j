@@ -43,6 +43,8 @@
 		<module>escape</module>
 		<module>getpass</module>
 		<module>handler</module>
+		<module>jaxb</module>
+		<module>jpa</module>
 		<module>jvm</module>
 		<module>servlet</module>
 		<module>spring</module>
@@ -54,13 +56,30 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.5.1</version>
+					<version>3.1</version>
 					<configuration>
 						<source>${source.version}</source>
 						<target>${source.version}</target>
+						<debug>false</debug>
+						<optimize>true</optimize>
 						<showWarnings>true</showWarnings>
 						<showDeprecation>true</showDeprecation>
+						<!--<compilerId>eclipse</compilerId>-->
 					</configuration>
+					<!--
+					<dependencies>
+						<dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-compiler-eclipse</artifactId>
+							<version>2.2</version>
+						</dependency>
+						<dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-compiler-jikes</artifactId>
+							<version>2.2</version>
+						</dependency>
+					</dependencies>
+					-->
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -320,6 +339,11 @@
 				<groupId>taglibs</groupId>
 				<artifactId>standard</artifactId>
 				<version>1.1.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-jpa_2.0_spec</artifactId>
+				<version>1.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.wagon</groupId>
