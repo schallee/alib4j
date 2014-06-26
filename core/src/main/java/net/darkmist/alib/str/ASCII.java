@@ -23,7 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 
-class ASCII
+public class ASCII
 {
 	public static final String CHARSET_NAME = "US-ASCII";
 	public static final Charset CHARSET = getCharSet();
