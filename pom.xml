@@ -15,6 +15,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<shortGroupName>alib</shortGroupName>
 		<slf4j.version>1.7.2</slf4j.version>
+		<osgi.core.version>4.3.1</osgi.core.version>
+		<osgi.compendium.version>4.3.1</osgi.compendium.version>
 		<source.version>1.6</source.version>
 		<server.name>weed.darkmist.net</server.name>
 		<wagon.ssh.version>2.2</wagon.ssh.version>
@@ -46,6 +48,7 @@
 		<module>jaxb</module>
 		<module>jpa</module>
 		<module>jvm</module>
+		<module>osgi</module>
 		<module>servlet</module>
 		<module>spring</module>
 	</modules>
@@ -248,6 +251,16 @@
 				<artifactId>jsp</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>${project.groupId}.osgi</groupId>
+				<artifactId>core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}.osgi</groupId>
+				<artifactId>slf4j_log_listener</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			
 			<!-- junit -->
 			<dependency>
@@ -350,6 +363,18 @@
 				<artifactId>wagon-ssh</artifactId>
 				<version>${wagon.ssh.version}</version>
 			</dependency>
+
+			<!-- osgi -->
+			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.core</artifactId>
+				<version>${osgi.core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.compendium</artifactId>
+				<version>${osgi.compendium.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<description>A library of java utils...</description>
@@ -358,8 +383,8 @@
 		<connection>scm:git://github.com/schallee/alib4j.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/schallee/alib4j.git</developerConnection>
 		<url>http://github.com/schallee/alib4j.git</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 	<issueManagement>
 		<url>https://github.com/schallee/alib4j/issues</url>
 	</issueManagement>
