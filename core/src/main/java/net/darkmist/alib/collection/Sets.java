@@ -26,7 +26,7 @@ import java.util.Set;
 /**
  * Static utilities for {@link Set}s.
  */
-public class Sets
+public final class Sets
 {
 	private Sets()
 	{
@@ -52,7 +52,23 @@ public class Sets
 	 */
 	public static <T> Set<T> dup(Collection<T> collection)
 	{
+		if(collection==null || collection.size()==0)
+			return new HashSet<T>();
 		return new HashSet<T>(collection);
+	}
+
+	/**
+	 * Duplicate set.
+	 * This allows the default Set implementation to be swapped
+	 * easily.
+	 * @param set The set to duplicate.
+	 * @return a new empty set.
+	 */
+	public static <T> Set<T> dup(Collection<T> contents)
+	{
+		if(contents==null || contents.size()==0)
+			return new HashSet<T>();
+		return new HashSet<T>(contents);
 	}
 
 	/**
@@ -99,6 +115,24 @@ public class Sets
 		set = newSet(contents.length);
 		Collections.addAll(set, contents);
 		return Collections.unmodifiableSet(set);
+	}
+
+	public static <T> Set<T> asUnmodifiable(Set<T> contents)
+	{
+		if(contents == null || contents.size()==0)
+			return Collections.emptySet();
+		if(contents.size() == 1)
+			return Collections.singleton(contents.iterator().next());
+		return Collections.unmodifiableSet(contents);
+	}
+	
+	public static <T> Set<T> unmodifiableCopy(Collection<T> contents)
+	{
+		if(contents == null || contents.size()==0)
+			return Collections.emptySet();
+		if(contents.size() == 1)
+			return Collections.singleton(contents.iterator().next());
+		return asUnmodifiable(dup(contents));
 	}
 
 	/**
