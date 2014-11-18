@@ -18,9 +18,12 @@
 
 package net.darkmist.alib.collection;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
-import java.util.NoSuchElementException;
 import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public final class Enumerations
 {
@@ -94,5 +97,33 @@ public final class Enumerations
 		if(e == null || !e.hasMoreElements())
 			return Iterators.getEmptyIterator();
 		return new EnumerationIterator<T>(e);
+	}
+
+	public static <T> Iterable<T> asSingleIterable(final Enumeration<T> e)
+	{
+		return new Iterable<T>()
+		{
+			private boolean initial=true;
+
+			@Override
+			public Iterator<T> iterator()
+			{
+				if(!initial)
+					throw new UnsupportedOperationException("Calling iterator multiple times is not supported.");
+				initial=false;
+				return asIterator(e);
+			}
+		};
+	}
+
+	public static <T> Iterable<T> asMultiIterable(final Enumeration<T> e)
+	{
+		List<T> list = new ArrayList<T>();
+
+		if(e==null || !e.hasMoreElements())
+			return Collections.emptyList();
+		while(e.hasMoreElements())
+			list.add(e.nextElement());
+		return list;
 	}
 }
