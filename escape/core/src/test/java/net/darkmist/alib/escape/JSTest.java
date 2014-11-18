@@ -18,17 +18,15 @@
 
 package net.darkmist.alib.escape;
 
+import java.util.concurrent.Callable;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class JSTest extends TestCase
+public class JSTest extends BaseTest
 {
 	private static final Class<JSTest> CLASS = JSTest.class;
-	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	private JS js = JS.instance();
 
@@ -68,51 +66,81 @@ public class JSTest extends TestCase
 		assertEquals("test", js.escape("test"));
 	}
 	
-	public void testTwoByteCharsWork()
+	public void testTwoByteCharsWork() throws Exception
 	{
-		String encoded = "";
-		String charStr;
-
-		for(int i=Character.MIN_VALUE;i<=Character.MAX_VALUE;i++)
+		executeForRange(Character.MIN_VALUE, (int)Character.MAX_VALUE + 1, new RangedCallableFactory()
 		{
-			charStr = Character.toString((char)i);
-
-			encoded = js.escape(charStr);
-			if(charStr.equals(encoded))
+			@Override
+			public Callable<Boolean> createCallableForRange(final int start, final int stop)
 			{
-				assertTrue(Util.isAlphaNumericOrWhiteSpace(i));
-				continue;
+				return new Callable<Boolean>()
+				{
+					@Override
+					public Boolean call()
+					{
+						String encoded = "";
+						String charStr;
+
+						for(int i=start;i<stop;i++)
+						{
+							charStr = Character.toString((char)i);
+							encoded = js.escape(charStr);
+				
+							if(charStr.equals(encoded))
+							{
+								assertTrue(Util.isAlphaNumericOrWhiteSpace(i));
+								continue;
+							}
+							assertEquals(i, testAndDecodeChar(encoded));
+						}
+						return true;
+					}
+				};
 			}
-			assertFalse(Util.isAlphaNumeric(i));
-			assertEquals(i, testAndDecodeChar(encoded));
-		}
+		});
 	}
 
-	public void testSurrogatesWork()
+	public void testSurrogatesWork() throws Exception
 	{
-		char array[] = new char[2];
-		String str;
-		String encoded;
-
-		for(char high=0xD800;high<=0xDBFF;high++)
+		executeForRange(0xD800, 0xDBFF + 1, new RangedCallableFactory()
 		{
-			array[0] = high;
-			for(char low=0xDC00;low<=0xDFFF;low++)
+			@Override
+			public Callable<Boolean> createCallableForRange(final int start, final int stop)
 			{
-				array[1] = low;
-				str = String.valueOf(array);
-				// make sure we built a proper char...
-				assertEquals(1, str.codePointCount(0,2));
-				try
+				return new Callable<Boolean>()
 				{
-					encoded = js.escape(str);
-					fail();
-				}
-				catch(IllegalArgumentException e)
-				{
-					assertTrue(true);
-				}
+					@Override
+					public Boolean call()
+					{
+						char array[] = new char[2];
+						String str;
+						String encoded;
+						int codepoint;
+
+						for(char high=(char)(start&0xFFFF);high<(char)(stop&0xFFFF);high++)
+						{
+							array[0] = high;
+							for(char low=0xDC00;low<=0xDFFF;low++)
+							{
+								array[1] = low;
+								str = String.valueOf(array);
+								assertEquals(1, str.codePointCount(0,2));
+								try
+								{
+									encoded = js.escape(str);
+									fail();
+								}
+								catch(IllegalArgumentException e)
+								{
+									assertTrue(true);
+								}
+							}
+						}
+
+						return true;
+					}
+				};
 			}
-		}
+		});
 	}
 }

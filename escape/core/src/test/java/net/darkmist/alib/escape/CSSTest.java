@@ -18,11 +18,13 @@
 
 package net.darkmist.alib.escape;
 
+import java.util.concurrent.Callable;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-public class CSSTest extends TestCase
+public class CSSTest extends BaseTest
 {
 	private static final Class<CSSTest> CLASS = CSSTest.class;
 
@@ -41,58 +43,89 @@ public class CSSTest extends TestCase
 		assertEquals("test", css.escape("test"));
 	}
 	
-	public void testTwoByteCharsWork()
+	public void testTwoByteCharsWork() throws Exception
 	{
-		String encoded = "";
-		String charStr;
-
-		for(int i=Character.MIN_VALUE;i<=Character.MAX_VALUE;i++)
+		executeForRange(Character.MIN_VALUE, (int)Character.MAX_VALUE + 1, new RangedCallableFactory()
 		{
-			charStr = Character.toString((char)i);
+			@Override
+			public Callable<Boolean> createCallableForRange(final int start, final int stop)
+			{
+				return new Callable<Boolean>()
+				{
+					@Override
+					public Boolean call()
+					{
+						String encoded;
+						String charStr;
 
-			try
-			{
-				encoded = css.escape(charStr);
-				// zero is invalid in css
-				assertTrue(0!=i);
-			}
-			catch(IllegalArgumentException e)
-			{
-				// zero is invalid in css
-				assertEquals(0,i);
-				continue;
-			}
+						for(int i=start;i<stop;i++)
+						{
+							charStr = Character.toString((char)i);
 
-			if(charStr.equals(encoded))
-			{
-				assertTrue(Util.isAlphaNumericOrWhiteSpace(i));
-				continue;
+							try
+							{
+								encoded = css.escape(charStr);
+								// zero is invalid in css
+								assertTrue(0!=i);
+							}
+							catch(IllegalArgumentException e)
+							{
+								// zero is invalid in css
+								assertEquals(0,i);
+								continue;
+							}
+				
+							if(charStr.equals(encoded))
+							{
+								assertTrue(Util.isAlphaNumericOrWhiteSpace(i));
+								continue;
+							}
+							assertFalse(Util.isAlphaNumeric(i));
+							assertEquals(i, testAndDecodeChar(encoded));
+						}
+						return true;
+					}
+				};
 			}
-			assertFalse(Util.isAlphaNumeric(i));
-			assertEquals(i, testAndDecodeChar(encoded));
-		}
+		});
 	}
 
-	public void testSurrogatesWork()
+	public void testSurrogatesWork() throws Exception
 	{
-		char array[] = new char[2];
-		String str;
-		String encoded;
-		int codepoint;
-
-		for(char high=0xD800;high<=0xDBFF;high++)
+		executeForRange(0xD800, 0xDBFF + 1, new RangedCallableFactory()
 		{
-			array[0] = high;
-			for(char low=0xDC00;low<=0xDFFF;low++)
+			@Override
+			public Callable<Boolean> createCallableForRange(final int start, final int stop)
 			{
-				array[1] = low;
-				str = String.valueOf(array);
-				// make sure we built a proper char...
-				assertEquals(1, str.codePointCount(0,2));
-				encoded = css.escape(str);
-				codepoint = str.codePointAt(0);
-				assertEquals(codepoint, testAndDecodeChar(encoded));
+				return new Callable<Boolean>()
+				{
+					@Override
+					public Boolean call()
+					{
+						char array[] = new char[2];
+						String str;
+						String encoded;
+						int codepoint;
+
+						for(char high=(char)(start&0xFFFF);high<(char)(stop&0xFFFF);high++)
+						{
+							array[0] = high;
+							for(char low=0xDC00;low<=0xDFFF;low++)
+							{
+								array[1] = low;
+								str = String.valueOf(array);
+								// make sure we built a proper char...
+								assertEquals(1, str.codePointCount(0,2));
+								encoded = css.escape(str);
+								codepoint = str.codePointAt(0);
+								assertEquals(codepoint, testAndDecodeChar(encoded));
+							}
+						}
+
+						return true;
+					}
+				};
 			}
-		}
+		});
 	}
 }

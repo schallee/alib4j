@@ -18,6 +18,8 @@
 
 package net.darkmist.alib.escape;
 
+import java.util.concurrent.Callable;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -25,7 +27,7 @@ import junit.framework.TestSuite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class URLTest extends TestCase
+public class URLTest extends BaseTest
 {
 	private static final Class<URLTest> CLASS = URLTest.class;
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
@@ -91,43 +93,74 @@ public class URLTest extends TestCase
 		return decoded.codePointAt(0);
 	}
 
-	public void testTwoByteCharsWork()
+	public void testTwoByteCharsWork() throws Exception
 	{
-		String encoded = "";
-		String charStr;
-		int decoded;
-
-		for(int i=0x100;i<=Character.MAX_VALUE;i++)
+		executeForRange(0x100, (int)Character.MAX_VALUE + 1, new RangedCallableFactory()
 		{
-			if(0xD800 <= i && i <= 0xDFFF)
-				continue;	// skip surrogates...
-			charStr = Character.toString((char)i);
-			encoded = url.escape(charStr);
-			decoded = testDecodeMultiByte(encoded);
-			assertEquals(i, decoded);
-		}
+			@Override
+			public Callable<Boolean> createCallableForRange(final int start, final int stop)
+			{
+				return new Callable<Boolean>()
+				{
+					@Override
+					public Boolean call()
+					{
+						String encoded;
+						String charStr;
+						int decoded;
+
+						for(int i=start;i<stop;i++)
+						{
+							if(0xD800 <= i && i <= 0xDFFF)
+								continue;	// skip surrogates...
+							charStr = Character.toString((char)i);
+							encoded = url.escape(charStr);
+							decoded = testDecodeMultiByte(encoded);
+							assertEquals(i, decoded);
+						}
+						return true;
+					}
+				};
+			}
+		});
 	}
 
-	public void testSurrogatesWork()
+	public void testSurrogatesWork() throws Exception
 	{
-		char array[] = new char[2];
-		String str;
-		String encoded;
-		int decoded;
-
-		for(char high=0xD800;high<=0xDBFF;high++)
+		executeForRange(0xD800, 0xDBFF + 1, new RangedCallableFactory()
 		{
-			array[0] = high;
-			for(char low=0xDC00;low<=0xDFFF;low++)
+			@Override
+			public Callable<Boolean> createCallableForRange(final int start, final int stop)
 			{
-				array[1] = low;
-				str = String.valueOf(array);
-				// make sure we built a proper char...
-				assertEquals(1, str.codePointCount(0,2));
-				encoded = url.escape(str);
-				decoded = testDecodeMultiByte(encoded);
-				assertEquals(str.codePointAt(0), decoded);
+				return new Callable<Boolean>()
+				{
+					@Override
+					public Boolean call()
+					{
+						char array[] = new char[2];
+						String str;
+						String encoded;
+						int decoded;
+
+						for(char high=(char)(start&0xFFFF);high<(char)(stop&0xFFFF);high++)
+						{
+							array[0] = high;
+							for(char low=0xDC00;low<=0xDFFF;low++)
+							{
+								array[1] = low;
+								str = String.valueOf(array);
+								// make sure we built a proper char...
+								assertEquals(1, str.codePointCount(0,2));
+								encoded = url.escape(str);
+								decoded = testDecodeMultiByte(encoded);
+								assertEquals(str.codePointAt(0), decoded);
+							}
+						}
+
+						return true;
+					}
+				};
 			}
-		}
+		});
 	}
 }
