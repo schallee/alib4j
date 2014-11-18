@@ -58,20 +58,6 @@ public final class Sets
 	}
 
 	/**
-	 * Duplicate set.
-	 * This allows the default Set implementation to be swapped
-	 * easily.
-	 * @param set The set to duplicate.
-	 * @return a new empty set.
-	 */
-	public static <T> Set<T> dup(Collection<T> contents)
-	{
-		if(contents==null || contents.size()==0)
-			return new HashSet<T>();
-		return new HashSet<T>(contents);
-	}
-
-	/**
 	 * Create a new set with an initial size.
 	 * This allow's the default Set implementation to be swapped
 	 * easily.
