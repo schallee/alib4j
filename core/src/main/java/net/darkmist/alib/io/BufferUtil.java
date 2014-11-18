@@ -437,9 +437,40 @@ public class BufferUtil
 		}
 	}
 
+	public static ByteBuffer mapOrSlurp(File file) throws IOException
+	{
+		FileInputStream fin=null;
+		FileChannel fc=null;
+
+		try
+		{
+			fin = new FileInputStream(file);
+			try
+			{
+				fc = fin.getChannel();
+				return fc.map(FileChannel.MapMode.READ_ONLY, 0, file.length());
+			}
+			catch(IOException e)
+			{
+				logger.debug("Ignoring IOException caught trying to map file {}", file, e);
+			}
+			return asBuffer(fin);
+		}
+		finally
+		{
+			fc = Closer.close(fc);
+			fin = Closer.close(fin);
+		}
+	}
+
 	public static ByteBuffer mapFile(String path) throws IOException
 	{
 		return map(new File(path));
+	}
+
+	public static ByteBuffer mapOrSlurpFile(String path) throws IOException
+	{
+		return mapOrSlurp(new File(path));
 	}
 
 	public static boolean isAll(ByteBuffer buf, byte b)
