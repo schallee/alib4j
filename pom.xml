@@ -14,30 +14,32 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<shortGroupName>alib</shortGroupName>
-		<slf4j.version>1.7.2</slf4j.version>
+		<slf4j.version>1.7.10</slf4j.version>
 		<osgi.core.version>4.3.1</osgi.core.version>
 		<osgi.compendium.version>4.3.1</osgi.compendium.version>
 		<source.version>1.6</source.version>
 		<server.name>weed.darkmist.net</server.name>
-		<wagon.ssh.version>2.2</wagon.ssh.version>
+		<wagon.ssh.version>2.8</wagon.ssh.version>
 		<nexus.url>https://oss.sonatype.org</nexus.url>
 		<nexus.serverAuthId>sonatype-nexus-staging</nexus.serverAuthId>
 
 		<!-- reporting stuff as there is no central management -->
-		<reporting.javadoc.version>2.9</reporting.javadoc.version>
+		<reporting.javadoc.version>2.10.1</reporting.javadoc.version>
 		<reporting.javadoc.conf.detectJavaApiLink>true</reporting.javadoc.conf.detectJavaApiLink>
 		<reporting.javadoc.conf.detectLinks>true</reporting.javadoc.conf.detectLinks>
 		<reporting.javadoc.conf.serialwarn>true</reporting.javadoc.conf.serialwarn>
 		<reporting.javadoc.conf.verbose>true</reporting.javadoc.conf.verbose>
+		<!--<reporting.pmd.version>3.4</reporting.pmd.version>-->
 		<reporting.pmd.version>2.7.1</reporting.pmd.version>
 		<reporting.pmd.linkXref>false</reporting.pmd.linkXref>
 		<reporting.pmd.sourceEncoding>${project.build.sourceEncoding}</reporting.pmd.sourceEncoding>
 		<reporting.pmd.targetJdk>${source.version}</reporting.pmd.targetJdk>
-		<reporting.versions.version>1.3.1</reporting.versions.version>
-		<reporting.jxr.version>2.3</reporting.jxr.version>
+		<reporting.versions.version>2.1</reporting.versions.version>
+		<reporting.jxr.version>2.5</reporting.jxr.version>
 	</properties>
 	<prerequisites>
-		<maven>2.2.1</maven>
+		<!--<maven>2.2.1</maven>-->
+		<maven>3.0.4</maven>
 	</prerequisites>
 	<modules>
 		<module>core</module>
@@ -60,7 +62,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.1</version>
+					<version>3.2</version>
 					<configuration>
 						<source>${source.version}</source>
 						<target>${source.version}</target>
@@ -107,7 +109,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>3.2</version>
+					<version>3.4</version>
 					<dependencies>
 						<dependency><!-- add support for ssh/scp -->
 							<groupId>org.apache.maven.wagon</groupId>
@@ -119,7 +121,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>2.3.2</version>
+					<version>2.5.1</version>
 					<configuration>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
 						<tagNameFormat>@{project.version}</tagNameFormat>
@@ -132,42 +134,42 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-gpg-plugin</artifactId>
-					<version>1.4</version>
+					<version>1.6</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.3</version>
+					<version>2.5.3</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.5</version>
+					<version>2.6.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.5.1</version>
+					<version>2.10</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.7</version>
+					<version>2.8.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-install-plugin</artifactId>
-					<version>2.4</version>
+					<version>2.5.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.4</version>
+					<version>2.5</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-war-plugin</artifactId>
-					<version>2.3</version>
+					<version>2.6</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -183,27 +185,27 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
-					<version>2.5.1</version>
+					<version>2.8</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.6</version>
+					<version>2.7</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>2.2.1</version>
+					<version>2.4</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.12.4</version>
+					<version>2.18.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
-					<version>1.7</version>
+					<version>1.8</version>
 				</plugin>
 				<plugin>
 					<groupId>net.sourceforge.maven-taglib</groupId>
@@ -213,7 +215,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>1.1.1</version>
+					<version>1.4</version>
 				</plugin>
 				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
@@ -228,7 +230,7 @@
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.3.7</version>
+					<version>2.5.3</version>
 					<extensions>true</extensions>
 				</plugin>
 			</plugins>
@@ -316,7 +318,8 @@
 			<dependency>
 				<groupId>org.easymock</groupId>
 				<artifactId>easymock</artifactId>
-				<version>2.5.2</version>
+				<!--<version>2.5.2</version>-->
+				<version>3.3.1</version>
 			</dependency>
 
 			<!-- jline -->
@@ -324,6 +327,7 @@
 				<groupId>jline</groupId>
 				<artifactId>jline</artifactId>
 				<version>0.9.94</version>
+				<!--<version>2.12</version>-->
 			</dependency>
 
 			<!-- spring -->
