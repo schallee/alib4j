@@ -181,6 +181,7 @@ public class ServiceUtil
 	 * @param cls The class this reference is expected to be
 	 * @return servRef as ServiceReference for cls if neither is null and servRef claims cls as a class. null otherwise.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> ServiceReference<T> getServiceRefAs(ServiceReference<?> servRef, Class<T> cls)
 	{
 		if(servRef == null || cls == null)

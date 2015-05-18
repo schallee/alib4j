@@ -69,6 +69,15 @@ public class LogBridge implements BundleActivator, LogListener, ServiceListener
 		servRefs=null;
 	}
 
+	/**
+	 * Utility method to reduce unchecked area.
+	 */
+	@SuppressWarnings("unchecked")
+	private static Enumeration<LogEntry> getLogEntries(LogReaderService lrs)
+	{
+		return (Enumeration<LogEntry>)lrs.getLog();
+	}
+
 	@Override	// ServiceListener
 	public synchronized void serviceChanged(ServiceEvent event)
 	{
@@ -106,7 +115,7 @@ public class LogBridge implements BundleActivator, LogListener, ServiceListener
 				}
 				try
 				{
-					logEntries = lrs.getLog();
+					logEntries = getLogEntries(lrs);
 				}
 				catch(Exception e)
 				{
