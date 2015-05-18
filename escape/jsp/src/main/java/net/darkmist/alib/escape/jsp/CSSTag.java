@@ -22,6 +22,7 @@ import net.darkmist.alib.escape.CSS;
 
 public class CSSTag extends BaseTag
 {
+	private static final long serialVersionUID = 1l;
 	private static final CSS escaper = CSS.instance();
 
 	public CSSTag()

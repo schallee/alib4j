@@ -22,6 +22,7 @@ import net.darkmist.alib.escape.XML;
 
 public class XMLTag extends BaseTag
 {
+	private static final long serialVersionUID = 1l;
 	private static final XML escaper = XML.instance();
 
 	public XMLTag()

@@ -22,6 +22,7 @@ import net.darkmist.alib.escape.HTMLAttribute;
 
 public class HTMLAttributeTag extends BaseTag
 {
+	private static final long serialVersionUID = 1l;
 	private static final HTMLAttribute escaper = HTMLAttribute.instance();
 
 	public HTMLAttributeTag()

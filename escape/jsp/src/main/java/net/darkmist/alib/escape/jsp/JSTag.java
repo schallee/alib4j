@@ -22,6 +22,7 @@ import net.darkmist.alib.escape.JS;
 
 public class JSTag extends BaseTag
 {
+	private static final long serialVersionUID = 1l;
 	private static final JS escaper = JS.instance();
 
 	public JSTag()

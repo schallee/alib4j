@@ -22,6 +22,7 @@ import net.darkmist.alib.escape.URL;
 
 public class URLTag extends BaseTag
 {
+	private static final long serialVersionUID = 1l;
 	private static final URL escaper = URL.instance();
 
 	public URLTag()

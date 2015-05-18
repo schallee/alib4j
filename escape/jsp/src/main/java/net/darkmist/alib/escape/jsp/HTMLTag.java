@@ -22,6 +22,7 @@ import net.darkmist.alib.escape.HTML;
 
 public class HTMLTag extends BaseTag
 {
+	private static final long serialVersionUID = 1l;
 	private static final HTML escaper = HTML.instance();
 
 	public HTMLTag()

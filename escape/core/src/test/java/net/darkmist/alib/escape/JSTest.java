@@ -49,6 +49,7 @@ public class JSTest extends BaseTest
 					default:
 						fail("Backslash single character followed by " + encoded.charAt(1));
 				}
+				break;	// unnecessary but make the compiler with -Xlint happier...
 			case 4:
 				assertEquals('x', encoded.charAt(1));
 				break;
