@@ -70,6 +70,9 @@
 						<optimize>true</optimize>
 						<showWarnings>true</showWarnings>
 						<showDeprecation>true</showDeprecation>
+						<compilerArgs>
+							<arg>-Xlint</arg>
+						</compilerArgs>
 						<!--<compilerId>eclipse</compilerId>-->
 					</configuration>
 					<!--

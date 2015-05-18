@@ -477,7 +477,7 @@ public class BeansTest extends TestCase
 		bean.setSomeByte((byte)((METH + ".byte").hashCode()));
 		bean.setSomeShort((short)((METH + ".short").hashCode()));
 		bean.setSomeChar((char)((METH + ".char").hashCode()));
-		bean.setSomeInt((int)((METH + ".int").hashCode()));
+		bean.setSomeInt((METH + ".int").hashCode());
 		bean.setSomeLong((long)((METH + ".long").hashCode())*Integer.MAX_VALUE);
 		bean.setSomeFloat((float)((METH + ".long").hashCode())*(float)(0.001));
 		bean.setSomeDouble((double)((METH + ".long").hashCode())*0.001);
@@ -540,7 +540,7 @@ public class BeansTest extends TestCase
 		map.put("someByte", (byte)((METH + ".byte").hashCode()));
 		map.put("someShort", (short)((METH + ".short").hashCode()));
 		map.put("someChar", (char)((METH + ".char").hashCode()));
-		map.put("someInt", (int)((METH + ".int").hashCode()));
+		map.put("someInt", (METH + ".int").hashCode());
 		map.put("someLong", (long)((METH + ".long").hashCode())*Integer.MAX_VALUE);
 		map.put("someFloat", (float)((METH + ".long").hashCode())*(float)(0.001));
 		map.put("someDouble", (double)((METH + ".long").hashCode())*0.001);
@@ -629,7 +629,7 @@ public class BeansTest extends TestCase
 		map.put("someByte", (byte)((METH + ".byte").hashCode()));
 		map.put("someShort", (short)((METH + ".short").hashCode()));
 		//map.put("someChar", (char)((METH + ".char").hashCode()));
-		map.put("someInt", (int)((METH + ".int").hashCode()));
+		map.put("someInt", (METH + ".int").hashCode());
 		map.put("someLong", (long)((METH + ".long").hashCode())*Integer.MAX_VALUE);
 		map.put("someFloat", (float)((METH + ".long").hashCode())*(float)(0.001));
 		map.put("someDouble", (double)((METH + ".long").hashCode())*0.001);
