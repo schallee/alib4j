@@ -126,4 +126,15 @@ public final class Enumerations
 			list.add(e.nextElement());
 		return list;
 	}
+
+	public static <T> List<T> toList(final Enumeration<T> e)
+	{
+		List<T> list = new ArrayList<T>();
+
+		if(e==null)
+			return list;
+		while(e.hasMoreElements())
+			list.add(e.nextElement());
+		return list;
+	}
 }
