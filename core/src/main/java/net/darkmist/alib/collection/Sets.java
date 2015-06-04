@@ -134,4 +134,16 @@ public final class Sets
 			return Collections.singleton(contents.iterator().next());
 		return Collections.unmodifiableSet(dup(contents));
 	}
+
+	public static <T> StrongWeakSet<T> newStrongWeakSet()
+	{
+		return new StrongWeakHashSet<T>();
+	}
+
+	public static <T> Set<T> asSet(Collection<T> c)
+	{
+		if(c instanceof Set)
+			return (Set<T>)c;
+		return new HashSet<T>(c);
+	}
 }
