@@ -32,7 +32,7 @@ import java.util.WeakHashMap;
  * in the WeakHashMap will not be garbage collected from the WeakHashMap
  * because strong references are guaranteed to still exist.
  */
-class StrongWeakHashSet<T> extends SetProxy.SimplifiedSetProxy<T,Set<T>> implements StrongWeakSet<T>
+class StrongWeakHashSet<T> extends SetWrapper.SimplifiedSetWrapper<T,Set<T>> implements StrongWeakSet<T>
 {
 	private final Set<T> strong = new HashSet<T>();
 

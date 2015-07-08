@@ -19,13 +19,12 @@
 package net.darkmist.alib.collection;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class CollectionProxy<T,I extends Collection<T>> extends IterableProxy<T,I> implements Collection<T>
+public class CollectionWrapper<T,I extends Collection<T>> extends IterableWrapper<T,I> implements Collection<T>
 {
-	public CollectionProxy(I target)
+	public CollectionWrapper(I target)
 	{
 		super(target);
 	}
@@ -115,13 +114,13 @@ public class CollectionProxy<T,I extends Collection<T>> extends IterableProxy<T,
 	}
 
 	/**
-	 * As {@link CollectionProxy} but with bulk mutation operations
+	 * As {@link CollectionWrapper} but with bulk mutation operations
 	 * are implemented in terms of single operations to simplify
 	 * overloading. Mutation operations include iterator() and clear().
 	 */
-	public static class SimplifiedCollectionProxy<T,I extends Collection<T>> extends CollectionProxy<T,I>
+	public static class SimplifiedCollectionWrapper<T,I extends Collection<T>> extends CollectionWrapper<T,I>
 	{
-		public SimplifiedCollectionProxy(I target)
+		public SimplifiedCollectionWrapper(I target)
 		{
 			super(target);
 		}
@@ -170,7 +169,7 @@ public class CollectionProxy<T,I extends Collection<T>> extends IterableProxy<T,
 					ret = true;
 				}
 			}
-			return target.retainAll(c);
+			return ret;
 		}
 
 		@Override
@@ -183,7 +182,7 @@ public class CollectionProxy<T,I extends Collection<T>> extends IterableProxy<T,
 		@Override
 		public Iterator<T> iterator()
 		{
-			return new IteratorProxy<T, Iterator<T>>(super.iterator())
+			return new IteratorWrapper<T, Iterator<T>>(super.iterator())
 			{
 				private boolean lastValid = false;
 				private T last;
@@ -201,7 +200,7 @@ public class CollectionProxy<T,I extends Collection<T>> extends IterableProxy<T,
 				{
 					if(!lastValid)
 						throw new IllegalStateException("Next has not been called.");
-					SimplifiedCollectionProxy.this.remove(last);
+					SimplifiedCollectionWrapper.this.remove(last);
 				}
 			};
 		}

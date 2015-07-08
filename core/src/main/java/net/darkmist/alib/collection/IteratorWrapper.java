@@ -16,15 +16,35 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package net.darkmist.alib.reflect;
+package net.darkmist.alib.collection;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.annotation.ElementType;
+import java.util.Iterator;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Property
+public class IteratorWrapper<T, I extends Iterator<T>> implements Iterator<T>
 {
+	protected final I target;
+
+	public IteratorWrapper(I target)
+	{
+		if((this.target=target)==null)
+			throw new NullPointerException();
+	}
+
+	@Override
+	public boolean hasNext()
+	{
+		return target.hasNext();
+	}
+
+	@Override
+	public T next()
+	{
+		return target.next();
+	}
+
+	@Override
+	public void remove()
+	{
+		target.remove();
+	}
 }

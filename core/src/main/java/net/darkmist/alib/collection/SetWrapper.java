@@ -18,33 +18,26 @@
 
 package net.darkmist.alib.collection;
 
-import java.util.Iterator;
+import java.util.Set;
 
-public class IteratorProxy<T, I extends Iterator<T>> implements Iterator<T>
+public class SetWrapper<T,I extends Set<T>> extends CollectionWrapper<T,I> implements Set<T>
 {
-	protected final I target;
-
-	public IteratorProxy(I target)
+	public SetWrapper(I target)
 	{
-		if((this.target=target)==null)
-			throw new NullPointerException();
+		super(target);
 	}
 
-	@Override
-	public boolean hasNext()
+	/**
+	 * As {@link SetWrapper} but with bulk mutation operations
+	 * are implemented in terms of single operations to simplify
+	 * overloading. Mutation operations include iterator() and
+	 * clear().
+	 */
+	public static class SimplifiedSetWrapper<T,I extends Set<T>> extends SimplifiedCollectionWrapper<T,I> implements Set<T>
 	{
-		return target.hasNext();
-	}
-
-	@Override
-	public T next()
-	{
-		return target.next();
-	}
-
-	@Override
-	public void remove()
-	{
-		target.remove();
+		public SimplifiedSetWrapper(I target)
+		{
+			super(target);
+		}
 	}
 }

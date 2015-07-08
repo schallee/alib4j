@@ -16,28 +16,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package net.darkmist.alib.collection;
+package net.darkmist.alib.beans;
 
-import java.util.Set;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.annotation.ElementType;
 
-public class SetProxy<T,I extends Set<T>> extends CollectionProxy<T,I> implements Set<T>
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Property
 {
-	public SetProxy(I target)
-	{
-		super(target);
-	}
-
-	/**
-	 * As {@link SetProxy} but with bulk mutation operations
-	 * are implemented in terms of single operations to simplify
-	 * overloading. Mutation operations include iterator() and
-	 * clear().
-	 */
-	public static class SimplifiedSetProxy<T,I extends Set<T>> extends SimplifiedCollectionProxy<T,I> implements Set<T>
-	{
-		public SimplifiedSetProxy(I target)
-		{
-			super(target);
-		}
-	}
 }

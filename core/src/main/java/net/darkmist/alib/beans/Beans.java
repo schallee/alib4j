@@ -16,7 +16,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package net.darkmist.alib.reflect;
+package net.darkmist.alib.beans;
 
 import java.lang.annotation.Annotation;
 import java.beans.IntrospectionException;
@@ -28,6 +28,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+
+import net.darkmist.alib.reflect.Reflections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

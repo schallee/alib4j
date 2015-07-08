@@ -16,7 +16,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package net.darkmist.alib.reflect;
+package net.darkmist.alib.beans;
 
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.darkmist.alib.lang.NullSafe;
+import net.darkmist.alib.reflect.Reflections;
 
 import junit.framework.TestCase;
 

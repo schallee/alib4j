@@ -26,6 +26,7 @@ public class Reflections
 {
 	private static final Map<Class<?>,Class<?>> PRIMITIVE_TO_WRAPPER = mkPrimitiveToWrapper();
 	private static final Map<Class<?>,Class<?>> WRAPPER_TO_PRIMITIVE = mkWrapperToPrimitive();
+	private static final Map<Class<?>,Object> PRIMITIVE_ZERO = mkPrimitiveZero();
 
 	private Reflections()
 	{
@@ -61,6 +62,22 @@ public class Reflections
 		return Collections.unmodifiableMap(map);
 	}
 
+	private static Map<Class<?>,Object> mkPrimitiveZero()
+	{
+		Map<Class<?>,Object> map = new HashMap<Class<?>,Object>();
+
+		map.put(Boolean.TYPE, Boolean.FALSE);
+		map.put(Character.TYPE, Character.valueOf((char)0));
+		map.put(Byte.TYPE, Byte.valueOf((byte)0));
+		map.put(Short.TYPE, Short.valueOf((short)0));
+		map.put(Integer.TYPE, Integer.valueOf((int)0));
+		map.put(Long.TYPE, Long.valueOf((long)0));
+		map.put(Float.TYPE, Float.valueOf((float)0));
+		map.put(Double.TYPE, Double.valueOf((double)0));
+
+		return Collections.unmodifiableMap(map);
+	}
+
 	public static Class<?> wrapperIfPrimitive(Class<?> cls)
 	{
 		Class<?> wrapper;
@@ -84,9 +101,27 @@ public class Reflections
 		return cls;
 	}
 
+	/**
+	 * @Deprecated Use {@link #isPrimitiveWrapper} instead.
+	 */
+	@Deprecated
 	public boolean isWrapper(Class<?> cls)
 	{
+		return isPrimitiveWrapper(cls);
+	}
+
+	public boolean isPrimitiveWrapper(Class<?> cls)
+	{
 		return WRAPPER_TO_PRIMITIVE.get(cls)!=null;
+	}
+
+	public static Object zeroIfPrimitiveNullOtherwise(Class<?> cls)
+	{
+		Object ret;
+
+		if((ret=PRIMITIVE_ZERO.get(cls))==null)
+			return null;
+		return ret;
 	}
 
 	public static StackTraceElement getStackTraceElement(int index)

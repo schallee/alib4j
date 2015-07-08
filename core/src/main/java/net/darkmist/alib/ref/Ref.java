@@ -18,12 +18,24 @@
 
 package net.darkmist.alib.ref;
 
+/**
+ * Generic reference to another object interface.
+ */
 public interface Ref<T>
 {
-	void set(T obj) throws RefException;
-	void setReferent(T obj) throws RefException;
-	T get() throws RefException;
-	T getReferent() throws RefException;
-	void clear() throws RefException;
-	boolean isSetSupported();
+	public void set(T obj) throws RefException;
+	public void setReferent(T obj) throws RefException;
+	public T get() throws RefException;
+	public T getReferent() throws RefException;
+	public void clear() throws RefException;
+	public boolean isSetSupported();
+
+	/**
+	 * Reference interface that includes @{link ReferenceQueue}s.
+	 */
+	public interface Queued<T> extends Ref<T>
+	{
+		public boolean enqueue();
+		public boolean isEnqueued();
+	}
 }
