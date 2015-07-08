@@ -1,4 +1,4 @@
-package net.darkmist.alib.proxied;
+package net.darkmist.alib.proxy;
 
 public enum MultiplexingFlags
 {

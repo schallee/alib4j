@@ -1,4 +1,4 @@
-package net.darkmist.alib.proxied;
+package net.darkmist.alib.proxy;
 
 import java.lang.reflect.Proxy;
 
@@ -37,5 +37,4 @@ public final class ProxiedRefs
 	{
 		return getProxy(iface, new SoftRef<T>(target));
 	}
-
 }

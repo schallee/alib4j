@@ -1,13 +1,14 @@
-package net.darkmist.alib.proxied;
+package net.darkmist.alib.proxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import net.darkmist.alib.ref.SimpleRef;
+import net.darkmist.alib.ref.Ref;
+import net.darkmist.alib.ref.WrapperRef;
 
-public class SimpleRefInvocationHandler<T> extends SimpleRef<T> implements InvocationHandler
+public class SimpleWrapperRefInvocationHandler<T> extends WrapperRef<T> implements InvocationHandler
 {
-	public SimpleRefInvocationHandler(Class<T> iface, T target)
+	public SimpleWrapperRefInvocationHandler(Class<T> iface, Ref<T> target)
 	{
 		super(target);
 		if(target==null)

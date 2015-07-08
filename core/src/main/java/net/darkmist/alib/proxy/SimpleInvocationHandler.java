@@ -1,4 +1,4 @@
-package net.darkmist.alib.proxied;
+package net.darkmist.alib.proxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
