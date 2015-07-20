@@ -16,34 +16,56 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package net.darkmist.alib.collection;
+package net.darkmist.alib.io;
 
-import java.util.Iterator;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import net.darkmist.alib.lang.Wrapper;
 
-public class IteratorWrapper<T, I extends Iterator<T>> extends Wrapper.Base<I> implements Iterator<T>
+public class OutputStreamWrapper<I extends OutputStream> extends OutputStream implements Wrapper<I>
 {
-	public IteratorWrapper(I target)
+	protected final I target;
+
+	public OutputStreamWrapper(I target)
 	{
-		super(target);
+		if((this.target = target)==null)
+			throw new NullPointerException();
 	}
 
 	@Override
-	public boolean hasNext()
+	public I unwrap()
 	{
-		return target.hasNext();
+		return target;
 	}
 
 	@Override
-	public T next()
+	public void write(int b) throws IOException
 	{
-		return target.next();
+		target.write(b);
 	}
 
 	@Override
-	public void remove()
+	public void write(byte[] bytes) throws IOException
 	{
-		target.remove();
+		target.write(bytes);
+	}
+
+	@Override
+	public void write(byte[] bytes, int off, int len) throws IOException
+	{
+		target.write(bytes, off, len);
+	}
+
+	@Override
+	public void flush() throws IOException
+	{
+		target.flush();
+	}
+
+	@Override
+	public void close() throws IOException
+	{
+		target.close();
 	}
 }

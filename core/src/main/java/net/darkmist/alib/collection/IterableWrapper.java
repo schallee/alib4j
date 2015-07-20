@@ -20,14 +20,13 @@ package net.darkmist.alib.collection;
 
 import java.util.Iterator;
 
-public class IterableWrapper<T,I extends Iterable<T>> implements Iterable<T>
-{
-	protected final I target;
+import net.darkmist.alib.lang.Wrapper;
 
+public class IterableWrapper<T,I extends Iterable<T>> extends Wrapper.Base<I> implements Iterable<T>
+{
 	public IterableWrapper(I target)
 	{
-		if((this.target = target)==null)
-			throw new NullPointerException();
+		super(target);
 	}
 
 	@Override

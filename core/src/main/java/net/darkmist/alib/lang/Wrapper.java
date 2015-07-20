@@ -16,34 +16,26 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package net.darkmist.alib.collection;
+package net.darkmist.alib.lang;
 
-import java.util.Iterator;
-
-import net.darkmist.alib.lang.Wrapper;
-
-public class IteratorWrapper<T, I extends Iterator<T>> extends Wrapper.Base<I> implements Iterator<T>
+public interface Wrapper<I>
 {
-	public IteratorWrapper(I target)
-	{
-		super(target);
-	}
+	public I unwrap();
 
-	@Override
-	public boolean hasNext()
+	public static class Base<I> implements Wrapper<I>
 	{
-		return target.hasNext();
-	}
+		protected final I target;
 
-	@Override
-	public T next()
-	{
-		return target.next();
-	}
+		public Base(I target)
+		{
+			if((this.target = target)==null)
+				throw new NullPointerException();
+		}
 
-	@Override
-	public void remove()
-	{
-		target.remove();
+		@Override
+		public I unwrap()
+		{
+			return target;
+		}
 	}
 }
