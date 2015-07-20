@@ -18,7 +18,23 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Export-Package>net.darkmist.alib,net.darkmist.alib.collection,net.darkmist.alib.console,net.darkmist.alib.exception,net.darkmist.alib.generics,net.darkmist.alib.io,net.darkmist.alib.job,net.darkmist.alib.lang,net.darkmist.alib.lang,net.darkmist.alib.math,net.darkmist.alib.ref,net.darkmist.alib.res,net.darkmist.alib.str</Export-Package>
+						<Export-Package>
+							net.darkmist.alib,
+							net.darkmist.alib.beans,
+							net.darkmist.alib.collection,
+							net.darkmist.alib.console,
+							net.darkmist.alib.exception,
+							net.darkmist.alib.generics,
+							net.darkmist.alib.io,
+							net.darkmist.alib.job,
+							net.darkmist.alib.lang,
+							net.darkmist.alib.math,
+							net.darkmist.alib.proxy,
+							net.darkmist.alib.ref,
+							net.darkmist.alib.reflect,
+							net.darkmist.alib.res,
+							net.darkmist.alib.str
+						</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>
