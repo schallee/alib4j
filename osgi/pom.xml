@@ -16,8 +16,9 @@
 		<shortGroupName>alib.osgi</shortGroupName>
 	</properties>
 	<modules>
-		<module>slf4j_log_listener</module>
 		<module>core</module>
+		<module>metatype</module>
+		<module>slf4j_log_listener</module>
 	</modules>
 	<description>OSGI utils library</description>
 </project>
