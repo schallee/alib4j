@@ -6,39 +6,39 @@
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
 	<name>alib</name>
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
-	</parent>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<shortGroupName>alib</shortGroupName>
-		<slf4j.version>1.7.10</slf4j.version>
+		<slf4j.version>1.7.12</slf4j.version>
 		<osgi.core.version>4.3.1</osgi.core.version>
 		<osgi.compendium.version>4.3.1</osgi.compendium.version>
-		<source.version>1.6</source.version>
 		<server.name>weed.darkmist.net</server.name>
-		<wagon.ssh.version>2.8</wagon.ssh.version>
+		<wagon.ssh.version>2.9</wagon.ssh.version>
 		<nexus.url>https://oss.sonatype.org</nexus.url>
 		<nexus.serverAuthId>sonatype-nexus-staging</nexus.serverAuthId>
 
+		<target.major.version>1</target.major.version>
+		<target.minor.version>6</target.minor.version>
+		<target.version>${target.major.version}.${target.minor.version}</target.version>
+		<target.java.home>${jdk-16-home}</target.java.home>
+		<!--<target.java.home>${java.home}</target.java.home>-->
+		<source.version>${target.version}</source.version>
+
 		<!-- reporting stuff as there is no central management -->
-		<reporting.javadoc.version>2.10.1</reporting.javadoc.version>
+		<reporting.javadoc.version>2.10.3</reporting.javadoc.version>
 		<reporting.javadoc.conf.detectJavaApiLink>true</reporting.javadoc.conf.detectJavaApiLink>
 		<reporting.javadoc.conf.detectLinks>true</reporting.javadoc.conf.detectLinks>
 		<reporting.javadoc.conf.serialwarn>true</reporting.javadoc.conf.serialwarn>
 		<reporting.javadoc.conf.verbose>true</reporting.javadoc.conf.verbose>
-		<!--<reporting.pmd.version>3.4</reporting.pmd.version>-->
+		<!--<reporting.pmd.version>3.5</reporting.pmd.version>-->
 		<reporting.pmd.version>2.7.1</reporting.pmd.version>
 		<reporting.pmd.linkXref>false</reporting.pmd.linkXref>
 		<reporting.pmd.sourceEncoding>${project.build.sourceEncoding}</reporting.pmd.sourceEncoding>
-		<reporting.pmd.targetJdk>${source.version}</reporting.pmd.targetJdk>
-		<reporting.versions.version>2.1</reporting.versions.version>
+		<reporting.pmd.targetJdk>${target.version}</reporting.pmd.targetJdk>
+		<reporting.versions.version>2.2</reporting.versions.version>
 		<reporting.jxr.version>2.5</reporting.jxr.version>
 	</properties>
 	<prerequisites>
-		<!--<maven>2.2.1</maven>-->
 		<maven>3.0.4</maven>
 	</prerequisites>
 	<modules>
@@ -62,10 +62,10 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.2</version>
+					<version>3.3</version>
 					<configuration>
 						<source>${source.version}</source>
-						<target>${source.version}</target>
+						<target>${target.version}</target>
 						<debug>false</debug>
 						<optimize>true</optimize>
 						<showWarnings>true</showWarnings>
@@ -73,22 +73,10 @@
 						<compilerArgs>
 							<arg>-Xlint</arg>
 						</compilerArgs>
-						<!--<compilerId>eclipse</compilerId>-->
+						<fork>true</fork>
+						<executable>${target.java.home}/bin/javac</executable>
+						<compilerVersion>${target.version}</compilerVersion>
 					</configuration>
-					<!--
-					<dependencies>
-						<dependency>
-							<groupId>org.codehaus.plexus</groupId>
-							<artifactId>plexus-compiler-eclipse</artifactId>
-							<version>2.2</version>
-						</dependency>
-						<dependency>
-							<groupId>org.codehaus.plexus</groupId>
-							<artifactId>plexus-compiler-jikes</artifactId>
-							<version>2.2</version>
-						</dependency>
-					</dependencies>
-					-->
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -98,9 +86,19 @@
 						<linkXref>${reporting.pmd.linkXref}</linkXref>
 						<sourceEncoding>${reporting.pmd.sourceEncoding}</sourceEncoding>
 						<targetJdk>${reporting.pmd.targetJdk}</targetJdk>
+						<printFailingErrors>true</printFailingErrors>
+						<verbose>true</verbose>
+						<!--
+						<rulesets>
+							<ruleset>java-basic</ruleset>
+							<ruleset>java-imports</ruleset>
+							<ruleset>java-unusedcode</ruleset>
+						</rulesets>
+						-->
 					</configuration>
 					<executions>
 						<execution>
+							<phase>process-classes</phase>
 							<goals>
 								<goal>check</goal>
 								<!-- cpd correctly thinks OutputWrapping{,Http}ServletResponse.java are too similar. Unless there is some way I am not aware they always will be... -->
@@ -124,7 +122,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>2.5.1</version>
+					<version>2.5.2</version>
 					<configuration>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
 						<tagNameFormat>@{project.version}</tagNameFormat>
@@ -142,7 +140,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.5.3</version>
+					<version>2.5.5</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -167,7 +165,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.5</version>
+					<version>2.6</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -204,6 +202,9 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>2.18.1</version>
+					<configuration>
+						<jvm>${target.java.home}/bin/java</jvm>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -225,15 +226,28 @@
 					<artifactId>nexus-maven-plugin</artifactId>
 					<version>2.1</version>
 				</plugin>
+				<!--
 				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-staging-maven-plugin</artifactId>
 					<version>1.2</version>
 				</plugin>
+				-->
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>1.6.5</version>
+					<extensions>true</extensions>
+					<configuration>
+						<serverId>ossrh</serverId>
+						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+						<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					</configuration>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.5.3</version>
+					<version>2.5.4</version>
 					<extensions>true</extensions>
 				</plugin>
 			</plugins>
