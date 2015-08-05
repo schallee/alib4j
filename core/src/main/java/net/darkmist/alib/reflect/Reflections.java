@@ -70,7 +70,7 @@ public class Reflections
 		map.put(Character.TYPE, Character.valueOf((char)0));
 		map.put(Byte.TYPE, Byte.valueOf((byte)0));
 		map.put(Short.TYPE, Short.valueOf((short)0));
-		map.put(Integer.TYPE, Integer.valueOf((int)0));
+		map.put(Integer.TYPE, Integer.valueOf(0));
 		map.put(Long.TYPE, Long.valueOf((long)0));
 		map.put(Float.TYPE, Float.valueOf((float)0));
 		map.put(Double.TYPE, Double.valueOf((double)0));
