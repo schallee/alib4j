@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 import org.osgi.service.metatype.AttributeDefinition;
 import org.osgi.service.metatype.ObjectClassDefinition;
@@ -93,12 +94,14 @@ public class Attributes
 
 	public static AttributeDefinition urlAttribute(String name, String id, String desc, String defaultVal)
 	{
-		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.STRING, null, null, new String[]{defaultVal})
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.STRING, null, null, defaultVal == null ? null : new String[]{defaultVal})
 		{
 			@Override
 			public String validate(String value)
 			{
 				logger.debug("validate(\"{}\")", value);
+				if(value==null)
+					return "Null value is invalid.";
 				try
 				{
 					new URL(value);
@@ -115,7 +118,7 @@ public class Attributes
 
 	public static AttributeDefinition tcpPortAttribute(String name, String id, String desc, String defaultVal)
 	{
-		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.INTEGER, null, null, new String[]{defaultVal})
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.INTEGER, null, null, defaultVal == null ? null : new String[]{defaultVal})
 		{
 			@Override
 			public String validate(String value)
@@ -124,6 +127,8 @@ public class Attributes
 
 				logger.debug("validate(\"{}\")", value);
 
+				if(value==null)
+					return "Null value is invalid.";
 				try
 				{
 					intVal = Integer.valueOf(value);
@@ -154,13 +159,15 @@ public class Attributes
 
 	public static AttributeDefinition inetAddressAttribute(String name, String id, String desc, String defaultVal)
 	{
-		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.STRING, null, null, new String[]{defaultVal})
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.STRING, null, null, defaultVal == null ? null : new String[]{defaultVal})
 		{
 			@Override
 			public String validate(String value)
 			{
 				byte[] addrBytes=null;
 
+				if(value==null)
+					return "Null value is invalid.";
 				try
 				{
 					addrBytes = InetAddress.getByName(value).getAddress();
@@ -180,5 +187,20 @@ public class Attributes
 				return "";
 			}
 		};
+	}
+
+	public static AttributeDefinition stringAttribute(String name, String id, String desc, String defaultVal)
+	{
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.STRING, null, null, defaultVal == null ? null : new String[]{defaultVal});
+	}
+
+	public static AttributeDefinition stringRegexedAttribute(String name, String id, String desc, String defaultVal, Pattern validationPattern)
+	{
+		return new RegexValidatedStringAttribute(name, id, desc, 0, defaultVal == null ? null : new String[]{defaultVal}, validationPattern);
+	}
+
+	public static AttributeDefinition stringRegexedAttribute(String name, String id, String desc, String defaultVal, String validationPattern)
+	{
+		return stringRegexedAttribute(name, id, desc, defaultVal, Pattern.compile(validationPattern));
 	}
 }
