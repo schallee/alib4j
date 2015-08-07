@@ -22,12 +22,15 @@ import java.io.DataInput;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.FileOutputStream;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+// java 7: import java.nio.file.Path;
+// java 7: import java.nio.file.StandardOpenOption;
 
 import javax.jms.BytesMessage;
 import javax.jms.JMSException;
@@ -176,42 +179,86 @@ public class Messages
 		return buf;
 	}
 
-	public static File writeTo(BytesMessage msg, File file) throws IOException, JMSException
+	/* blasted. java 7
+	private static Path writeToMapped(BytesMessage msg, Path path) throws IOException, JMSException
 	{
-		FileOutputStream fos = null;
-		FileChannel fc = null;
-		long size;
 		ByteBuffer buf;
+		FileChannel fc;
 
-		if(file.exists())
-			throw new IllegalArgumentException("File " + file + " already exists.");
-		size = msg.getBodyLength();
+		try
+		(
+			FileChannel fc = FileChannel.open(path, EnumSet.of(StandardOpenOption.CREATE_NEW));
+		)
+		{
+			logger.debug("Mapping file {}", file);
+			buf = fc.map(FileChannel.MapMode.READ_WRITE, 0, msg.getBodyLength());
+			logger.debug("Writting message to byte buffer.");
+			writeTo(msg, buf);
+			logger.debug("Success writing message to file {} using file map.", file);
+			return path;
+		}
+	}
+	*/
+
+
+	private static File writeToMapped(BytesMessage msg, File file) throws IOException, JMSException
+	{
+		// writeToMapped(msg, file.toPath());
+
+		ByteBuffer buf;
+		FileChannel fc=null;
+		RandomAccessFile raf=null;
+
 		try
 		{
-			fos = new FileOutputStream(file);
-			try
-			{
-				fc = fos.getChannel();
-				fc.truncate(size);
-				buf = fc.map(FileChannel.MapMode.READ_WRITE, 0, size);
-				writeTo(msg, buf);
-				return file;
-			}
-			catch(IOException e)
-			{
-				logger.debug("Ignoring IOException trying to map file {}.", file, e);
-			}
-			finally
-			{
-				fc=Closer.close(fc);
-			}
-			writeTo(msg, fos);
+			raf = new RandomAccessFile(file, "rw");
+			fc = raf.getChannel();
+			buf = fc.map(FileChannel.MapMode.READ_WRITE, 0, msg.getBodyLength());
+			logger.debug("Writting message to byte buffer.");
+			writeTo(msg, buf);
+			logger.debug("Success writing message to file {} using file map. Closing", file);
+			fc.close();
+			raf.close();
 			return file;
 		}
 		finally
 		{
-			fos=Closer.close(fos);
+			fc=Closer.close(fc);
+			raf=Closer.close(raf);
 		}
+	}
+	
+	private static File writeToOutputStream(BytesMessage msg, File file) throws IOException, JMSException
+	{
+		FileOutputStream fos = null;
+
+
+		try
+		{
+			fos = new FileOutputStream(file);
+			writeTo(msg, fos);
+			fos.close();
+			return file;
+		}
+		finally
+		{
+			fos = Closer.close(fos);
+		}
+	}
+
+	public static File writeTo(BytesMessage msg, File file) throws IOException, JMSException
+	{
+		if(file.exists())
+			throw new IllegalArgumentException("File " + file + " already exists.");
+		try
+		{
+			return writeToMapped(msg, file);
+		}
+		catch(IOException e)
+		{
+			logger.debug("Ignoring IOException trying to write file through memory mapping.", e);
+		}
+		return writeToOutputStream(msg, file);
 	}
 
 	public static byte[] asBytes(BytesMessage msg) throws JMSException
