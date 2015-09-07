@@ -122,4 +122,40 @@ public final class Attributes
 	{
 		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.STRING, Validators.getRegexValidator(validationPattern), null, null, defaultVal == null ? null : new String[]{defaultVal});
 	}
+
+	public static AttributeDefinition stringValidatorAttribute(String name, String id, String desc, String defaultVal, Validator validator)
+	{
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.STRING, validator, null, null, defaultVal == null ? null : new String[]{defaultVal});
+	}
+
+	public static AttributeDefinition stringValidatorAttribute(String name, String id, String desc, Validator validator)
+	{
+		return stringValidatorAttribute(name, id, desc, null, validator);
+	}
+
+	public static AttributeDefinition nonEmptyStringAttribute(String name, String id, String desc)
+	{
+		return stringValidatorAttribute(name, id, desc, Validators.getNonEmptyStringValidator());
+	}
+
+	public static AttributeDefinition intRangeAttribute(String name, String id, String desc, Integer defaultVal, int min, int max)
+	{
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.INTEGER, Validators.getIntRangeValidator(min,max), null, null, defaultVal == null ? null : new String[]{defaultVal.toString()});
+	}
+
+	public static AttributeDefinition intMinAttribute(String name, String id, String desc, Integer defaultVal, int min)
+	{
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.INTEGER, Validators.getIntMinValidator(min), null, null, defaultVal == null ? null : new String[]{defaultVal.toString()});
+	}
+
+	public static AttributeDefinition intMaxAttribute(String name, String id, String desc, Integer defaultVal, int max)
+	{
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.INTEGER, Validators.getIntMaxValidator(max), null, null, defaultVal == null ? null : new String[]{defaultVal.toString()});
+	}
+
+	public static AttributeDefinition intAttribute(String name, String id, String desc, Integer defaultVal)
+	{
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.INTEGER, Validators.getIntValidator(), null, null, defaultVal == null ? null : new String[]{defaultVal.toString()});
+	}
+
 }

@@ -132,6 +132,26 @@ public final class Validators
 		return InetAddressValidator.SINGLETON;
 	}
 
+	private static enum NonEmptyStringValidator implements Validator
+	{
+		SINGLETON;
+
+		@Override
+		public String validate(String value)
+		{
+			if(value == null)
+				return "Value cannot be null.";
+			if(value.isEmpty())
+				return "Value cannot be empty.";
+			return value;
+		}
+	}
+
+	public static Validator getNonEmptyStringValidator()
+	{
+		return NonEmptyStringValidator.SINGLETON;
+	}
+
 	public static Validator getRegexValidator(final Pattern pat)
 	{
 		return new Validator()
@@ -151,5 +171,83 @@ public final class Validators
 	public static Validator getRegexValidator(String pattern)
 	{
 		return getRegexValidator(Pattern.compile(pattern));
+	}
+
+	private static final class IntRangeValidator implements Validator
+	{
+		private final int min;
+		private final int max;
+
+		IntRangeValidator(int min, int max)
+		{
+			this.min = min;
+			this.max = max;
+			if(max < min)
+				throw new IllegalArgumentException("Max value " + max + " was less then min value " + min);
+		}
+
+		@Override
+		public String validate(String value)
+		{
+			int i;
+
+			if(value == null)
+				return "Value cannot be null.";
+			try
+			{
+				i = Integer.parseInt(value);
+			}
+			catch(NumberFormatException e)
+			{
+				return "Unable to convert value " + value + " to a valid integer.";
+			}
+			if(i < min)
+				return "Value " + i + " is less then the minimum value " + min + '.';
+			if(i > max)
+				return "Value " + i + " is more than the maximum value " + max + '.';
+			return "";
+		}
+	}
+
+	public static Validator getIntMinValidator(int min)
+	{
+		return new IntRangeValidator(min, Integer.MAX_VALUE);
+	}
+
+	public static Validator getIntMaxValidator(int max)
+	{
+		return new IntRangeValidator(Integer.MIN_VALUE, max);
+	}
+
+	public static Validator getIntRangeValidator(int min, int max)
+	{
+		return new IntRangeValidator(min, max);
+	}
+
+	private static enum IntValidator implements Validator
+	{
+		SINGLETON;
+
+		@Override
+		public String validate(String value)
+		{
+			if(value == null)
+				return "Value cannot be null.";
+			try
+			{
+				Integer.parseInt(value);
+			}
+			catch(NumberFormatException e)
+			{
+				return "Unable to convert value " + value + " to a valid integer.";
+			}
+			return "";
+		}
+		
+	}
+
+	public static Validator getIntValidator()
+	{
+		return IntValidator.SINGLETON;
 	}
 }
