@@ -1,9 +1,5 @@
 package net.darkmist.alib.osgi.metatype;
 
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.UnknownHostException;
-import java.net.URL;
 import java.util.regex.Pattern;
 
 import org.osgi.service.metatype.AttributeDefinition;
@@ -12,7 +8,7 @@ import org.osgi.service.metatype.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Attributes
+public final class Attributes
 {
 	private static final Class<Attributes> CLASS = Attributes.class;
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
@@ -94,62 +90,12 @@ public class Attributes
 
 	public static AttributeDefinition urlAttribute(String name, String id, String desc, String defaultVal)
 	{
-		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.STRING, null, null, defaultVal == null ? null : new String[]{defaultVal})
-		{
-			@Override
-			public String validate(String value)
-			{
-				logger.debug("validate(\"{}\")", value);
-				if(value==null)
-					return "Null value is invalid.";
-				try
-				{
-					new URL(value);
-					logger.debug("validated url {}", value);
-					return "";
-				}
-				catch(MalformedURLException e)
-				{
-					return e.toString();
-				}
-			}
-		};
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.STRING, Validators.getURLValidator(), null, null, defaultVal == null ? null : new String[]{defaultVal});
 	}
 
 	public static AttributeDefinition tcpPortAttribute(String name, String id, String desc, String defaultVal)
 	{
-		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.INTEGER, null, null, defaultVal == null ? null : new String[]{defaultVal})
-		{
-			@Override
-			public String validate(String value)
-			{
-				int intVal=0;
-
-				logger.debug("validate(\"{}\")", value);
-
-				if(value==null)
-					return "Null value is invalid.";
-				try
-				{
-					intVal = Integer.valueOf(value);
-				}
-				catch(NumberFormatException e)
-				{
-					logger.warn("Unable to convert {} to integer value.", e);
-					return e.toString();
-				}
-
-				if(intVal <= 0 || 65535 < intVal)
-				{
-					if(logger.isDebugEnabled())
-						logger.debug("Port {} not in range 1 and 65535.", intVal);
-					return "Port value must be between 1 and 65535.";
-				}
-
-				logger.debug("validated port {}", value);
-				return "";
-			}
-		};
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.INTEGER, Validators.getUDPPortValidator(), null, null, defaultVal == null ? null : new String[]{defaultVal});
 	}
 
 	public static AttributeDefinition udpPortAttribute(String name, String id, String desc, String defaultVal)
@@ -159,34 +105,7 @@ public class Attributes
 
 	public static AttributeDefinition inetAddressAttribute(String name, String id, String desc, String defaultVal)
 	{
-		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.STRING, null, null, defaultVal == null ? null : new String[]{defaultVal})
-		{
-			@Override
-			public String validate(String value)
-			{
-				byte[] addrBytes=null;
-
-				if(value==null)
-					return "Null value is invalid.";
-				try
-				{
-					addrBytes = InetAddress.getByName(value).getAddress();
-				}
-				catch(UnknownHostException e)
-				{
-					return e.toString();
-				}
-
-				if(addrBytes == null)
-				{
-					logger.debug("unable to validate address {}.", value);
-					return "Unable to convert " + value + " to InetAddress.";
-				}
-
-				logger.debug("validated address {}", value);
-				return "";
-			}
-		};
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.STRING, Validators.getInetAddressValidator(), null, null, defaultVal == null ? null : new String[]{defaultVal});
 	}
 
 	public static AttributeDefinition stringAttribute(String name, String id, String desc, String defaultVal)
@@ -196,11 +115,11 @@ public class Attributes
 
 	public static AttributeDefinition stringRegexedAttribute(String name, String id, String desc, String defaultVal, Pattern validationPattern)
 	{
-		return new RegexValidatedStringAttribute(name, id, desc, 0, defaultVal == null ? null : new String[]{defaultVal}, validationPattern);
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.STRING, Validators.getRegexValidator(validationPattern), null, null, defaultVal == null ? null : new String[]{defaultVal});
 	}
 
 	public static AttributeDefinition stringRegexedAttribute(String name, String id, String desc, String defaultVal, String validationPattern)
 	{
-		return stringRegexedAttribute(name, id, desc, defaultVal, Pattern.compile(validationPattern));
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.STRING, Validators.getRegexValidator(validationPattern), null, null, defaultVal == null ? null : new String[]{defaultVal});
 	}
 }

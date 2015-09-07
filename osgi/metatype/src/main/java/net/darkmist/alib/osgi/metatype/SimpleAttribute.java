@@ -18,20 +18,27 @@ public class SimpleAttribute implements AttributeDefinition
 	private final String desc;
 	private final int card;
 	private final int type;
+	private final Validator validator;
 	private final String[] optVals;
 	private final String[] optLabels;
 	private final String[] defaults;
 
-	public SimpleAttribute(String name, String id, String desc, int card, int type, String[] optVals, String[] optLabels, String[] defaults)
+	public SimpleAttribute(String name, String id, String desc, int card, int type, Validator validator, String[] optVals, String[] optLabels, String[] defaults)
 	{
 		this.name = name;
 		this.id = id;
 		this.desc = desc;
 		this.card = card;
 		this.type = Attributes.validTypeOrThrow(type);
+		this.validator = validator;
 		this.optVals = optVals;
 		this.optLabels = optLabels;
 		this.defaults = defaults;
+	}
+
+	public SimpleAttribute(String name, String id, String desc, int card, int type, String[] optVals, String[] optLabels, String[] defaults)
+	{
+		this(name, id, desc, card, type, null, optVals, optLabels, defaults);
 	}
 
 	public static class Builder
@@ -44,6 +51,7 @@ public class SimpleAttribute implements AttributeDefinition
 		private List<String> optVals = null;
 		private List<String> optLabels = null;
 		private List<String> defaults = null;
+		private Validator validator = null;
 
 		private static <T> List<T> arrayToMutableList(T...array)
 		{
@@ -65,7 +73,7 @@ public class SimpleAttribute implements AttributeDefinition
 
 		public SimpleAttribute build()
 		{
-			return new SimpleAttribute(name, id, desc, card, type, listToArray(optVals), listToArray(optLabels), listToArray(defaults));
+			return new SimpleAttribute(name, id, desc, card, type, validator, listToArray(optVals), listToArray(optLabels), listToArray(defaults));
 		}
 
 		public Builder name(String name_)
@@ -140,6 +148,12 @@ public class SimpleAttribute implements AttributeDefinition
 			defaults.add(def);
 			return this;
 		}
+
+		public Builder validator(Validator validator)
+		{
+			this.validator = validator;
+			return this;
+		}
 	}
 
 	public static Builder builder()
@@ -207,6 +221,8 @@ public class SimpleAttribute implements AttributeDefinition
 	@Override
 	public String validate(String value)
 	{
+		if(validator != null)
+			return validator.validate(value);
 		logger.debug("default validate(\"{}\") returning success", value);
 		return "";
 	}

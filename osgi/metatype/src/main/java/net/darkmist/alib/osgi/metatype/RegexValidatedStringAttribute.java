@@ -10,6 +10,7 @@ import org.osgi.service.metatype.AttributeDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Deprecated
 public class RegexValidatedStringAttribute implements AttributeDefinition
 {
 	private static final Class<RegexValidatedStringAttribute> CLASS = RegexValidatedStringAttribute.class;
@@ -19,7 +20,7 @@ public class RegexValidatedStringAttribute implements AttributeDefinition
 	private final String desc;
 	private final int card;
 	private final String[] defaults;
-	private final Pattern validationPattern;
+	private final Validator validator;
 
 	public RegexValidatedStringAttribute(String name, String id, String desc, int card, String[] defaults, Pattern validationPattern)
 	{
@@ -28,8 +29,7 @@ public class RegexValidatedStringAttribute implements AttributeDefinition
 		this.desc = desc;
 		this.card = card;
 		this.defaults = defaults;
-		if((this.validationPattern = validationPattern)==null)
-			throw new NullPointerException("ValidationPattern cannot be null.");
+		this.validator = Validators.getRegexValidator(validationPattern);
 	}
 
 	public RegexValidatedStringAttribute(String name, String id, String desc, int card, String[] defaults, String validationPattern)
@@ -87,11 +87,7 @@ public class RegexValidatedStringAttribute implements AttributeDefinition
 	@Override
 	public String validate(String value)
 	{
-		if(value==null)
-			return "Null value is invalid.";
-		if(!validationPattern.matcher(value).matches())
-			return "Value must match Java regular expression \"" + validationPattern + "\".";
-		return "";
+		return validator.validate(value);
 	}
 
 	@Override
