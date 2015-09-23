@@ -71,6 +71,11 @@ public class SimpleAttribute implements AttributeDefinition
 		{
 		}
 
+		public static Builder instance()
+		{
+			return new Builder();
+		}
+
 		public SimpleAttribute build()
 		{
 			return new SimpleAttribute(name, id, desc, card, type, validator, listToArray(optVals), listToArray(optLabels), listToArray(defaults));
@@ -91,6 +96,12 @@ public class SimpleAttribute implements AttributeDefinition
 		public Builder description(String desc_)
 		{
 			this.desc = desc_;
+			return this;
+		}
+
+		public Builder cardinality(int card)
+		{
+			this.card = card;
 			return this;
 		}
 
