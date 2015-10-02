@@ -11,8 +11,6 @@ import net.darkmist.alib.reflect.Reflections;
 public class MultiplexingInvocationHandler<T, C extends Iterable<T>> implements InvocationHandler
 {
 	private final static Set<MultiplexingFlags> DEFAULT_FLAGS = Collections.unmodifiableSet(EnumSet.of(
-		MultiplexingFlags.IGNORE_NULL,
-		MultiplexingFlags.IGNORE_EXCEPTIONS,
 		MultiplexingFlags.RETURN_LAST
 	));
 	private final C targets;
