@@ -157,5 +157,15 @@ public final class Attributes
 	{
 		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.INTEGER, Validators.getIntValidator(), null, null, defaultVal == null ? null : new String[]{defaultVal.toString()});
 	}
+	
+	public static AttributeDefinition intValidatorAttribute(String name, String id, String desc, Integer defaultVal, Validator validator)
+	{
+		return new SimpleAttribute(name, id, desc, 0, AttributeDefinition.INTEGER, validator, null, null, defaultVal == null ? null : new String[]{defaultVal.toString()});
+	}
+
+	public static AttributeDefinition intValidatorAttribute(String name, String id, String desc, Validator validator)
+	{
+		return intValidatorAttribute(name, id, desc, null, validator);
+	}
 
 }

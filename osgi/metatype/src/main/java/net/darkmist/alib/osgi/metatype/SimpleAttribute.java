@@ -146,7 +146,7 @@ public class SimpleAttribute implements AttributeDefinition
 			return this;
 		}
 
-		public Builder defaults(String[] defaults_)
+		public Builder defaults(String...defaults_)
 		{
 			defaults = arrayToMutableList(defaults_);
 			return this;
