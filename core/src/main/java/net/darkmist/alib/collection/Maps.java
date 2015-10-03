@@ -19,8 +19,10 @@
 package net.darkmist.alib.collection;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -152,6 +154,70 @@ public final class Maps
 				return map.remove(key);
 			}
 		};
+	}
+
+	public static class Builder<K,V>
+	{
+		private Map<K,V> map;
+
+		private Builder(Map<K,V> map)
+		{
+			this.map = map;
+		}
+
+		public static <K,V> Builder<K,V> instance(Map<K,V> base)
+		{
+			return new Builder<K,V>(base);
+		}
+
+		public static <K,V> Builder<K,V> instance(Class<K> keyCls, Class<V> valCls)
+		{
+			return instance(new HashMap<K,V>());
+		}
+
+		public static <K,V> Builder<K,V> instance()
+		{
+			return instance(new HashMap<K,V>());
+		}
+
+		public Builder<K,V> put(K key, V value)
+		{
+			if(map==null)
+				throw new IllegalStateException("Attempt to use builder after building Map.");
+			map.put(key, value);
+			return this;
+		}
+
+		public Map<K,V> build()
+		{
+			Map<K,V> ret = map;
+
+			map=null;
+			return ret;
+		}
+
+		public Map<K,V> buildUnmodifiable()
+		{
+			Map<K,V> tmpMap = map;
+			Map.Entry<K,V> entry;
+
+			map = null;
+			switch(tmpMap.size())
+			{
+				case 0:
+					return Collections.emptyMap();
+				case 1:
+					entry = tmpMap.entrySet().iterator().next();
+					return Collections.singletonMap(entry.getKey(), entry.getValue());
+				default:
+					return Collections.unmodifiableMap(tmpMap);
+			}
+		}
+
+		public Map<K,V> unmodifiable()
+		{
+			return buildUnmodifiable();
+		}
 	}
 
 }
