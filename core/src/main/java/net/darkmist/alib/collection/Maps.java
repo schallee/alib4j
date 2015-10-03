@@ -159,6 +159,7 @@ public final class Maps
 	public static class Builder<K,V>
 	{
 		private Map<K,V> map;
+		private boolean throwOnDuplicate = true;
 
 		private Builder(Map<K,V> map)
 		{
@@ -180,11 +181,26 @@ public final class Maps
 			return instance(new HashMap<K,V>());
 		}
 
+		public Builder<K,V> noThrowOnDuplicate()
+		{
+			throwOnDuplicate = false;
+			return this;
+		}
+
+		public Builder<K,V> throwOnDuplicate()
+		{
+			throwOnDuplicate = true;
+			return this;
+		}
+
 		public Builder<K,V> put(K key, V value)
 		{
+			V oldValue;
+
 			if(map==null)
 				throw new IllegalStateException("Attempt to use builder after building Map.");
-			map.put(key, value);
+			if((oldValue = map.put(key, value))!=null && throwOnDuplicate)
+				throw new IllegalArgumentException("Key " + key + " already has value " + oldValue + " when trying to put new value " + value + '.');
 			return this;
 		}
 

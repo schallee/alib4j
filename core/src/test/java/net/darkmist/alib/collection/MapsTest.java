@@ -265,4 +265,52 @@ public class MapsTest extends TestCase
 		assertModifiable(map, "two",2);
 		assertPostBuildPutFails(builder,"three",3);
 	}
+
+	public void testBuildThrowOnDuplicateDefault() throws Exception
+	{
+		Maps.Builder<String,Integer> builder;
+
+ 		builder = Maps.Builder.instance(String.class,Integer.class);
+		builder.put("zero",0);
+		try
+		{
+			builder.put("zero",0);
+			fail("No excpetion thrown when duplicate put attempted.");
+		}
+		catch(Exception expected)
+		{
+		}
+	}
+
+	public void testBuildThrowOnDuplicateTrue() throws Exception
+	{
+		Maps.Builder<String,Integer> builder;
+
+ 		builder = Maps.Builder.instance(String.class,Integer.class).throwOnDuplicate();
+		builder.put("zero",0);
+		try
+		{
+			builder.put("zero",0);
+			fail("No excpetion thrown when duplicate put attempted.");
+		}
+		catch(Exception expected)
+		{
+		}
+	}
+
+	public void testBuildThrowOnDuplicateFalse() throws Exception
+	{
+		Maps.Builder<String,Integer> builder;
+
+ 		builder = Maps.Builder.instance(String.class,Integer.class).noThrowOnDuplicate();
+		builder.put("zero",0);
+		try
+		{
+			builder.put("zero",0);
+		}
+		catch(Exception expected)
+		{
+			fail("Exception thrown when duplicate put attempted with noThrowOnDuplicate set.");
+		}
+	}
 }
