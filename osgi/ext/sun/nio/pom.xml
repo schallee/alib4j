@@ -5,22 +5,19 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>parent</artifactId>
-		<groupId>net.darkmist.alib</groupId>
+		<artifactId>pom</artifactId>
+		<groupId>net.darkmist.alib.osgi.ext.sun</groupId>
 		<version>1.0.7-SNAPSHOT</version>
 	</parent>
-	<artifactId>parent</artifactId>
-	<groupId>net.darkmist.alib.osgi</groupId>
+	<artifactId>pom</artifactId>
+	<groupId>net.darkmist.alib.osgi.ext.sun.nio</groupId>
 	<packaging>pom</packaging>
 	<properties>
-		<shortGroupName>alib.osgi</shortGroupName>
+		<shortGroupName>alib.osgi.ext.sun.nio</shortGroupName>
 	</properties>
 	<name>${shortGroupName}</name>
 	<modules>
-		<module>core</module>
-		<module>ext</module>
-		<module>metatype</module>
-		<module>slf4j_log_listener</module>
+		<module>ch</module>
 	</modules>
-	<description>OSGI utils library</description>
+	<description>Framework extension fragments exposing classs and subpackages of sun.nio.</description>
 </project>

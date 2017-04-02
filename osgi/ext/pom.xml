@@ -6,21 +6,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>parent</artifactId>
-		<groupId>net.darkmist.alib</groupId>
+		<groupId>net.darkmist.alib.osgi</groupId>
 		<version>1.0.7-SNAPSHOT</version>
 	</parent>
-	<artifactId>parent</artifactId>
-	<groupId>net.darkmist.alib.osgi</groupId>
+	<artifactId>pom</artifactId>
+	<groupId>net.darkmist.alib.osgi.ext</groupId>
 	<packaging>pom</packaging>
 	<properties>
-		<shortGroupName>alib.osgi</shortGroupName>
+		<shortGroupName>alib.osgi.ext</shortGroupName>
+		<osgiExtBaseName>alib.osgi.ext</osgiExtBaseName>
 	</properties>
 	<name>${shortGroupName}</name>
 	<modules>
-		<module>core</module>
-		<module>ext</module>
-		<module>metatype</module>
-		<module>slf4j_log_listener</module>
+		<module>sun</module>
+		<!--<module>com</module>-->
 	</modules>
-	<description>OSGI utils library</description>
+	<description>Framework extension fragments.</description>
 </project>

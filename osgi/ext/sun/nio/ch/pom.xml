@@ -1,0 +1,51 @@
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>pom</artifactId>
+		<groupId>net.darkmist.alib.osgi.ext.sun.nio</groupId>
+		<version>1.0.7-SNAPSHOT</version>
+	</parent>
+	<artifactId>sun.nio.ch</artifactId>
+	<packaging>jar</packaging>
+	<name>${osgiExtBaseName}.${project.artifactId}</name>
+	<description>Framework extension fragments exposing classs in the package sun.nio.ch.</description>
+	<build>
+		<finalName>${shortGroupName}-${project.artifactId}-${project.version}</finalName>
+		<!-- based on example from http://blog.meschberger.ch/2008/10/osgi-framework-extension-as-maven.html -->
+		<plugins>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<forceCreation>true</forceCreation>
+        				<archive>
+						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+						<manifestEntries>
+							<Export-Package>sun.nio.ch</Export-Package>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<instructions>
+						<Fragment-Host>system.bundle; extension=frameork</Fragment-Host>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
