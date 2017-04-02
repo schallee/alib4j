@@ -24,14 +24,14 @@ public class FinalProxy<T> extends NonReflectiveProxyBase<T>
 		return target;
 	}
 
-	public static class AccessibleFinalProxy<T> extends FinalProxy<T> implements AccessibleProxy<T>
+	public static class Accessible<T> extends FinalProxy<T> implements AccessibleProxy<T>
 	{
-		public AccessibleFinalProxy(T target)
+		public Accessible(T target)
 		{
 			super(target);
 		}
 	
-		public AccessibleFinalProxy(T target, Set<ProxyFlags> flags)
+		public Accessible(T target, Set<ProxyFlags> flags)
 		{
 			super(target, flags);
 		}

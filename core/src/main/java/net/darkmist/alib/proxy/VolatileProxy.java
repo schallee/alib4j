@@ -30,14 +30,14 @@ public class VolatileProxy<T> extends NonReflectiveProxyBase<T> implements Retar
 		this.target = ProxyFlags.validate(proxyFlags, target);
 	}
 
-	public static class AccessibleVolatileProxy<T> extends VolatileProxy<T> implements AccessibleProxy<T>
+	public static class Accessible<T> extends VolatileProxy<T> implements AccessibleProxy<T>
 	{
-		public AccessibleVolatileProxy(T target)
+		public Accessible(T target)
 		{
 			super(target);
 		}
 	
-		public AccessibleVolatileProxy(T target, Set<ProxyFlags> flags)
+		public Accessible(T target, Set<ProxyFlags> flags)
 		{
 			super(target, flags);
 		}

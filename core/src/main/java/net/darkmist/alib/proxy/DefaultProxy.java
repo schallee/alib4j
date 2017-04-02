@@ -32,14 +32,14 @@ public class DefaultProxy<T> extends NonReflectiveProxyBase<T>
 		this.target = ProxyFlags.validate(proxyFlags, target);
 	}
 
-	public static class AccessibleDefaultProxy<T> extends DefaultProxy<T> implements AccessibleProxy<T>
+	public static class Accessible<T> extends DefaultProxy<T> implements AccessibleProxy<T>
 	{
-		public AccessibleDefaultProxy(T target)
+		public Accessible(T target)
 		{
 			super(target);
 		}
 	
-		public AccessibleDefaultProxy(T target, Set<ProxyFlags> flags)
+		public Accessible(T target, Set<ProxyFlags> flags)
 		{
 			super(target, flags);
 		}
@@ -51,14 +51,14 @@ public class DefaultProxy<T> extends NonReflectiveProxyBase<T>
 		}
 	}
 
-	public static class RetargetableDefaultProxy<T> extends DefaultProxy<T> implements RetargetableProxy<T>
+	public static class Retargetable<T> extends DefaultProxy<T> implements RetargetableProxy<T>
 	{
-		public RetargetableDefaultProxy(T target)
+		public Retargetable(T target)
 		{
 			super(target);
 		}
 	
-		public RetargetableDefaultProxy(T target, Set<ProxyFlags> flags)
+		public Retargetable(T target, Set<ProxyFlags> flags)
 		{
 			super(target,flags);
 		}
@@ -70,14 +70,14 @@ public class DefaultProxy<T> extends NonReflectiveProxyBase<T>
 		}
 	}
 
-	public static class AccessibleRetargetableDefaultProxy<T> extends DefaultProxy<T> implements AccessibleProxy<T>, RetargetableProxy<T>
+	public static class AccessibleRetargetable<T> extends DefaultProxy<T> implements AccessibleProxy<T>, RetargetableProxy<T>
 	{
-		public AccessibleRetargetableDefaultProxy(T target)
+		public AccessibleRetargetable(T target)
 		{
 			super(target);
 		}
 	
-		public AccessibleRetargetableDefaultProxy(T target, Set<ProxyFlags> flags)
+		public AccessibleRetargetable(T target, Set<ProxyFlags> flags)
 		{
 			super(target, flags);
 		}

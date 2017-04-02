@@ -9,4 +9,12 @@ public interface RetargetableProxy<T>
 	 * @throws NullPointerException is target is null and is not allowed to be.
 	 */
 	void setProxyTarget(T target);
+
+	public interface NonNull<T> extends RetargetableProxy<T>, NonNullProxy<T>
+	{
+	}
+
+	public interface Clearable<T> extends RetargetableProxy<T>, ClearableProxy<T>
+	{
+	}
 }
