@@ -84,14 +84,23 @@ public final class Maps
 		@Override
 		public abstract V remove(Object key);
 
-		// Method of computation not specified in java docs so we hope that the dictionary base class will do something useful
-		// public int hashCode()
+		/**
+		 * Hash code of dictionary. The method of computation of {@link Dictionary#hashCode()} is not specified in java docs. We don't know the implementation of the super class so we'll just follow the docs for {@link Map#hashCode()}.
+		 */
+		@Override
+		public int hashCode()
+		{
+			if(map==null)
+				return 0;
+			return map.hashCode();
+		}
 		// public String toString()
 
 		@Override
+		@SuppressWarnings("PMD.CompareObjectsWithEquals")	// We do after the direct check. It simplifies null checks.
 		public boolean equals(Object o)
 		{
-			Dictionary<?,?> other;
+			Dictionary<?,?> that;
 
 			if(this==o)
 				return true;
@@ -99,17 +108,23 @@ public final class Maps
 				return false;
 			if(!(o instanceof Dictionary))
 				return false;
-			other = (Dictionary<?,?>)o;
+			that = (Dictionary<?,?>)o;
 
 			for(Map.Entry<K,V> entry : map.entrySet())
 			{
-				if((o=other.get(entry.getKey()))==null)
+				K key = entry.getKey();
+				V thisVal = entry.getValue();
+				Object thatVal = that.get(key);
+
+				if(thisVal == thatVal)
+					continue;
+				if(thisVal==null||thatVal==null)
 					return false;
-				if(!o.equals(entry.getValue()))
+				if(!thisVal.equals(thatVal))
 					return false;
 			}
 
-			for(Enumeration<?> e=other.keys(); e.hasMoreElements();)
+			for(Enumeration<?> e=that.keys(); e.hasMoreElements();)
 				if(!map.containsKey(e.nextElement()))
 					return false;
 			return true;

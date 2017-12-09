@@ -68,6 +68,7 @@ public abstract class AbstractMemCachedStaticSet<T> extends MemCachedRef<Set<T>>
 	}
 
 	@Override
+	@SuppressWarnings("PMD.UseVarargs")	// part of interface
 	public <U> U[] toArray(U[] a)
 	{
 		return get().toArray(a);

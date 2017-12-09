@@ -18,16 +18,32 @@
 
 package net.darkmist.alib.collection;
 
+import java.util.Enumeration;
 import java.util.Iterator;
 
 /**
  * @deprecated Use {@link Iterators#asEnumeration(Iterator)} instead.
  */
 @Deprecated
-public final class IteratorEnumeration<E> extends Iterators.IteratorEnumeration<E>
+@SuppressWarnings("PMD.ReplaceEnumerationWithIterator")	// This is an adaptor.
+public final class IteratorEnumeration<E> implements Enumeration<E>
 {
-	public IteratorEnumeration(Iterator<? extends E> i)
+	private final Iterator<? extends E> i;
+
+	IteratorEnumeration(Iterator<? extends E> i)
 	{
-		super(i);
+		this.i = i;
+	}
+
+	@Override
+	public boolean hasMoreElements()
+	{
+		return i.hasNext();
+	}
+
+	@Override
+	public E nextElement()
+	{
+		return i.next();
 	}
 }

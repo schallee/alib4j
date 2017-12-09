@@ -34,7 +34,8 @@ import net.darkmist.alib.reflect.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Beans
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
+final public class Beans
 {
 	private static final Class<Beans> CLASS = Beans.class;
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
@@ -416,7 +417,8 @@ public class Beans
 			propCls = Reflections.wrapperIfPrimitive(propCls);
 			if(value==null)
 				valCls = propCls;
-			valCls = value.getClass();
+			else
+				valCls = value.getClass();
 			if(!propCls.isAssignableFrom(valCls))
 			{
 				if(String.class.equals(valCls))

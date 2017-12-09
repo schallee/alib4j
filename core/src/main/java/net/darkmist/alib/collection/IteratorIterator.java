@@ -20,6 +20,7 @@ package net.darkmist.alib.collection;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Deque;
 import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public final class IteratorIterator<T> extends NonRemovingIterator<T>
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
-	private LinkedList<Iterator<T>> iterators = new LinkedList<Iterator<T>>();
+	private final Deque<Iterator<T>> iterators = new LinkedList<Iterator<T>>();
 	private Iterator<T> iterator = null;
 
 	protected Iterator<T> nextIterator()

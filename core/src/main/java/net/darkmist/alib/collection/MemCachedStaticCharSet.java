@@ -26,7 +26,7 @@ public class MemCachedStaticCharSet extends AbstractMemCachedStaticSet<Character
 {
 	protected final char[] array;
 
-	public MemCachedStaticCharSet(char[] array)
+	public MemCachedStaticCharSet(char...array)
 	{
 		this.array = array;
 	}

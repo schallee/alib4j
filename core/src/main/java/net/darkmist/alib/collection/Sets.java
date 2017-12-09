@@ -32,6 +32,11 @@ public final class Sets
 	{
 	}
 
+	private static boolean isEmpty(Collection<?> c)
+	{
+		return c==null||c.isEmpty();
+	}
+
 	/**
 	 * Create a new set.
 	 * This allow's the default Set implementation to be swapped
@@ -52,7 +57,7 @@ public final class Sets
 	 */
 	public static <T> Set<T> dup(Collection<T> collection)
 	{
-		if(collection==null || collection.size()==0)
+		if(isEmpty(collection))
 			return new HashSet<T>();
 		return new HashSet<T>(collection);
 	}
@@ -105,7 +110,7 @@ public final class Sets
 
 	public static <T> Set<T> asUnmodifiable(Set<T> contents)
 	{
-		if(contents == null || contents.size()==0)
+		if(isEmpty(contents))
 			return Collections.emptySet();
 		if(contents.size() == 1)
 			return Collections.singleton(contents.iterator().next());
@@ -114,7 +119,7 @@ public final class Sets
 	
 	public static <T> Set<T> unmodifiableCopy(Collection<T> contents)
 	{
-		if(contents == null || contents.size()==0)
+		if(isEmpty(contents))
 			return Collections.emptySet();
 		if(contents.size() == 1)
 			return Collections.singleton(contents.iterator().next());
@@ -128,7 +133,7 @@ public final class Sets
 	 */
 	public static <T> Set<T> newUnmodifiableSet(Collection<T> contents)
 	{
-		if(contents == null || contents.size()==0)
+		if(isEmpty(contents))
 			return Collections.emptySet();
 		if(contents.size() == 1)
 			return Collections.singleton(contents.iterator().next());

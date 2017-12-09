@@ -22,6 +22,7 @@ package net.darkmist.alib.collection;
  * @deprecated Use {@link Collections} instead
  */
 @Deprecated
+@SuppressWarnings("PMD.MissingStaticMethodInNonInstantiatableClass")
 public final class CollectionUtil extends Collections
 {
 	private CollectionUtil()

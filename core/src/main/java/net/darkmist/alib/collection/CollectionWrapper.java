@@ -54,6 +54,7 @@ public class CollectionWrapper<T,I extends Collection<T>> extends IterableWrappe
 	}
 
 	@Override
+	@SuppressWarnings("PMD.UseVarargs")	// part of interface
 	public <T> T[] toArray(T[] array)
 	{
 		return target.toArray(array);
@@ -156,8 +157,6 @@ public class CollectionWrapper<T,I extends Collection<T>> extends IterableWrappe
 		{
 			Set<?> s = Sets.asSet(c);
 			boolean ret = false;
-
-			c=null;
 
 			for(Iterator<T> i = iterator(); i.hasNext();)
 			{

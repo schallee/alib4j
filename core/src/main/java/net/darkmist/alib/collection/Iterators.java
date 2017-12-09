@@ -28,6 +28,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressWarnings("PMD.UseUtilityClass")	// yes but we're deprecating IteratorUtil at the same time.
 public class Iterators
 {
 	private static final Class<Iterators> CLASS = Iterators.class;
@@ -37,8 +38,9 @@ public class Iterators
 	/**
 	 * Package private so deprecated IteratorUtil can subclass...
 	 */
-	Iterators()
+	protected Iterators()
 	{
+		// for deprecated IteratorUtil
 	}
 
 	public static <T> Set<T> addToSet(Set<T> set, Iterator<T> i)
@@ -51,6 +53,7 @@ public class Iterators
 		return set;
 	}
 
+	@SuppressWarnings("PMD.LooseCoupling")	// its supposed to return LinkedHashSet!
 	public static <T> LinkedHashSet<T> toLinkedHashSet(Iterator<T> i)
 	{
 		LinkedHashSet<T> set = new LinkedHashSet<T>();
@@ -58,6 +61,7 @@ public class Iterators
 		return set;
 	}
 	
+	@SuppressWarnings("PMD.LooseCoupling")	// its supposed to return LinkedHashSet!
 	public static <T> LinkedHashSet<T> toLinkedHashSet(Iterator<T> i, int sizeGuess)
 	{
 		LinkedHashSet<T> set = new LinkedHashSet<T>(sizeGuess);
@@ -166,7 +170,7 @@ public class Iterators
 	 */
 	static class ArrayIterator<T> extends NonRemovingIterator<T>
 	{
-		private T[] array;
+		private final T[] array;
 		private int i;
 
 		/**
@@ -209,40 +213,31 @@ public class Iterators
 			return getEmptyIterator();
 		return new ArrayIterator<T>(array);
 	}
-	
-	static class IteratorEnumeration<E> implements Enumeration<E>
-	{
-		private Iterator<? extends E> i;
 
-		IteratorEnumeration(Iterator<? extends E> i)
-		{
-			this.i = i;
-		}
-
-		@Override
-		public final boolean hasMoreElements()
-		{
-			return i.hasNext();
-		}
-
-		@Override
-		public final E nextElement()
-		{
-			return i.next();
-		}
-	}
-
-	public static <T> Enumeration<T> asEnumeration(Iterator<T> i)
+	public static <T> Enumeration<T> asEnumeration(final Iterator<T> i)
 	{
 		if(i == null || !i.hasNext())
 			return Enumerations.getEmptyEnumeration();
-		return new IteratorEnumeration<T>(i);
+		return new Enumeration<T>()
+		{
+			@Override
+			public final boolean hasMoreElements()
+			{
+				return i.hasNext();
+			}
+	
+			@Override
+			public final T nextElement()
+			{
+				return i.next();
+			}
+		};
 	}
 
 	/** Iterator for a single item. Why? So items can be trivially added to a IteratorIterator. */
 	static class SingleIterator<U> extends NonRemovingIterator<U>
 	{
-		private U single;
+		private final U single;
 		private boolean done;	// so we can actually iterate a null value....
 
 		public SingleIterator(U single)
@@ -260,13 +255,10 @@ public class Iterators
 		@Override
 		public U next()
 		{
-			U ret;
-	
 			if(done)
 				throw new NoSuchElementException("Single element already iterated over");
-			ret = single;
-			single = null;
-			return ret;
+			done = true;
+			return single;
 		}
 	}
 

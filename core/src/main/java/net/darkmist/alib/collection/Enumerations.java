@@ -31,6 +31,7 @@ public final class Enumerations
 	{
 	}
 
+	@SuppressWarnings("PMD.ReplaceEnumerationWithIterator")
 	private static final class EmptyEnumeration<T> implements Enumeration<T>
 	{
 		@SuppressWarnings("rawtypes")
@@ -66,7 +67,7 @@ public final class Enumerations
 
 	private static final class EnumerationIterator<T> extends NonRemovingIterator<T>
 	{
-		private Enumeration<T> e;
+		private final Enumeration<T> e;
 
 		/**
 		 * @param e The enumeration to back the iterator with.

@@ -25,10 +25,13 @@ import net.darkmist.alib.generics.GenericFudge;
 /**
  * Static utils for {@link Collection}s.
  */
+@SuppressWarnings("PMD.UseUtilityClass")	// handling deprecated CollectionUtils
 public class Collections
 {
-	Collections()
+	// protected and not final class as the deprecated CollectionUtils inherits
+	protected Collections()
 	{
+		// support deprecated
 	}
 
 	/**
