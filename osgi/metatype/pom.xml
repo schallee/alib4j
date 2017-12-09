@@ -39,8 +39,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.compendium</artifactId>
-			<scope>compile</scope>
+			<artifactId>${osgi.service.metatype.artifactId}</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

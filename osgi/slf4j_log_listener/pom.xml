@@ -41,7 +41,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.compendium</artifactId>
+			<artifactId>${osgi.service.log.artifactId}</artifactId>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
