@@ -45,6 +45,9 @@
 		<findbugs.version>3.0.5</findbugs.version>
 		<findbugs.skip>false</findbugs.skip>
 		<findbugs.fail>false</findbugs.fail>
+
+		<enforcer.skip>false</enforcer.skip>
+		<enforcer.fail>false</enforcer.fail>
 	</properties>
 	<prerequisites>
 		<maven>3.0.4</maven>
@@ -81,6 +84,67 @@
 						<goals>
 							<goal>check</goal> 
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<skip>${enforcer.skip}</skip>
+							<rules>
+								<banDuplicatePomDependencyVersion/>
+								<dependencyConvergence/>
+								<reactorModuleConvergence>
+									<message>The reactor is not valid</message>
+								</reactorModuleConvergence>
+								<!-- This only checks the jvm running maven which is not what we want. -->
+								<!--
+								<requireJavaVersion>
+									<version>[1.6.0,1.7.0)</version>
+								</requireJavaVersion>
+								-->
+								<requireMavenVersion>
+									<version>[3.0,)</version>
+								</requireMavenVersion>
+								<requireNoRepositories/>
+								<requireReleaseDeps>
+									<onlyWhenRelease>true</onlyWhenRelease>
+								</requireReleaseDeps>
+								<requireSameVersions>
+									<dependencies>
+										<dependency>org.slf4j</dependency>
+									</dependencies>
+								</requireSameVersions>
+
+								<!-- extra rules -->
+								<banDuplicateClasses/>
+								<requirePropertyDiverges>
+									<property>project.name</property>
+								</requirePropertyDiverges>
+								<enforceBytecodeVersion>
+									<maxJdkVersion>${target.version}</maxJdkVersion>
+								</enforceBytecodeVersion>
+								<banCircularDependencies/>
+								<!-- This is USELESS! All of my sources are US-ASCII and it reports invalid encoding because it thinks some are latin1 and some are windows encoded! -->
+								<!--<requireEncoding/>-->
+
+								<!-- victims -->
+								<!--
+								<rule implementation="com.redhat.victims.VictimsRule">
+									<metadata>fatal</metadata>
+									<updates>daily</updates>
+								</rule>
+								-->
+							</rules>
+							<fail>${enforcer.fail}</fail>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -270,11 +334,6 @@
 					<version>2.4</version>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>1.4</version>
-				</plugin>
-				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-maven-plugin</artifactId>
 					<version>2.1</version>
@@ -325,6 +384,26 @@
 						</execution>
 					</executions>
 					-->
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>3.0.0-M1</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>extra-enforcer-rules</artifactId>
+							<version>1.0-beta-6</version>
+						</dependency>
+						<!--
+						<dependency>
+							<groupId>com.redhat.victims</groupId>
+							<artifactId>enforce-victims-rule</artifactId>
+							<version>1.3.4</version>
+							<type>jar</type>
+						</dependency>
+						-->
+					</dependencies>
 				</plugin>
 			</plugins>
 		</pluginManagement>
