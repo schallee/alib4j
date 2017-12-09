@@ -25,8 +25,6 @@
 		<target.major.version>1</target.major.version>
 		<target.minor.version>6</target.minor.version>
 		<target.version>${target.major.version}.${target.minor.version}</target.version>
-		<target.java.home>${jdk-16-home}</target.java.home>
-		<!--<target.java.home>${java.home}</target.java.home>-->
 		<source.version>${target.version}</source.version>
 
 		<!-- reporting stuff as there is no central management -->
@@ -62,25 +60,52 @@
 	</modules>
 	<build>
 		<defaultGoal>package</defaultGoal>
+		<plugins>
+			<plugin>	<!-- This won't get run if not in a plugins section even when in pluginManagement. -->
+					<!-- If it causes isseus (eg: target dir being created) on non compile moduels it will need to be moved to module level...-->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-toolchains-plugin</artifactId>
+			</plugin>
+		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.3</version>
+					<version>3.6.1</version>
 					<configuration>
-						<source>${source.version}</source>
-						<target>${target.version}</target>
-						<debug>false</debug>
+						<debug>true</debug>
 						<optimize>true</optimize>
 						<showWarnings>true</showWarnings>
 						<showDeprecation>true</showDeprecation>
 						<compilerArgs>
 							<arg>-Xlint</arg>
 						</compilerArgs>
+						<!--
 						<fork>true</fork>
-						<executable>${target.java.home}/bin/javac</executable>
-						<compilerVersion>${target.version}</compilerVersion>
+						-->
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-toolchains-plugin</artifactId>
+					<version>1.1</version>
+					<!--
+					-->
+					<executions>
+						<execution>
+							<goals>
+								<goal>toolchain</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<toolchains>
+							<jdk>
+								<version>${target.version}</version>
+								<!--<vendor>${target.vendor}</vendor>-->
+							</jdk>
+						</toolchains>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -206,9 +231,9 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.18.1</version>
+					<version>2.20</version>
 					<configuration>
-						<jvm>${target.java.home}/bin/java</jvm>
+						<trimStackTrace>false</trimStackTrace>
 					</configuration>
 				</plugin>
 				<plugin>
