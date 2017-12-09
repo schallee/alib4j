@@ -9,6 +9,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<shortGroupName>alib</shortGroupName>
+		<base.groupId>net.darkmist.alib</base.groupId>
 		<slf4j.version>1.7.12</slf4j.version>
 
 		<osgi.core.version>6.0.0</osgi.core.version>
@@ -33,13 +34,11 @@
 		<reporting.javadoc.conf.detectLinks>true</reporting.javadoc.conf.detectLinks>
 		<reporting.javadoc.conf.serialwarn>true</reporting.javadoc.conf.serialwarn>
 		<reporting.javadoc.conf.verbose>true</reporting.javadoc.conf.verbose>
-		<!--<reporting.pmd.version>3.5</reporting.pmd.version>-->
-		<reporting.pmd.version>2.7.1</reporting.pmd.version>
-		<reporting.pmd.linkXref>false</reporting.pmd.linkXref>
-		<reporting.pmd.sourceEncoding>${project.build.sourceEncoding}</reporting.pmd.sourceEncoding>
-		<reporting.pmd.targetJdk>${target.version}</reporting.pmd.targetJdk>
-		<reporting.versions.version>2.2</reporting.versions.version>
-		<reporting.jxr.version>2.5</reporting.jxr.version>
+		<pmd.version>3.5</pmd.version>
+		<pmd.failOnViolation>false</pmd.failOnViolation>
+		<pmd.skip>false</pmd.skip>
+		<versions.version>2.2</versions.version>
+		<jxr.version>2.5</jxr.version>
 	</properties>
 	<prerequisites>
 		<maven>3.0.4</maven>
@@ -51,10 +50,11 @@
 		<module>getpass</module>
 		<module>handler</module>
 		<module>jaxb</module>
-		<module>jpa</module>
 		<module>jms</module>
+		<module>jpa</module>
 		<module>jvm</module>
 		<module>osgi</module>
+		<module>pmd</module>
 		<module>servlet</module>
 		<module>spring</module>
 	</modules>
@@ -111,21 +111,26 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-pmd-plugin</artifactId>
-					<version>${reporting.pmd.version}</version>
+					<version>${pmd.version}</version>
 					<configuration>
-						<linkXref>${reporting.pmd.linkXref}</linkXref>
-						<sourceEncoding>${reporting.pmd.sourceEncoding}</sourceEncoding>
-						<targetJdk>${reporting.pmd.targetJdk}</targetJdk>
-						<printFailingErrors>true</printFailingErrors>
+						<skip>${pmd.skip}</skip>
+						<linkXref>true</linkXref>
+						<sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+						<targetJdk>${target.version}</targetJdk>
+						<failOnViolation>${pmd.failOnViolation}</failOnViolation>
+						<!--<printFailingErrors>true</printFailingErrors>-->
 						<verbose>true</verbose>
-						<!--
 						<rulesets>
-							<ruleset>java-basic</ruleset>
-							<ruleset>java-imports</ruleset>
-							<ruleset>java-unusedcode</ruleset>
+							<ruleset>${base.groupId}.pmd.xml</ruleset>
 						</rulesets>
-						-->
 					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>${base.groupId}</groupId>
+							<artifactId>pmd</artifactId>
+							<version>${project.version}</version>
+						</dependency>
+					</dependencies>
 					<executions>
 						<execution>
 							<phase>process-classes</phase>
@@ -287,27 +292,32 @@
 		<dependencies>
 			<!-- sub modules -->
 			<dependency>
-				<groupId>${project.groupId}</groupId>
+				<groupId>${base.groupId}</groupId>
 				<artifactId>core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>${project.groupId}.escape</groupId>
+				<groupId>${base.groupId}</groupId>
+				<artifactId>pmd</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${base.groupId}.escape</groupId>
 				<artifactId>core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>${project.groupId}.escape</groupId>
+				<groupId>${base.groupId}.escape</groupId>
 				<artifactId>jsp</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>${project.groupId}.osgi</groupId>
+				<groupId>${base.groupId}.osgi</groupId>
 				<artifactId>core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>${project.groupId}.osgi</groupId>
+				<groupId>${base.groupId}.osgi</groupId>
 				<artifactId>slf4j_log_listener</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -562,7 +572,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
-				<version>${reporting.versions.version}</version>
+				<version>${versions.version}</version>
 				<reportSets>
 					<reportSet>
 						<reports>
@@ -576,17 +586,17 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<version>${reporting.pmd.version}</version>
+				<version>${pmd.version}</version>
 				<configuration>
-					<linkXref>${reporting.pmd.linkXref}</linkXref>
-					<sourceEncoding>${reporting.pmd.sourceEncoding}</sourceEncoding>
-					<targetJdk>${reporting.pmd.targetJdk}</targetJdk>
+					<linkXref>true</linkXref>
+					<sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+					<targetJdk>${target.version}</targetJdk>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
-				<version>${reporting.jxr.version}</version>
+				<version>${jxr.version}</version>
 			</plugin>
 		</plugins>
 	</reporting>
