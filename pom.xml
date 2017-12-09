@@ -34,11 +34,17 @@
 		<reporting.javadoc.conf.detectLinks>true</reporting.javadoc.conf.detectLinks>
 		<reporting.javadoc.conf.serialwarn>true</reporting.javadoc.conf.serialwarn>
 		<reporting.javadoc.conf.verbose>true</reporting.javadoc.conf.verbose>
-		<pmd.version>3.5</pmd.version>
-		<pmd.failOnViolation>false</pmd.failOnViolation>
-		<pmd.skip>false</pmd.skip>
 		<versions.version>2.2</versions.version>
 		<jxr.version>2.5</jxr.version>
+
+		<!-- code quality checks -->
+		<pmd.version>3.5</pmd.version>
+		<pmd.fail>false</pmd.fail>
+		<pmd.skip>false</pmd.skip>
+
+		<findbugs.version>3.0.5</findbugs.version>
+		<findbugs.skip>false</findbugs.skip>
+		<findbugs.fail>false</findbugs.fail>
 	</properties>
 	<prerequisites>
 		<maven>3.0.4</maven>
@@ -65,6 +71,18 @@
 					<!-- If it causes isseus (eg: target dir being created) on non compile moduels it will need to be moved to module level...-->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-toolchains-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>check</goal> 
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -117,7 +135,7 @@
 						<linkXref>true</linkXref>
 						<sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
 						<targetJdk>${target.version}</targetJdk>
-						<failOnViolation>${pmd.failOnViolation}</failOnViolation>
+						<failOnViolation>${pmd.fail}</failOnViolation>
 						<!--<printFailingErrors>true</printFailingErrors>-->
 						<verbose>true</verbose>
 						<rulesets>
@@ -284,6 +302,29 @@
 					<artifactId>maven-bundle-plugin</artifactId>
 					<version>2.5.4</version>
 					<extensions>true</extensions>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>findbugs-maven-plugin</artifactId>
+					<version>${findbugs.version}</version>
+					<configuration>
+						<skip>${findbugs.skip}</skip>
+						<fork>false</fork>
+						<effort>Max</effort>
+						<threshold>Low</threshold>
+						<xmlOutput>true</xmlOutput>
+						<failOnError>${findbugs.fail}</failOnError>
+					</configuration>
+					<!--
+					<executions>
+						<execution>
+							<phase>process-classes</phase>
+							<goals>
+								<goal>check</goal> 
+							</goals>
+						</execution>
+					</executions>
+					-->
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -597,6 +638,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
 				<version>${jxr.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>${findbugs.version}</version>
 			</plugin>
 		</plugins>
 	</reporting>
