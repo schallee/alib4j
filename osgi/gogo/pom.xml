@@ -6,22 +6,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>parent</artifactId>
-		<groupId>net.darkmist.alib</groupId>
+		<groupId>net.darkmist.alib.osgi</groupId>
 		<version>1.0.7-SNAPSHOT</version>
 	</parent>
-	<artifactId>parent</artifactId>
-	<groupId>net.darkmist.alib.osgi</groupId>
+	<artifactId>pom</artifactId>
+	<groupId>net.darkmist.alib.osgi.gogo</groupId>
 	<packaging>pom</packaging>
 	<properties>
-		<shortGroupName>alib.osgi</shortGroupName>
+		<shortGroupName>alib.osgi.gogo</shortGroupName>
+		<osgiFixupBaseName>alib.osgi.gogo</osgiFixupBaseName>
 	</properties>
 	<name>${shortGroupName}</name>
 	<modules>
-		<module>core</module>
-		<module>ext</module>
-		<module>gogo</module>
 		<module>metatype</module>
-		<module>slf4j_log_listener</module>
 	</modules>
-	<description>OSGI utils library</description>
+	<description>Bundles implementing useful gogo shell commands.</description>
 </project>

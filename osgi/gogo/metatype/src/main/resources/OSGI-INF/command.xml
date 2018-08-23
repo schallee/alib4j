@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component
+        name="${project.groupId}.${project.artifactId}.Command"
+        xmlns="http://www.osgi.org/xmlns/scr/v1.3.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.osgi.org/xmlns/scr/v1.2.0 http://www.osgi.org/xmlns/scr/v1.0.0/scr.xsd"
+        configuration-policy="ignore"
+        >
+        <implementation class="${project.groupId}.${project.artifactId}.Command"/>
+	<property name="osgi.command.scope" value="${commandContext}"/>
+	<property name="osgi.command.function">
+		list
+		ls
+	</property>
+	<reference name="metaTypeService" interface="org.osgi.service.metatype.MetaTypeService" bind="setMetaTypeService"/>
+        <service>
+                <provide interface="java.lang.Object"/>
+        </service>
+</component>
+
