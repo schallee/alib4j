@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.io.FileUtils;
@@ -150,7 +151,7 @@ public final class Slurp
 
 	public static Callable<String> callableToString(InputStream in)
 	{
-		return new ReaderToStringCallable(new InputStreamReader(in));
+		return new ReaderToStringCallable(new InputStreamReader(in,Charset.defaultCharset()));
 	}
 
 	public static Callable<String> callableToString(Reader in)

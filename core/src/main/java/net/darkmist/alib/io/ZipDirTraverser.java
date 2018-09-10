@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 import java.util.Queue;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -75,7 +76,7 @@ public class ZipDirTraverser extends DirTraverser
 			logger.debug("name=" + name + " ext=" + ext);
 		if(ext == null || ext.length() <= 0)
 			return false;
-		return ZIP_EXTS.contains(ext.toLowerCase());
+		return ZIP_EXTS.contains(ext.toLowerCase(Locale.getDefault()));
 	}
 
 	protected void onZipInputStream(String path, InputStream in) throws IOException

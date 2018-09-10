@@ -85,7 +85,8 @@ public class NullSafe
 
 		if(o==null)
 			return ifNull;
-		if((ret = o.toString())==null)
+		ret=o.toString();
+		if(ret==null)
 			return ifNull;
 		return ret;
 	}

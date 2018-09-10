@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.Charset;
 
 public class DataIOUtil
 {
@@ -66,7 +67,7 @@ public class DataIOUtil
 
 	public static Reader asReader(DataInput din)
 	{
-		return new InputStreamReader(asInputStream(din));
+		return new InputStreamReader(asInputStream(din),Charset.defaultCharset());
 	}
 
 	private static class DataOutputAsStream extends OutputStream
@@ -107,6 +108,6 @@ public class DataIOUtil
 
 	public static Writer asWriter(DataOutput dout)
 	{
-		return new OutputStreamWriter(asOutputStream(dout));
+		return new OutputStreamWriter(asOutputStream(dout),Charset.defaultCharset());
 	}
 }
