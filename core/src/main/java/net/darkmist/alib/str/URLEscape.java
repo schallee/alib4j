@@ -19,6 +19,9 @@
 package net.darkmist.alib.str;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,52 +31,67 @@ public abstract class URLEscape
 	private static final Class<URLEscape> CLASS = URLEscape.class;
         private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
-	private static String urlByte2Str[] = new String[256];
+	private static class URLByte2StrHolder
+	{
+		static final List<String> urlByte2Str = mkUrlByte2Str();
+
+		private static List<String> mkUrlByte2Str()
+		{
+			String[] array = new String[256];
+
+			for(int ch=0;ch<256;ch++)
+			{
+				if(logger.isDebugEnabled())
+					logger.debug("ch={}", ch);
+				if(('A' <= ch && ch <= 'Z')||
+					('a' <= ch && ch <= 'z') ||
+					('0' <= ch && ch <= '9') ||
+					ch == '_' ||
+					ch == '-' ||
+					ch == '.' ||
+					ch == '~')
+				{
+					array[ch&0xff] = Character.toString((char)ch);
+					if(logger.isDebugEnabled())
+						logger.debug("ch={} didn't need escapoing array[ch]={}", ch, array[ch]);
+				}
+				else if(ch == ' ')
+				{
+					array[ch&0xff] = "+";
+					if(logger.isDebugEnabled())
+						logger.debug("ch={} space replacement array[ch]={}", ch, array[ch]);
+				}
+				else
+				{
+					array[ch&0xff] = String.format("%%%02X", ch);
+					if(logger.isDebugEnabled())
+						logger.debug("ch={} hex replacement array[ch]={}", ch, array[ch]);
+				}
+			}
+			return Collections.unmodifiableList(Arrays.asList(array));
+		}
+	}
+
+	private static class URLByte2StrNotSlashHolder
+	{
+		static final List<String> urlByte2StrNotSlash = mkUrlByte2StrNotSlash();
+
+		private static List<String> mkUrlByte2StrNotSlash()
+		{
+			String[] array = URLByte2StrHolder.urlByte2Str.toArray(new String[256]);
+
+			array['/'&0xff]="/";
+			return Collections.unmodifiableList(Arrays.asList(array));
+		}
+	}
+
 	private URLEscape()
 	{
 	}
 
 	public static final String escape(int b)
 	{
-		String ret;
-
-		while(b<0)
-			b+=256;
-		if((ret = urlByte2Str[b]) != null)
-			return ret;
-		synchronized(URLEscape.class)
-		{
-			// try it again now that we are synced
-			if((ret = urlByte2Str[b])!=null)
-				return ret;	// got changed before we synced...
-			// there has to be a better way to do this...
-			//ch = new String(new byte[]{b}, "US-ASCII").charAt(0);
-			// This seems to work... worries me though
-			char ch = (char)b;
-			logger.debug("b=" + b + "= ch=" + ch + "=");
-			if(('A' <= ch && ch <= 'Z')||
-				('a' <= ch && ch <= 'z') ||
-				('0' <= ch && ch <= '9') ||
-				ch == '_' ||
-				ch == '-' ||
-				ch == '.' ||
-				ch == '~')
-			{
-				ret = new String(Character.toString(ch));
-				logger.debug("didn't need escaping ret=" + ret + "=");
-			}
-			else if(ch == ' ')
-			{
-				ret = "+";
-				logger.debug("Space needing replacement ret=" + ret + "=");
-			}
-			else
-			{
-				ret = String.format("%%%02X", b);
-				logger.debug("Needied percent escape ret=" + ret + "=");
-			}
-			return (urlByte2Str[b] = ret);
-		}
+		return URLByte2StrHolder.urlByte2Str.get(b&0xff);
 	}
 
 	public static final String escape(byte[] in)
@@ -82,7 +100,7 @@ public abstract class URLEscape
 		for(int i=0;i<in.length;i++)
 		{
 			ret.append(escape(in[i]));
-			logger.debug("ret=" + ret + "=");
+			logger.debug("ret={}", ret);
 		}
 		return ret.toString();
 	}
@@ -106,9 +124,7 @@ public abstract class URLEscape
 
 	public static final String URLEscapeNotSlash(int b)
 	{
-		if((char)b == '/')
-			return "/";
-		return escape(b);
+		return URLByte2StrNotSlashHolder.urlByte2StrNotSlash.get(b&0xff);
 	}
 
 	public static final String URLEscapeNotSlash(byte[] in)
@@ -117,7 +133,7 @@ public abstract class URLEscape
 		for(int i=0;i<in.length;i++)
 		{
 			ret.append(URLEscapeNotSlash(in[i]));
-			logger.debug("ret=" + ret + "=");
+			logger.debug("ret={}", ret);
 		}
 		return ret.toString();
 	}
