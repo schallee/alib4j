@@ -100,7 +100,7 @@ public class DirTraverser
 			{
 				File[] files = dir.listFiles();
 				if(files != null)
-					for(File file : sort(dir.listFiles()))
+					for(File file : sort(files))
 						onRawFile(file);
 			}
 			else

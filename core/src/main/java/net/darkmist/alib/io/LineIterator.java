@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -45,7 +46,7 @@ public class LineIterator implements Iterator<String>
 
 	private void init(InputStream init_in)
 	{
-		init(new BufferedReader(new InputStreamReader(init_in)));
+		init(new BufferedReader(new InputStreamReader(init_in,Charset.defaultCharset())));
 	}
 
 	public LineIterator(InputStream in)
