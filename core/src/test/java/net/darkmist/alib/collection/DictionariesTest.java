@@ -33,6 +33,7 @@ import junit.framework.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressWarnings("unused")
 public class DictionariesTest extends TestCase
 {
 	private static final Class<DictionariesTest> CLASS = DictionariesTest.class;
@@ -101,23 +102,27 @@ public class DictionariesTest extends TestCase
 		}
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	private static <T, C> void setTestContains(Set<T> set, Collection<C> toCheck)
 	{
 		for(C item : toCheck)
 			assertTrue("Test set did not contain expected item.", set.contains(item));
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	private static <T, C> void setTestDoesNotContain(Set<T> set, Collection<C> toCheck)
 	{
 		for(C item : toCheck)
 			assertFalse("Test set contained unexpected item.", set.contains(item));
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	private static <T, C> void setTestContainsAll(Set<T> set, Collection<C> toCheck)
 	{
 		assertTrue("Test set did not contain all expected items.", set.containsAll(toCheck));
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	private static <T, C> void setTestDoesNotContainAll(Set<T> set, Collection<C> toCheck)
 	{
 		assertFalse("Test set contained unexpected item(s).", set.containsAll(toCheck));
@@ -172,6 +177,7 @@ public class DictionariesTest extends TestCase
 		assertFalse(map.containsKey(-1));
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	public void testAsUnmodifiableMapContainsValue() throws Exception
 	{
 		Dictionary<Integer,String> dict = mkTestDict();

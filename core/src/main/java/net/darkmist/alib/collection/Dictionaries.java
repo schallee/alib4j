@@ -38,7 +38,7 @@ public final class Dictionaries
 	{	// only static methods...
 	}
 
-	private static class DictionaryMapViewKeySet<K> extends AbstractSet<K>
+	private static class DictionaryMapViewKeySet<K> extends AbstractSet<K> implements Serializable
 	{	// Add methods are not supported according to Map#keySet() javadoc.
 		private static final long serialVersionUID = 1l;
 		private final Dictionary<K,?> dict;
@@ -136,7 +136,7 @@ public final class Dictionaries
 
 	}
 
-	private static class DictionaryMapViewEntry<K,V> implements Map.Entry<K,V>
+	private static class DictionaryMapViewEntry<K,V> implements Map.Entry<K,V>, Serializable
 	{
 		private static final long serialVersionUID = 1l;
 		private final Dictionary<K,V> dict;

@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 public final class IteratorIterator<T> extends NonRemovingIterator<T>
 {
+	@SuppressWarnings("rawtypes")
 	private static final Class<IteratorIterator> CLASS = IteratorIterator.class;
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
@@ -80,12 +81,14 @@ public final class IteratorIterator<T> extends NonRemovingIterator<T>
 		iterators.addLast(newIterator);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void prependIterators(Iterator<T>...newIterators)
 	{
 		for(int i=newIterators.length-1;i>=0;i--)
 			prependIterator(newIterators[i]);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void appendIterators(Iterator<T>...newIterators)
 	{
 		for(Iterator<T> i : newIterators)
@@ -101,6 +104,7 @@ public final class IteratorIterator<T> extends NonRemovingIterator<T>
 		appendIterator(newIterator);
 	}
 
+	@SafeVarargs
 	private IteratorIterator(Iterator<T>...newIterators)
 	{
 		appendIterators(newIterators);
@@ -116,6 +120,8 @@ public final class IteratorIterator<T> extends NonRemovingIterator<T>
 		return new IteratorIterator<T>(newIterator);
 	}
 
+	@SafeVarargs
+	@SuppressWarnings("varargs")
 	public static <T> IteratorIterator<T> getInstance(Iterator<T>...newIterators)
 	{
 		return new IteratorIterator<T>(newIterators);

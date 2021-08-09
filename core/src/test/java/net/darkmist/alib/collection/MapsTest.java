@@ -21,15 +21,15 @@ package net.darkmist.alib.collection;
 import java.util.Map;
 import java.util.TreeMap;
 
-import junit.framework.TestCase;
-import junit.framework.Test;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import junit.framework.TestCase;
 
 public class MapsTest extends TestCase
 {
 	private static final Class<MapsTest> CLASS = MapsTest.class;
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	private static <K,V> void assertPostBuildPutFails(Maps.Builder<K,V> builder, K key, V val)

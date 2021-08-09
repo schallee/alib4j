@@ -46,9 +46,9 @@ public class SimpleInvocationHandler<T> implements InvocationHandler
 			return true;
 		if(o == null)
 			return false;
-		if(o.getClass() != this.getClass())
+		if(!(o instanceof SimpleInvocationHandler))
 			return false;
-		other = (SimpleInvocationHandler)o;
+		other = (SimpleInvocationHandler<?>)o;
 		return NullSafe.equals(other.target, target);
 	}
 }

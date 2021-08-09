@@ -47,6 +47,7 @@ public abstract class NonReflectiveProxyBase<T> extends ProxyBase<T>
 	 * Called by base class to use target for various purposes.
 	 * @returns proxy target target
 	 */
+	@Override
 	protected abstract T getProxyTargetInternal();
 
 	/*===============OBJECT=================*/

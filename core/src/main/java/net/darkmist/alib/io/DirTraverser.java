@@ -79,7 +79,7 @@ public class DirTraverser
 			onFile(file);
 	}
 
-	private static <T> T[] sort(T...a)
+	private static File[] inplaceSort(File...a)
 	{
 		Arrays.sort(a);
 		return a;
@@ -100,7 +100,7 @@ public class DirTraverser
 			{
 				File[] files = dir.listFiles();
 				if(files != null)
-					for(File file : sort(files))
+					for(File file : inplaceSort(files))
 						onRawFile(file);
 			}
 			else

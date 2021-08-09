@@ -1,4 +1,4 @@
-package net.darkmist.net.alib.proxy;
+package net.darkmist.alib.proxy;
 
 /*
 

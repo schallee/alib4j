@@ -15,6 +15,8 @@ public final class MultiplexingProxies
 		return iface.cast(Proxy.newProxyInstance(iface.getClassLoader(), new Class<?>[]{iface}, new MultiplexingInvocationHandler<T,C>(iface, targets)));
 	}
 
+	@SafeVarargs
+	@SuppressWarnings("varargs")
 	public static <T> T getProxy(Class<T> iface, T...targets)
 	{
 		return getProxy(iface, Arrays.asList(targets));

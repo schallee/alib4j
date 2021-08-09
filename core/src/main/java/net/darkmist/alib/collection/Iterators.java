@@ -178,6 +178,8 @@ public class Iterators
 		 * @param array The array to iterate over.
 		 * @throws NullPointerException if array is null.
 		 */
+		@SafeVarargs
+		@SuppressWarnings("varargs")
 		public ArrayIterator(T...array)
 		{
 			if(array == null)
@@ -207,6 +209,8 @@ public class Iterators
 	 * @return Iterator that iterates over array. If array is null,
 	 * 	a empty iterator is returned.
 	 */
+	@SafeVarargs
+	@SuppressWarnings("varargs")
 	public static <T> Iterator<T> getArrayIterator(T...array)
 	{
 		if(array == null || array.length == 0)

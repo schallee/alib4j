@@ -33,7 +33,9 @@ public final class ArrayIterator<T> extends Iterators.ArrayIterator<T>
 	 * @param array The array to iterate over.
 	 * @throws NullPointerException if array is null.
 	 */
-	public ArrayIterator(T...array)
+	@SafeVarargs
+	@SuppressWarnings("varargs")
+	public ArrayIterator(@SuppressWarnings("unchecked") T...array)
 	{
 		super(array);
 	}

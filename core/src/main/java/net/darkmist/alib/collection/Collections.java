@@ -44,6 +44,8 @@ public class Collections
 	 * @return c
 	 * @see java.util.Collections#addAll(Collection,Object[])
 	 */
+	@SafeVarargs
+	@SuppressWarnings("varargs")
 	public static <T> Collection<? super T> addAll(Collection<? super T> c, T... elements)
 	{
 		java.util.Collections.addAll(c,elements);

@@ -140,7 +140,6 @@ public class InternalRefBasedProxy<T> implements ProxyIface<T>
 			VOLATILE(VOLATILE_INCOMPATIBLE, VOLATILE_IMPLIES),
 			WEAK(WEAK_INCOMPATIBLE, WEAK_IMPLIES);
 
-		private final boolean isFactory;
 		private final Set<Flags> incompatible;
 		private final Set<Flags> implies;
 
@@ -151,7 +150,6 @@ public class InternalRefBasedProxy<T> implements ProxyIface<T>
 			if(implies==null)
 				implies = Collections.emptySet();
 			this.implies = implies;
-			this.isFactory = isFactory;
 		}
 
 		private Flags(Set<Flags> incompatible, Set<Flags> implies)

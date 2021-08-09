@@ -18,7 +18,6 @@
 
 package net.darkmist.alib.beans;
 
-import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -27,13 +26,12 @@ import java.lang.annotation.Target;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.darkmist.alib.lang.NullSafe;
-import net.darkmist.alib.reflect.Reflections;
-
-import junit.framework.TestCase;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import junit.framework.TestCase;
+import net.darkmist.alib.lang.NullSafe;
+import net.darkmist.alib.reflect.Reflections;
 
 // FIXME: there are Char tests below that are comented out because there is not char property editors...
 // FIXME: setting/getting of non-existant properties?
@@ -522,6 +520,7 @@ public class BeansTest extends TestCase
 
 	public void testGetPropsBadTagged() throws Exception
 	{
+		@SuppressWarnings("unused")
 		String METH = Reflections.getMethodName();
 		Map<String,?> map;
 

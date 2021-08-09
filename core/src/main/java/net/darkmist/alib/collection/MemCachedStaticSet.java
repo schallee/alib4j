@@ -26,6 +26,8 @@ public class MemCachedStaticSet<T> extends AbstractMemCachedStaticSet<T>
 {
 	protected final T[] array;
 
+	@SafeVarargs
+	@SuppressWarnings("varargs")
 	public MemCachedStaticSet(T...array)
 	{
 		this.array = array;

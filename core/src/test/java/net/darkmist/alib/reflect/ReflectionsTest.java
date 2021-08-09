@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 public class ReflectionsTest extends TestCase
 {
 	private static final Class<ReflectionsTest> CLASS = ReflectionsTest.class;
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	public void testGetMethodName() throws Exception

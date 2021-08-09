@@ -79,6 +79,8 @@ public final class Sets
 	 * @param contents The contents of the set.
 	 * @return A set containing contents.
 	 */
+	@SafeVarargs
+	@SuppressWarnings("varargs")
 	public static <T> Set<T> newSet(T...contents)
 	{
 		Set<T> set;
@@ -95,6 +97,8 @@ public final class Sets
 	 * @param contents The contents of the set.
 	 * @return A unmodifiable set containing contents.
 	 */
+	@SafeVarargs
+	@SuppressWarnings("varargs")
 	public static <T> Set<T> newUnmodifiableSet(T...contents)
 	{
 		Set<T> set;

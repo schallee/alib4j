@@ -55,7 +55,7 @@ public class CollectionWrapper<T,I extends Collection<T>> extends IterableWrappe
 
 	@Override
 	@SuppressWarnings("PMD.UseVarargs")	// part of interface
-	public <T> T[] toArray(T[] array)
+	public <S> S[] toArray(S[] array)
 	{
 		return target.toArray(array);
 	}
