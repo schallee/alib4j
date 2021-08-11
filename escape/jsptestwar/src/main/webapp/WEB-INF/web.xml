@@ -28,6 +28,6 @@
 	<display-name>Escape Taglib Test App</display-name>
 	
 	<welcome-file-list>
-		<welcome-file>/index.jspx</welcome-file>
+		<welcome-file>index.jspx</welcome-file>
 	</welcome-file-list>
 </web-app>
