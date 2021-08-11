@@ -37,7 +37,7 @@ public class JPAUtil
 
 	public static <T> T getSingleResultOrNull(Class<T> cls, Query query)
 	{
-		List l;
+		List<?> l;
 
 		logger.debug("Calling getRequestList()");
 		l = query.getResultList();
