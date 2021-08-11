@@ -17,6 +17,7 @@ interface MetaTypeEntryHandler<T>
 
 	final static class CollectionMetaTypeEntryHandler<T extends Collection<MetaTypeEntry>> implements MetaTypeEntryHandler<T>
 	{
+		@SuppressWarnings("rawtypes")
 		private static final Class<CollectionMetaTypeEntryHandler> CLASS = CollectionMetaTypeEntryHandler.class;
 		private static final Logger logger = LoggerFactory.getLogger(CLASS);
 		private final T collection;

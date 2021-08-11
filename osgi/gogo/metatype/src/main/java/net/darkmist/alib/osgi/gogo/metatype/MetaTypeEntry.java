@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 final class MetaTypeEntry
 {
 	private static final Class<MetaTypeEntry> CLASS = MetaTypeEntry.class;
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 	private final String pid;
 	private final boolean factory;
@@ -110,7 +111,7 @@ final class MetaTypeEntry
 		return "" + pid + ( factory ? " factory for \"" : " \"") + name + "\" with id " + id + '.';
 	}
 
-	private static Comparator<MetaTypeEntry> PID_NAME_COMPARATOR;
+	//private static Comparator<MetaTypeEntry> PID_NAME_COMPARATOR;
 
 	private enum PidNameComparator implements Comparator<MetaTypeEntry>
 	{
