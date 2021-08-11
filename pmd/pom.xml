@@ -11,7 +11,9 @@
 	</parent>
 	<packaging>jar</packaging>
 	<name>${shortGroupName}.${project.artifactId}</name>
-	<properties/>
+	<properties>
+		<base.dir>${project.basedir}/..</base.dir>
+	</properties>
 	<build/>
 	<dependencies/>
 </project>

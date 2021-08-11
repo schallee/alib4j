@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.darkmist.alib</groupId>
 	<version>1.0.7-SNAPSHOT</version>
@@ -10,8 +14,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<shortGroupName>alib</shortGroupName>
 		<base.groupId>net.darkmist.alib</base.groupId>
-		<slf4j.version>1.7.12</slf4j.version>
+		<base.dir>${project.basedir}</base.dir>
+		<slow.skip>false</slow.skip>
 
+		<slf4j.version>1.7.12</slf4j.version>
 		<osgi.core.version>6.0.0</osgi.core.version>
 		<osgi.service.log.artifactId>org.osgi.service.log</osgi.service.log.artifactId>
 		<osgi.service.log.version>1.3.0</osgi.service.log.version>
@@ -30,24 +36,28 @@
 		<source.version>${target.version}</source.version>
 
 		<!-- reporting stuff as there is no central management -->
-		<reporting.javadoc.version>3.0.0</reporting.javadoc.version>
+		<reporting.javadoc.version>3.3.0</reporting.javadoc.version>
 		<reporting.javadoc.conf.detectJavaApiLink>true</reporting.javadoc.conf.detectJavaApiLink>
 		<reporting.javadoc.conf.detectLinks>true</reporting.javadoc.conf.detectLinks>
 		<reporting.javadoc.conf.serialwarn>true</reporting.javadoc.conf.serialwarn>
 		<reporting.javadoc.conf.verbose>true</reporting.javadoc.conf.verbose>
-		<versions.version>2.5</versions.version>
-		<jxr.version>2.5</jxr.version>
+		<versions.version>2.8.1</versions.version>
+		<jxr.version>3.1.1</jxr.version>
 
 		<!-- code quality checks -->
-		<pmd.version>3.10.0</pmd.version>
+		<pmd.version>3.14.0</pmd.version>
 		<pmd.fail>false</pmd.fail>
-		<pmd.skip>false</pmd.skip>
+		<!--<pmd.skip>${slow.skip}</pmd.skip>-->
+		<pmd.skip>true</pmd.skip>
 
-		<findbugs.version>3.0.5</findbugs.version>
-		<findbugs.skip>false</findbugs.skip>
-		<findbugs.fail>false</findbugs.fail>
+		<!--<spotbugs.version>3.1.10</spotbugs.version>-->
+		<spotbugs.version>4.3.0</spotbugs.version>
+		<!--<spotbugs.skip>${slow.skip}</spotbugs.skip>-->
+		<spotbugs.skip>true</spotbugs.skip>
+		<spotbugs.fail>false</spotbugs.fail>
 
-		<enforcer.skip>false</enforcer.skip>
+		<!--<enforcer.skip>${slow.skip}</enforcer.skip>-->
+		<enforcer.skip>true</enforcer.skip>
 		<enforcer.fail>false</enforcer.fail>
 	</properties>
 	<prerequisites>
@@ -76,9 +86,10 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-toolchains-plugin</artifactId>
 			</plugin>
+
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
 				<executions>
 					<execution>
 						<phase>process-classes</phase>
@@ -87,9 +98,9 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+            		</plugin>
+
 			<!--
-			-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
@@ -104,7 +115,7 @@
 							<rules>
 								<banDuplicatePomDependencyVersion/>
 								<dependencyConvergence/>
-								<!--
+								--><!--
 								<reactorModuleConvergence>
 									<message>The reactor is not valid</message>
 								</reactorModuleConvergence>
@@ -114,7 +125,7 @@
 								<requireJavaVersion>
 									<version>[1.6.0,1.7.0)</version>
 								</requireJavaVersion>
-								-->
+								--><!--
 								<requireMavenVersion>
 									<version>[3.0,)</version>
 								</requireMavenVersion>
@@ -128,7 +139,7 @@
 									</dependencies>
 								</requireSameVersions>
 
-								<!-- extra rules -->
+								--><!-- extra rules --><!--
 								<banDuplicateClasses/>
 								<requirePropertyDiverges>
 									<property>project.name</property>
@@ -137,7 +148,7 @@
 									<maxJdkVersion>${target.version}</maxJdkVersion>
 								</enforceBytecodeVersion>
 								<banCircularDependencies/>
-								<!-- This is USELESS! All of my sources are US-ASCII and it reports invalid encoding because it thinks some are latin1 and some are windows encoded! -->
+								--><!-- This is USELESS! All of my sources are US-ASCII and it reports invalid encoding because it thinks some are latin1 and some are windows encoded! -->
 								<!--<requireEncoding/>-->
 
 								<!-- victims -->
@@ -146,20 +157,21 @@
 									<metadata>fatal</metadata>
 									<updates>daily</updates>
 								</rule>
-								-->
+								--><!--
 							</rules>
 							<fail>${enforcer.fail}</fail>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+			-->
 		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.7.0</version>
+					<version>3.8.1</version>
 					<configuration>
 						<debug>true</debug>
 						<optimize>true</optimize>
@@ -178,7 +190,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-toolchains-plugin</artifactId>
-					<version>1.1</version>
+					<version>3.0.0</version>
 					<executions>
 						<execution>
 							<goals>
@@ -232,7 +244,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>3.6</version>
+					<version>3.9.1</version>
 					<dependencies>
 						<dependency><!-- add support for ssh/scp -->
 							<groupId>org.apache.maven.wagon</groupId>
@@ -244,7 +256,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>2.5.3</version>
+					<version>3.0.0-M4</version>
 					<configuration>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
 						<tagNameFormat>@{project.version}</tagNameFormat>
@@ -262,22 +274,22 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.3.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.1.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>3.0.2</version>
+					<version>3.2.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.8.2</version>
+					<version>3.0.0-M1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -287,12 +299,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.0.2</version>
+					<version>3.2.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-war-plugin</artifactId>
-					<version>3.2.0</version>
+					<version>3.3.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -308,12 +320,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
-					<version>2.9</version>
+					<version>3.1.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.0.2</version>
+					<version>3.2.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -323,7 +335,8 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.20.1</version>
+					<!--<version>2.20.1</version>-->
+					<version>3.0.0-M5</version>
 					<configuration>
 						<trimStackTrace>false</trimStackTrace>
 					</configuration>
@@ -331,7 +344,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
-					<version>1.8</version>
+					<version>3.0.0</version>
 				</plugin>
 				<plugin>
 					<groupId>net.sourceforge.maven-taglib</groupId>
@@ -364,36 +377,39 @@
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.5.4</version>
+					<version>4.0.0</version>
 					<extensions>true</extensions>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>findbugs-maven-plugin</artifactId>
-					<version>${findbugs.version}</version>
+					<groupId>com.github.spotbugs</groupId>
+					<artifactId>spotbugs-maven-plugin</artifactId>
+					<version>${spotbugs.version}</version>
 					<configuration>
-						<skip>${findbugs.skip}</skip>
-						<fork>false</fork>
+						<skip>${spotbugs.skip}</skip>
+						<fork>true</fork>
 						<effort>Max</effort>
 						<threshold>Low</threshold>
-						<xmlOutput>true</xmlOutput>
-						<failOnError>${findbugs.fail}</failOnError>
+						<failOnError>${spotbugs.fail}</failOnError>
+						<excludeFilterFile>${base.dir}/spotbugs.xml</excludeFilterFile>
+						<plugins>
+							<!-- This may have issues with lambda functional interfaces -->
+							<plugin>
+								<groupId>com.h3xstream.findsecbugs</groupId>
+								<artifactId>findsecbugs-plugin</artifactId>
+								<version>1.8.0</version>
+							</plugin>
+							<plugin>
+								<groupId>com.mebigfatguy.fb-contrib</groupId>
+								<artifactId>fb-contrib</artifactId>
+								<version>7.4.3.sb</version>
+							</plugin>
+						</plugins>
 					</configuration>
-					<!--
-					<executions>
-						<execution>
-							<phase>process-classes</phase>
-							<goals>
-								<goal>check</goal> 
-							</goals>
-						</execution>
-					</executions>
-					-->
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>3.0.0-M1</version>
+					<version>3.0.0</version>
 					<dependencies>
 						<dependency>
 							<groupId>org.codehaus.mojo</groupId>
@@ -409,6 +425,56 @@
 						</dependency>
 						-->
 					</dependencies>
+				</plugin>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											findbugs-maven-plugin
+										</artifactId>
+										<versionRange>
+											[3.0.5,)
+										</versionRange>
+										<goals>
+											<goal>check</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.felix
+										</groupId>
+										<artifactId>
+											maven-bundle-plugin
+										</artifactId>
+										<versionRange>
+											[2.5.4,)
+										</versionRange>
+										<goals>
+											<goal>manifest</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -724,10 +790,10 @@
 				<version>${jxr.version}</version>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>${findbugs.version}</version>
-			</plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>${spotbugs.version}</version>
+            		</plugin>
 		</plugins>
 	</reporting>
 </project>

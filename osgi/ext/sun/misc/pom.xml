@@ -12,6 +12,9 @@
 	<packaging>jar</packaging>
 	<name>${osgiExtBaseName}.${project.artifactId}</name>
 	<description>Framework extension fragments exposing classs in the package sun.misc.</description>
+	<properties>
+		<base.dir>${project.basedir}/../../../..</base.dir>
+	</properties>
 	<build>
 		<finalName>${shortGroupName}-${project.artifactId}-${project.version}</finalName>
 		<!-- based on example from http://blog.meschberger.ch/2008/10/osgi-framework-extension-as-maven.html -->

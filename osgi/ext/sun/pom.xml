@@ -13,6 +13,7 @@
 	<groupId>net.darkmist.alib.osgi.ext.sun</groupId>
 	<packaging>pom</packaging>
 	<properties>
+		<base.dir>${project.basedir}/../../..</base.dir>
 		<shortGroupName>alib.osgi.ext.sun</shortGroupName>
 		<osgiExtGroupName>sun</osgiExtGroupName>
 	</properties>

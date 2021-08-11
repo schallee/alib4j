@@ -9,6 +9,9 @@
 	<artifactId>servlet</artifactId>
 	<packaging>bundle</packaging>
 	<name>${shortGroupName}.${project.artifactId}</name>
+	<properties>
+		<base.dir>${project.basedir}/..</base.dir>
+	</properties>
 	<build>
 		<finalName>${shortGroupName}-${project.artifactId}-${project.version}</finalName>
 		<plugins>
