@@ -76,6 +76,12 @@ public class BeansTest extends TestCase
 		}
 
 		@Override
+		public int hashCode()
+		{
+			return NullSafe.hashCode(getStr());
+		}
+
+		@Override
 		public String toString()
 		{
 			return str;
