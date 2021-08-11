@@ -160,7 +160,7 @@ public class LogBridge implements BundleActivator, LogListener, ServiceListener
 	@Override	// LogListener
 	public synchronized void logged(LogEntry entry)
 	{
-		ServiceReference servRef = entry.getServiceReference();
+		ServiceReference<?> servRef = entry.getServiceReference();
 		String loggerName = getLoggerName(entry.getBundle());
 		Logger eventLogger = LoggerFactory.getLogger(loggerName);
 		Throwable exception = entry.getException();
