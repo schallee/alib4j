@@ -18,6 +18,11 @@
 
 package net.darkmist.alib.jvm;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+
 import junit.framework.TestCase;
 
 import org.slf4j.Logger;
@@ -35,11 +40,53 @@ public class JVMLauncherTest extends TestCase
 		}
 	}
 
+	private static class PipeReader implements Runnable
+	{
+		private final String name;
+		private final BufferedReader in;
+
+		PipeReader(String name, InputStream is)
+		{
+			this.name = name;
+			in = new BufferedReader(new InputStreamReader(is));
+		}
+
+		@Override
+		public void run()
+		{
+			String line;
+
+			try
+			{
+				while((line = in.readLine())!=null)
+					logger.debug("[{}] {}", name, line);
+			}
+			catch(IOException ioe)
+			{
+				logger.debug("[{}] Error reading line", name, ioe);
+			}
+		}
+	}
+
 	public void testLaunch() throws Exception
 	{
 		Process proc;
 		
 		proc = JVMLauncher.getProcessBuilder(Main.class).start();
+		if(logger.isDebugEnabled())
+		{
+			Thread stdout = new Thread(new PipeReader("stdout", proc.getInputStream()));
+			Thread stderr = new Thread(new PipeReader("stderr", proc.getErrorStream()));
+
+			stdout.setDaemon(true);
+			stderr.setDaemon(true);
+
+			stdout.setName("stdout");
+			stderr.setName("stderr");
+
+			stdout.start();
+			stderr.start();
+		}
 		proc.waitFor();
 		assertEquals(0, proc.exitValue());
 	}
