@@ -20,12 +20,17 @@ package net.darkmist.alib.jvm;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,15 +39,17 @@ public class JVMLauncher
 {
 	private static final Class<JVMLauncher> CLASS = JVMLauncher.class;
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
+	private static final boolean HAVE_EXTENSION_CLASS_LOADER = System.getProperty("java.ext.dirs")!=null;
+	private static final String PATH_SEPARATOR = System.getProperty("path.separator", ":");
 	private static File JAVA;
 
-	private static List<String> getPossibleExecutableExtensions()
+	private static Set<String> getPossibleExecutableExtensions()
 	{
 		String pathext;
 			
 		if((pathext = System.getenv("PATHEXT"))== null)
-			return Collections.singletonList("");
-		return Arrays.asList(pathext.split(";"));
+			return Collections.singleton("");
+		return new LinkedHashSet(Arrays.asList(pathext.split(";")));
 	}
 
 	private static final File getJavaHome() throws LauncherException
@@ -94,32 +101,81 @@ public class JVMLauncher
 		return getJavaFile().getPath();
 	}
 
-	private static List<URL> addClassPathURLsFor(List<URL> list, ClassLoader clsLoader)
+	private static Set<URL> addClassPathURLsFor(Set<URL> set, ClassLoader clsLoader)
 	{
 		ClassLoader parent;
 
-		if((parent = clsLoader.getParent())!=null)
-			addClassPathURLsFor(list, parent);
+		if((parent = clsLoader.getParent())==null)
+		{
+			if(HAVE_EXTENSION_CLASS_LOADER)	// java <= 8
+				return set;	// we are the extension class loader
+		}
+		else
+			addClassPathURLsFor(set, parent);
 		if(clsLoader instanceof URLClassLoader)
-			list.addAll(Arrays.asList(((URLClassLoader)clsLoader).getURLs()));
-		return list;
+		{
+			URL[] urls = ((URLClassLoader)clsLoader).getURLs();
+			if(logger.isDebugEnabled())
+			{
+				logger.debug("clsLoader {} has urls:", clsLoader);
+				for(int i=0;i<urls.length;i++)
+					logger.debug("\t[{}] {}", i, urls[i]);
+			}
+			set.addAll(Arrays.asList(urls));
+		}
+		else
+			logger.warn("ClassLoader {} is not URLClassLoader but {}", clsLoader, clsLoader.getClass());
+		return set;
 	}
 
-	private static List<URL> getClassPathURLsFor(Class<?> cls)
+	private static Set<URL> getClassPathURLsFor(Class<?> cls)
 	{
-		List<URL> urls = addClassPathURLsFor(new ArrayList<URL>(), cls.getClassLoader());
+		Set<URL> urls = addClassPathURLsFor(new LinkedHashSet<URL>(), cls.getClassLoader());
 		logger.debug("Computed urls for {}: {}", cls, urls);
 		return urls;
 	}
 
-	private static String mkPath(List<URL> urls)
+	private static String mkPath(Collection<URL> urls)
 	{
-		String delim = System.getProperty("path.separator", ":");
 		StringBuilder sb = new StringBuilder();
 
 		for(URL url : urls)
-			sb.append(url.toString()).append(delim);
-		return sb.substring(0, sb.length() - delim.length());
+		{
+			if("file".equalsIgnoreCase(url.getProtocol()))
+			{	// For some idiotic reason winderz can't find it if this is a url...
+				File file;
+				String path;
+
+				try
+				{
+					file = new File(url.toURI());
+				}
+				catch(URISyntaxException use)
+				{
+					logger.warn("Unable to convert {} to URI. Ignoring.", url, use);
+					continue;
+				}
+				if(!file.exists())
+				{
+					logger.debug("File {} does not exist. Ignoring.", file);
+					continue;
+				}
+				try
+				{
+					path = file.getCanonicalPath();
+				}
+				catch(IOException ioe)
+				{
+					logger.debug("File {} could not be cannonicalized. Using absolute instead.", file, ioe);
+					path = file.getAbsolutePath();
+				}
+				sb.append(path);
+			}
+			else
+				sb.append(url.toString());
+			sb.append(PATH_SEPARATOR);
+		}
+		return sb.substring(0, sb.length() - PATH_SEPARATOR.length());
 	}
 
 	/**
@@ -193,7 +249,39 @@ public class JVMLauncher
 	 */
 	public static ProcessBuilder getProcessBuilder(Class<?> mainClass, List<String> args) throws LauncherException
 	{
-		return getProcessBuilder(mainClass.getName(), getClassPathURLsFor(mainClass), args);
+		URL mainUrl;
+		String mainName = mainClass.getName();
+		String mainPath = mainName.replace('.','/') + ".class";
+		Set<URL> classPath = getClassPathURLsFor(mainClass);
+
+		if((mainUrl = mainClass.getClassLoader().getResource(mainPath))!=null)
+		{	// So, at least when run from surefire, the actual location of the class is not in the provided URLs.
+			String urlPath = mainUrl.getPath();
+			String proto = mainUrl.getProtocol();
+
+			if(logger.isDebugEnabled())
+			{
+				logger.debug("mainClass={} => {}", mainClass, mainPath);
+				logger.debug("\tclassLoader={}", mainClass.getClassLoader());
+				logger.debug("\tproto={} path={}", proto, urlPath);
+			}
+			if(urlPath.endsWith(mainPath))
+			{
+				String mainClsPath = urlPath.substring(0, urlPath.length() - mainPath.length());
+				try
+				{
+					mainUrl = new URL(proto, mainUrl.getHost(), mainUrl.getPort(), mainClsPath);
+					logger.debug("\tadding {} to class path", mainUrl);
+					classPath.add(mainUrl);
+				}
+				catch(MalformedURLException mue)
+				{	// Log but keep going
+					logger.warn("Failed to create url for class path from url for class", mue);
+				}
+			}
+		}
+
+		return getProcessBuilder(mainName, classPath, args);
 	}
 
 	/**
@@ -204,7 +292,7 @@ public class JVMLauncher
 	 * @param args Additional command line parameters
 	 * @return ProcessBuilder that has not been started.
 	 */
-	public static ProcessBuilder getProcessBuilder(String mainClass, List<URL> classPath, String...args) throws LauncherException
+	public static ProcessBuilder getProcessBuilder(String mainClass, Set<URL> classPath, String...args) throws LauncherException
 	{
 		return getProcessBuilder(mainClass, classPath, Arrays.asList(args));
 	}
@@ -212,12 +300,12 @@ public class JVMLauncher
 	/**
 	 * Get a process loader for a JVM.
 	 * @param mainClass Main class to run
-	 * @param classPath List of urls to use for the new JVM's
+	 * @param classPath Set of urls to use for the new JVM's
 	 * 	class path.
 	 * @param args Additional command line parameters
 	 * @return ProcessBuilder that has not been started.
 	 */
-	public static ProcessBuilder getProcessBuilder(String mainClass, List<URL> classPath, List<String> args) throws LauncherException
+	public static ProcessBuilder getProcessBuilder(String mainClass, Set<URL> classPath, List<String> args) throws LauncherException
 	{
 		List<String> cmdList = new ArrayList<String>();
 		String[] cmdArray;
@@ -226,6 +314,14 @@ public class JVMLauncher
 		if(classPath != null && classPath.size() > 0)
 		{
 			cmdList.add("-cp");
+			if(logger.isDebugEnabled())
+			{
+				int i=0;
+
+				logger.debug("classPath:");
+				for(URL url : classPath)
+					logger.debug("\t[{}]: {}", i++, url);
+			}
 			cmdList.add(mkPath(classPath));
 		}
 		cmdList.add(mainClass);
@@ -233,7 +329,11 @@ public class JVMLauncher
 			cmdList.addAll(args);
 		cmdArray = cmdList.toArray(new String[cmdList.size()]);
 		if(logger.isDebugEnabled())
-			logger.debug("cmdArray=" + Arrays.toString(cmdArray));
+		{
+			logger.debug("cmdArray:");
+			for(int i=0;i<cmdArray.length;i++)
+				logger.debug("\t[{}]={}", i, cmdArray[i]);
+		}
 		return new ProcessBuilder(cmdArray);
 	}
 
