@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 public class Dispatchers<T extends Servlet & Serializable> implements Serializable
 {
 	private static final long serialVersionUID = 1l;
+	@SuppressWarnings("rawtypes")
 	private static final Class<Dispatchers> CLASS = Dispatchers.class;
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
