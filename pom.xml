@@ -17,15 +17,15 @@
 		<base.dir>${project.basedir}</base.dir>
 		<slow.skip>false</slow.skip>
 
-		<slf4j.version>1.7.12</slf4j.version>
+		<slf4j.version>1.7.32</slf4j.version>
 		<osgi.core.version>6.0.0</osgi.core.version>
 		<osgi.service.log.artifactId>org.osgi.service.log</osgi.service.log.artifactId>
-		<osgi.service.log.version>1.3.0</osgi.service.log.version>
+		<osgi.service.log.version>1.5.0</osgi.service.log.version>
 		<osgi.service.metatype.artifactId>org.osgi.service.metatype</osgi.service.metatype.artifactId>
-		<osgi.service.metatype.version>1.3.0</osgi.service.metatype.version>
+		<osgi.service.metatype.version>1.4.0</osgi.service.metatype.version>
 
 		<server.name>weed.darkmist.net</server.name>
-		<wagon.ssh.version>3.1.0</wagon.ssh.version>
+		<wagon.ssh.version>3.4.3</wagon.ssh.version>
 		<nexus.url>https://oss.sonatype.org</nexus.url>
 		<nexus.serverAuthId>sonatype-nexus-staging</nexus.serverAuthId>
 
@@ -36,7 +36,7 @@
 		<source.version>${target.version}</source.version>
 
 		<!-- reporting stuff as there is no central management -->
-		<reporting.javadoc.version>3.3.0</reporting.javadoc.version>
+		<reporting.javadoc.version>3.3.1</reporting.javadoc.version>
 		<reporting.javadoc.conf.detectJavaApiLink>true</reporting.javadoc.conf.detectJavaApiLink>
 		<reporting.javadoc.conf.detectLinks>true</reporting.javadoc.conf.detectLinks>
 		<reporting.javadoc.conf.serialwarn>true</reporting.javadoc.conf.serialwarn>
@@ -45,13 +45,13 @@
 		<jxr.version>3.1.1</jxr.version>
 
 		<!-- code quality checks -->
-		<pmd.version>3.14.0</pmd.version>
+		<pmd.version>3.15.0</pmd.version>
 		<pmd.fail>false</pmd.fail>
 		<!--<pmd.skip>${slow.skip}</pmd.skip>-->
 		<pmd.skip>true</pmd.skip>
 
-		<!--<spotbugs.version>3.1.10</spotbugs.version>-->
-		<spotbugs.version>4.3.0</spotbugs.version>
+		<spotbugs.version>3.1.12.2</spotbugs.version>
+		<!--<spotbugs.version>4.4.1</spotbugs.version>-->
 		<!--<spotbugs.skip>${slow.skip}</spotbugs.skip>-->
 		<spotbugs.skip>true</spotbugs.skip>
 		<spotbugs.fail>false</spotbugs.fail>
@@ -269,7 +269,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-gpg-plugin</artifactId>
-					<version>1.6</version>
+					<version>3.0.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -294,7 +294,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-install-plugin</artifactId>
-					<version>2.5.2</version>
+					<version>3.0.0-M1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -304,7 +304,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-war-plugin</artifactId>
-					<version>3.3.1</version>
+					<version>3.3.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -330,7 +330,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>3.0.1</version>
+					<version>3.2.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -377,7 +377,7 @@
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>4.0.0</version>
+					<version>5.1.2</version>
 					<extensions>true</extensions>
 				</plugin>
 				<plugin>
@@ -414,7 +414,7 @@
 						<dependency>
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>extra-enforcer-rules</artifactId>
-							<version>1.0-beta-6</version>
+							<version>1.4</version>
 						</dependency>
 						<!--
 						<dependency>

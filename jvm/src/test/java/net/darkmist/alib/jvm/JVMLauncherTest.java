@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 public class JVMLauncherTest extends TestCase
 {
 	private static final Class<JVMLauncherTest> CLASS = JVMLauncherTest.class;
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
 	public static class Main
