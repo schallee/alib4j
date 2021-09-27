@@ -49,7 +49,7 @@ public class JVMLauncher
 			
 		if((pathext = System.getenv("PATHEXT"))== null)
 			return Collections.singleton("");
-		return new LinkedHashSet(Arrays.asList(pathext.split(";")));
+		return new LinkedHashSet<String>(Arrays.asList(pathext.split(";")));
 	}
 
 	private static final File getJavaHome() throws LauncherException
