@@ -25,6 +25,13 @@ import java.util.LinkedHashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+//import net.darkmist.alib.lang.NullSafe;
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +50,8 @@ public class Iterators
 		// for deprecated IteratorUtil
 	}
 
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public static <T> Set<T> addToSet(Set<T> set, Iterator<T> i)
 	{
 		while(i.hasNext())
@@ -53,6 +62,7 @@ public class Iterators
 		return set;
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	@SuppressWarnings("PMD.LooseCoupling")	// its supposed to return LinkedHashSet!
 	public static <T> LinkedHashSet<T> toLinkedHashSet(Iterator<T> i)
 	{
@@ -61,6 +71,7 @@ public class Iterators
 		return set;
 	}
 	
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	@SuppressWarnings("PMD.LooseCoupling")	// its supposed to return LinkedHashSet!
 	public static <T> LinkedHashSet<T> toLinkedHashSet(Iterator<T> i, int sizeGuess)
 	{
@@ -120,6 +131,7 @@ public class Iterators
 		}
 
 		@Override
+		@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Constant state")
 		public T next()
 		{
 			throw new NoSuchElementException("This iterator has no content!");
@@ -139,9 +151,9 @@ public class Iterators
 		{
 			if(o == null)
 				return false;
-			if(!(o instanceof Iterator))
+			if(!(o instanceof EmptyIterator))
 				return false;
-			return !((Iterator<?>)o).hasNext();
+			return !((EmptyIterator<?>)o).hasNext();
 		}
 		
 		/**
@@ -182,9 +194,7 @@ public class Iterators
 		@SuppressWarnings("varargs")
 		public ArrayIterator(T...array)
 		{
-			if(array == null)
-				throw new NullPointerException("Array was null");
-			this.array = array;
+			this.array = requireNonNull(array, "array");
 			this.i = 0;
 		}
 	
@@ -197,6 +207,8 @@ public class Iterators
 		@Override
 		public T next()
 		{
+			if(i>=array.length)
+				throw new NoSuchElementException("Array index " + i + " is out of range.");
 			return array[i++];
 		}
 	}
@@ -257,6 +269,7 @@ public class Iterators
 		}
 
 		@Override
+		@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 		public U next()
 		{
 			if(done)

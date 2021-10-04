@@ -21,6 +21,8 @@ package net.darkmist.alib.collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 
+import net.darkmist.alib.lang.NullSafe;
+
 /**
  * @deprecated Use {@link Iterators#asEnumeration(Iterator)} instead.
  */
@@ -28,6 +30,7 @@ import java.util.Iterator;
 @SuppressWarnings("PMD.ReplaceEnumerationWithIterator")	// This is an adaptor.
 public final class IteratorEnumeration<E> implements Enumeration<E>
 {
+	private static final long serialVersionUID = 1l;
 	private final Iterator<? extends E> i;
 
 	IteratorEnumeration(Iterator<? extends E> i)
@@ -45,5 +48,27 @@ public final class IteratorEnumeration<E> implements Enumeration<E>
 	public E nextElement()
 	{
 		return i.next();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof IteratorEnumeration))
+			return false;
+		return NullSafe.equals(i, ((IteratorEnumeration<?>)o).i);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(i);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": i=" + i;
 	}
 }

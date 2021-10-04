@@ -18,6 +18,9 @@
 
 package net.darkmist.alib.lang;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API methods")
 public class NumericConversion
 {
 	private NumericConversion()
@@ -76,6 +79,7 @@ public class NumericConversion
 		return checkByte(l.longValue());
 	}
 
+	@SuppressFBWarnings(value="ITC_INHERITANCE_TYPE_CHECKING", justification="Less complex than alternatives")
 	public static byte checkByte(Object o)
 	{
 		if(o instanceof Byte)
@@ -137,6 +141,7 @@ public class NumericConversion
 		return checkShort(l.longValue());
 	}
 
+	@SuppressFBWarnings(value="ITC_INHERITANCE_TYPE_CHECKING", justification="Less complex than alternatives")
 	public static short checkShort(Object o)
 	{
 		if(o instanceof Byte)
@@ -194,6 +199,7 @@ public class NumericConversion
 		return checkInt(l.longValue());
 	}
 
+	@SuppressFBWarnings(value="ITC_INHERITANCE_TYPE_CHECKING", justification="Less complex than alternatives")
 	public static int checkInt(Object o)
 	{
 		if(o instanceof Byte)

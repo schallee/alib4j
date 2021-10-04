@@ -29,6 +29,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
+
 /**
  * Static utilities for {@link Dictionary}s.
  */
@@ -102,6 +107,7 @@ public final class Dictionaries
 				}
 
 				@Override
+				@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 				public void remove()
 				{
 					if(lastKey==null)
@@ -144,10 +150,8 @@ public final class Dictionaries
 
 		public DictionaryMapViewEntry(Dictionary<K,V> dict, K key)
 		{
-			if((this.dict=dict)==null)
-				throw new NullPointerException("Dictioanry cannot be null.");
-			if((this.key=key)==null)
-				throw new NullPointerException("Key cannot be null.");
+			this.dict = requireNonNull(dict, "dict");
+			this.key = requireNonNull(key, "key");
 		}
 
 		@Override
@@ -171,7 +175,7 @@ public final class Dictionaries
 		@Override
 		public boolean equals(Object o)
 		{
-			Map.Entry<?,?> other;
+			DictionaryMapViewEntry<?,?> other;
 			Object otherVal;
 			V val;
 
@@ -179,9 +183,9 @@ public final class Dictionaries
 				return true;
 			if(o==null)
 				return false;
-			if(!(o instanceof Map.Entry))
+			if(!(o instanceof DictionaryMapViewEntry))
 				return false;
-			other = (Map.Entry<?,?>)o;
+			other = (DictionaryMapViewEntry<?,?>)o;
 			if((otherVal=other.getValue())==null)
 				return false;
 			if((val=dict.get(key))==null)
@@ -291,6 +295,7 @@ public final class Dictionaries
 				}
 
 				@Override
+				@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 				public void remove()
 				{
 					if(lastKey==null)
@@ -447,6 +452,7 @@ public final class Dictionaries
 		return Collections.unmodifiableMap(asMap(dict));
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public static <K,V> Map<K,V> asMap(Dictionary<K,V> dict)
 	{
 		return new DictionaryMapView<K, V>(dict);

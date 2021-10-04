@@ -22,6 +22,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 public class MemCachedStaticSet<T> extends AbstractMemCachedStaticSet<T>
 {
 	protected final T[] array;
@@ -43,5 +45,10 @@ public class MemCachedStaticSet<T> extends AbstractMemCachedStaticSet<T>
 		return Collections.unmodifiableSet(set);
 	}
 
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": array.length=" + array.length + " super=" + super.toString();
+	}
 }
 

@@ -18,37 +18,31 @@
 
 package net.darkmist.alib.str;
 
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+
+import javax.annotation.Nullable;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class RegexIterator<T> implements Iterator<T>
 {
-	@SuppressWarnings("rawtypes")
-	private static final Class<RegexIterator> CLASS = RegexIterator.class;
+	private static final Class<?> CLASS = RegexIterator.class;
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
-	protected Matcher matcher;
+	protected final Matcher matcher;
 	protected T next;
 	protected boolean hasNext;
 
+	@Nullable
 	protected abstract T getObj(Matcher matcher_param);
-	protected abstract String getRegex();
-
-	protected Pattern getPattern()
-	{
-		return Pattern.compile(getRegex());
-	}
-
-	protected Matcher getMatcher(CharSequence data)
-	{
-		return getPattern().matcher(data);
-	}
 
 	private boolean advance()
 	{
@@ -62,20 +56,23 @@ public abstract class RegexIterator<T> implements Iterator<T>
 		return hasNext;
 	}
 
-	private void init(CharSequence data)
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
+	public RegexIterator(Pattern pat, CharSequence data)
 	{
-		matcher = getMatcher(data);
+		matcher = pat.matcher(data);
 		hasNext = false;
 	}
 
-	public RegexIterator(byte[] data)
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
+	public RegexIterator(CharSequence regex, CharSequence data)
 	{
-		init(new String(data));
+		this(Pattern.compile(regex.toString()), data);
 	}
 
-	public RegexIterator(CharSequence data)
+	@Deprecated	// Not our job to decode bytes
+	public RegexIterator(CharSequence regex, byte[] data)
 	{
-		init(data);
+		this(regex, new String(data, Charset.defaultCharset()));
 	}
 
 	@Override
@@ -87,7 +84,7 @@ public abstract class RegexIterator<T> implements Iterator<T>
 	}
 
 	@Override
-	public T next() throws NoSuchElementException
+	public T next()
 	{
 		T ret;
 
@@ -100,7 +97,7 @@ public abstract class RegexIterator<T> implements Iterator<T>
 	}
 
 	@Override
-	public void remove() throws UnsupportedOperationException
+	public void remove()
 	{
 		throw new UnsupportedOperationException();
 	}

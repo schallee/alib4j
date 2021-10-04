@@ -3,6 +3,10 @@ package net.darkmist.alib.ref;
 import java.lang.ref.SoftReference;
 import java.lang.ref.Reference;
 
+import javax.annotation.Nullable;
+
+import net.darkmist.alib.lang.NullSafe;
+
 /**
  * Concrete wrapper of @{link Reference} that implements {@link Ref}.
  *
@@ -14,46 +18,48 @@ import java.lang.ref.Reference;
  */
 public class StrongRef<T> extends SoftReference<T> implements Ref.Queued<T>
 {
-	private T target;
+	private @Nullable T target;
 
-	public StrongRef(T referent)
+	public StrongRef(@Nullable T referent)
 	{
 		super(referent);
 		this.target = referent;
 	}
 
 	@Override
-	public void set(T obj) throws RefException
+	public void set(@Nullable T obj)
 	{
 		throw new RefException(new UnsupportedOperationException());
 	}
 
 	@Override
-	public void setReferent(T obj) throws RefException
+	public void setReferent(@Nullable T obj)
 	{
 		set(obj);
 	}
 
 	@Override
-	public boolean isSetSupported() throws RefException
+	public boolean isSetSupported()
 	{
 		return false;
 	}
 
+	@Nullable
 	@Override
-	public T get() throws RefException
+	public T get()
+	{
+		return target;
+	}
+
+	@Nullable
+	@Override
+	public T getReferent()
 	{
 		return target;
 	}
 
 	@Override
-	public T getReferent() throws RefException
-	{
-		return get();
-	}
-
-	@Override
-	public void clear() throws RefException
+	public void clear()
 	{
 		target = null;
 	}
@@ -68,5 +74,28 @@ public class StrongRef<T> extends SoftReference<T> implements Ref.Queued<T>
 	public boolean isEnqueued()
 	{
 		return false;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof StrongRef))
+			return false;
+		StrongRef<?> that = (StrongRef<?>)o;
+		return NullSafe.equals(this.target, that.target);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(target);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + " target=" + target;
 	}
 }

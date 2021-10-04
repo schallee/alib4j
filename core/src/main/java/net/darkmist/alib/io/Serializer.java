@@ -30,6 +30,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +47,7 @@ public abstract class Serializer
 	 * @param type The type that is to be read.
 	 * @return The serialized object cast as type.
 	 */
+	@SuppressFBWarnings(value={"OPM_OVERLY_PERMISSIVE_METHOD","OBJECT_DESERIALIZATION"}, justification="API Method, purpose of method")
 	public static <T extends Serializable> T deserializeFromStream(InputStream in, Class<T> type) throws ClassNotFoundException, IOException
 	{
 		ObjectInputStream objIn;
@@ -63,6 +66,7 @@ public abstract class Serializer
 		return obj;
 	}
 
+	@SuppressFBWarnings(value={"PATH_TRAVERSAL_IN","IOI_USE_OF_FILE_STREAM_CONSTRUCTORS"}, justification="Library API that ssumes sane use, supports 1.6")
 	public static <T extends Serializable> T deserializeFromFile(File file, Class<T> type) throws ClassNotFoundException, IOException
 	{
 		return deserializeFromStream(new FileInputStream(file), type);
@@ -77,6 +81,7 @@ public abstract class Serializer
 	 * @param obj The Object to serilize.
 	 * @param out The output stream to write it to. This will be closed!
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public static <T extends Serializable> void serializeToStream(T obj, OutputStream out) throws IOException
 	{
 		ObjectOutputStream objOut;
@@ -89,6 +94,7 @@ public abstract class Serializer
 		objOut.close();
 	}
 
+	@SuppressFBWarnings(value={"OVERLY_PERMISSIVE_METHOD","PATH_TRAVERSAL_IN","IOI_USE_OF_FILE_STREAM_CONSTRUCTORS"}, justification="API method, Library API that assumes sane use, supports 1.6")
 	public static <T extends Serializable> void serializeToFile(T obj, File file) throws IOException
 	{
 		serializeToStream(obj, new FileOutputStream(file));

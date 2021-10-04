@@ -30,6 +30,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /** A Executor that immedately executes in the current thread.
  * In many respects this is a non-Executor
  */
@@ -146,6 +148,7 @@ public class CurrentThreadExecutor implements ExecutorService
 	 * @return A @{link Past} containing the result.
 	 */
 	@Override
+	@SuppressFBWarnings(value="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE",justification="Warning doesn't make sense in context.")
 	public <T> Future<T> submit(Runnable task, T result)
 	{
 		return run(task, result);
@@ -185,11 +188,12 @@ public class CurrentThreadExecutor implements ExecutorService
 	}
 
 	@Override
+	@SuppressFBWarnings(value={"WEM_WEAK_EXCEPTION_MESSAGING","EXS_EXCEPTION_SOFTENING_HAS_CHECKED"}, justification="Boolean state, should not happen")
 	public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException
 	{
 		ExecutionException last = null;
 
-		if(tasks.size() <= 0)
+		if(tasks.isEmpty())
 			throw new IllegalArgumentException("Empty tasks passed.");
 		for(Callable<T> task: tasks)
 			try
@@ -202,17 +206,18 @@ public class CurrentThreadExecutor implements ExecutorService
 			}
 		if(last != null)
 			throw last;
-		throw new IllegalStateException("No task finished and no task threw an exception.");
+		throw new IllegalStateException("No task finished and no task threw an exception. Tasks: " + tasks + '.');
 	}
 
 	@Override
+	@SuppressFBWarnings(value={"WEM_WEAK_EXCEPTION_MESSAGING","EXS_EXCEPTION_SOFTENING_HAS_CHECKED"}, justification="Boolean state, should not happen")
 	public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException, ExecutionException
 	{
 		long end = System.currentTimeMillis() + unit.toMillis(timeout);
 		Iterator<? extends Callable<T>> i = tasks.iterator();
 		ExecutionException last = null;
 
-		if(tasks.size() <= 0)
+		if(tasks.isEmpty())
 			throw new IllegalArgumentException("Empty tasks passed.");
 		while(System.currentTimeMillis() < end && i.hasNext())
 			try

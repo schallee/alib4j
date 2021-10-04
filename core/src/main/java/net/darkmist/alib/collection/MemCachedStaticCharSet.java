@@ -18,6 +18,7 @@
 
 package net.darkmist.alib.collection;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,6 +40,12 @@ public class MemCachedStaticCharSet extends AbstractMemCachedStaticSet<Character
 		for(char entry : array)
 			set.add(entry);
 		return Collections.unmodifiableSet(set);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": array=" + Arrays.toString(array);
 	}
 
 }

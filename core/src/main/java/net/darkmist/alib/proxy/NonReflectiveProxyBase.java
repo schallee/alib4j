@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import net.darkmist.alib.lang.NullSafe;
 
 public abstract class NonReflectiveProxyBase<T> extends ProxyBase<T>
@@ -15,7 +17,7 @@ public abstract class NonReflectiveProxyBase<T> extends ProxyBase<T>
 		this.proxyFlags = ProxyFlags.getDefaultFlags();
 	}
 
-	protected NonReflectiveProxyBase(Set<ProxyFlags> proxyFlags)
+	protected NonReflectiveProxyBase(@Nullable Set<ProxyFlags> proxyFlags)
 	{
 		if(proxyFlags==null)
 			this.proxyFlags = ProxyFlags.getDefaultFlags();
@@ -32,15 +34,19 @@ public abstract class NonReflectiveProxyBase<T> extends ProxyBase<T>
 	 * @param proxyFlags Configuration flags for the proxy.
 	 * @param target Target to validate but <em>NOT</em> persist.
 	 */
-	protected NonReflectiveProxyBase(T target, Set<ProxyFlags> proxyFlags)
+	protected NonReflectiveProxyBase(T target, @Nullable Set<ProxyFlags> proxyFlags)
 	{
-		this(proxyFlags);
-		ProxyFlags.validate(proxyFlags, target);
+		if(proxyFlags==null)
+			this.proxyFlags = ProxyFlags.getDefaultFlags();
+		else
+			this.proxyFlags = Collections.unmodifiableSet(EnumSet.copyOf(proxyFlags));
+		ProxyFlags.validate(this.proxyFlags, target);
 	}
 
 	protected NonReflectiveProxyBase(T target)
 	{
-		this(target,null);
+		this();
+		ProxyFlags.validate(proxyFlags, target);
 	}
 
 	/**

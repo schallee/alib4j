@@ -23,6 +23,12 @@ import java.util.LinkedList;
 import java.util.Deque;
 import java.util.NoSuchElementException;
 
+import javax.annotation.Nullable;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +42,7 @@ public final class IteratorIterator<T> extends NonRemovingIterator<T>
 	private final Deque<Iterator<T>> iterators = new LinkedList<Iterator<T>>();
 	private Iterator<T> iterator = null;
 
+	@Nullable
 	protected Iterator<T> nextIterator()
 	{
 		if(iterators.isEmpty())
@@ -63,6 +70,7 @@ public final class IteratorIterator<T> extends NonRemovingIterator<T>
 	}
 
 	@Override
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING", justification="Boolean state")
 	public T next()
 	{
 		if(!hasNext())
@@ -70,12 +78,14 @@ public final class IteratorIterator<T> extends NonRemovingIterator<T>
 		return iterator.next();
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public void prependIterator(Iterator<T> newIterator)
 	{
 		iterators.addFirst(iterator);
 		iterator = newIterator;
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API method")
 	public void appendIterator(Iterator<T> newIterator)
 	{
 		iterators.addLast(newIterator);
@@ -88,6 +98,7 @@ public final class IteratorIterator<T> extends NonRemovingIterator<T>
 			prependIterator(newIterators[i]);
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	@SuppressWarnings("unchecked")
 	public void appendIterators(Iterator<T>...newIterators)
 	{
@@ -125,5 +136,30 @@ public final class IteratorIterator<T> extends NonRemovingIterator<T>
 	public static <T> IteratorIterator<T> getInstance(Iterator<T>...newIterators)
 	{
 		return new IteratorIterator<T>(newIterators);
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof IteratorIterator))
+			return false;
+		IteratorIterator<?> that = (IteratorIterator<?>)o;
+		if(!NullSafe.equals(this.iterator, that.iterator))
+			return false;
+		return NullSafe.equals(this.iterators, that.iterators);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(iterator,iterators);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": iterator=" + iterator + " iterators=" + iterators;
 	}
 }

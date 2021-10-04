@@ -29,6 +29,10 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.concurrent.Callable;
 
+import javax.annotation.Nullable;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -66,7 +70,7 @@ public final class Slurp
 	public static byte[] slurp(InputStream stream, long amount) throws IOException
 	{
 		if(amount > Integer.MAX_VALUE)
-			throw new IOException("Size larger than max int");
+			throw new IOException("Size " + amount + " is larger than max int");
 		return slurp(stream, (int)amount);
 	}
 
@@ -103,7 +107,7 @@ public final class Slurp
 	public static byte[] slurp(DataInput din, long amount) throws IOException
 	{
 		if(amount > Integer.MAX_VALUE)
-			throw new IOException("Size larger than max int");
+			throw new IOException("Size " + amount + " is larger than max int");
 		return slurp(din, (int)amount);
 	}
 
@@ -116,6 +120,7 @@ public final class Slurp
 		return FileUtils.readFileToByteArray(file);
 	}
 
+	@SuppressFBWarnings(value="PATH_TRAVERSAL_IN", justification="Library API that ssumes sane use")
 	public static byte[] slurp(String file) throws IOException
 	{
 		return FileUtils.readFileToByteArray(new File(file));
@@ -128,7 +133,7 @@ public final class Slurp
 
 		public ReaderToStringCallable(Reader in)
 		{
-			setReader(in);
+			this.in = in;
 		}
 
 		public void setReader(Reader in)
@@ -136,6 +141,7 @@ public final class Slurp
 			this.in = in;
 		}
 
+		@Nullable
 		@Override
 		public String call() throws Exception
 		{

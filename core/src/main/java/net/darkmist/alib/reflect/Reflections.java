@@ -22,6 +22,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 public class Reflections
 {
 	private static final Map<Class<?>,Class<?>> PRIMITIVE_TO_WRAPPER = mkPrimitiveToWrapper();
@@ -110,11 +114,13 @@ public class Reflections
 		return isPrimitiveWrapper(cls);
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public boolean isPrimitiveWrapper(Class<?> cls)
 	{
 		return WRAPPER_TO_PRIMITIVE.get(cls)!=null;
 	}
 
+	@Nullable
 	public static Object zeroIfPrimitiveNullOtherwise(Class<?> cls)
 	{
 		Object ret;
@@ -124,6 +130,7 @@ public class Reflections
 		return ret;
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public static StackTraceElement getStackTraceElement(int index)
 	{
 		return new Throwable().fillInStackTrace().getStackTrace()[index];

@@ -18,6 +18,10 @@
 
 package net.darkmist.alib.exception;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +40,7 @@ public class LoggingExceptionHandler implements ExceptionHandler
 	 * @param log_ the log to log exceptions to.
 	 */
 	// final as constructor calls this.
+	@SuppressFBWarnings(value="LO_SUSPECT_LOG_PARAMETER",justification="Purpose of class")
 	public final void setLogger(Logger log_)
 	{
 		log = log_;
@@ -54,6 +59,7 @@ public class LoggingExceptionHandler implements ExceptionHandler
 	 * Create using the given logger.
 	 * @param log_ The logger to use.
 	 */
+	@SuppressFBWarnings(value="LO_SUSPECT_LOG_PARAMETER",justification="Purpose of class")
 	public LoggingExceptionHandler(Logger log_)
 	{
 		setLogger(log_);
@@ -74,5 +80,28 @@ public class LoggingExceptionHandler implements ExceptionHandler
 		if((localLog = getLogger())==null)
 			localLog = logger;
 		localLog.error("Handling exception", t);
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof LoggingExceptionHandler))
+			return false;
+		LoggingExceptionHandler that = (LoggingExceptionHandler)o;
+		return NullSafe.equals(this.log, that.log);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(log);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": log=" + log;
 	}
 }

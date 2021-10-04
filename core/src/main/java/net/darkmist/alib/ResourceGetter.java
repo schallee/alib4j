@@ -23,15 +23,16 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nullable;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Get resources from classpath. Resources are based on the full name of the
  * class requesting the resource. 
  */
 public class ResourceGetter
 {
-	/** The class to get resources for */
-	protected Class<?> src;
-
 	// sql fixup stuff:
 	// seperate vars for readablility
 	// private so hopefully javac will hopefully optimize them all out...
@@ -52,6 +53,9 @@ public class ResourceGetter
 	/** Pattern to match quoted strings, comments and vars in a sql query */
 	private static final Pattern sqlfix_pat = Pattern.compile(regexp_sqlfix, Pattern.MULTILINE);
 
+	/** The class to get resources for */
+	protected Class<?> src;
+
 	/** Construct a resource getter for an object.
 	 * @param obj Object to get resources for.
 	 */
@@ -63,8 +67,11 @@ public class ResourceGetter
 	/** Construct a resource getter for a class.
 	 * @param src_n Class to get resources for.
 	 */
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING", justification="Boolean case")
 	public ResourceGetter(Class<?> src_n)
 	{
+		if(src_n == null)
+			throw new NullPointerException("src_n cannot be null");
 		src = src_n;
 	}
 
@@ -77,6 +84,7 @@ public class ResourceGetter
 		return getResourceNameFor(name, src);
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	static public String getResourceNameFor(String name, Class<?> src)
 	{
 		return src.getSimpleName() + "." + name;
@@ -87,21 +95,26 @@ public class ResourceGetter
 		return getResourceNameFor(name, src.getClass());
 	}
 
+	@Nullable
 	public InputStream get(String name)
 	{
 		return getFor(name, src);
 	}
 
+	@Nullable
 	static public InputStream getFor(String name, Class<?> src)
 	{
 		return src.getResourceAsStream(getResourceNameFor(name, src));
 	}
 
+	@Nullable
 	static public InputStream getFor(String name, Object src)
 	{
 		return getFor(name, src.getClass());
 	}
 
+	@Nullable
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS",justification="If resource isn't available it is usually fatal.")
 	static public String getStringFor(String name, Class<?> src)
 	{
 		try
@@ -122,16 +135,19 @@ public class ResourceGetter
 		}
 	}
 
+	@Nullable
 	static public String getStringFor(String name, Object src)
 	{
 		return getStringFor(name, src.getClass());
 	}
 
+	@Nullable
 	public String getString(String name)
 	{
 		return getStringFor(name, src);
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public static String sqlFixup(CharSequence in)
 	{
 		StringBuffer out = new StringBuffer();
@@ -158,6 +174,7 @@ public class ResourceGetter
 		return matcher.appendTail(out).toString();
 	}
 
+	@Nullable
 	static public String getSQLFor(String name, Class<?> src)
 	{
 		String sql;
@@ -167,8 +184,34 @@ public class ResourceGetter
 		return sqlFixup(sql);
 	}
 
+	@Nullable
 	static public String getSQLFor(String name, Object src)
 	{
 		return getSQLFor(name, src.getClass());
+	}
+
+	@Override
+	public boolean equals(Object other)
+	{
+		if(this==other)
+			return true;
+		if(!(other instanceof ResourceGetter))
+			return false;
+		ResourceGetter that = (ResourceGetter)other;
+		if(this.src.equals(that.src))
+			return true;
+		return false;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return src.hashCode();
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + " for class " + src.getSimpleName();
 	}
 }

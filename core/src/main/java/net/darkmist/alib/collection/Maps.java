@@ -25,6 +25,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+
 /**
  * Static utilities for {@link Map}s.
  */
@@ -97,6 +101,7 @@ public final class Maps
 		// public String toString()
 
 		@Override
+		@SuppressFBWarnings(value="NSE_NON_SYMMETRIC_EQUALS",justification="I don't see how this is not symmetric.")
 		@SuppressWarnings("PMD.CompareObjectsWithEquals")	// We do after the direct check. It simplifies null checks.
 		public boolean equals(Object o)
 		{
@@ -104,29 +109,19 @@ public final class Maps
 
 			if(this==o)
 				return true;
-			if(o==null)
-				return false;
 			if(!(o instanceof Dictionary))
 				return false;
 			that = (Dictionary<?,?>)o;
+			if(this.size() != that.size())
+				return false;
 
-			for(Map.Entry<K,V> entry : map.entrySet())
+			for(Enumeration<K> e=this.keys();e.hasMoreElements();)
 			{
-				K key = entry.getKey();
-				V thisVal = entry.getValue();
-				Object thatVal = that.get(key);
-
-				if(thisVal == thatVal)
-					continue;
-				if(thisVal==null||thatVal==null)
-					return false;
-				if(!thisVal.equals(thatVal))
+				K thisKey = e.nextElement();
+				if(!NullSafe.equals(this.get(thisKey), that.get(thisKey)))
 					return false;
 			}
 
-			for(Enumeration<?> e=that.keys(); e.hasMoreElements();)
-				if(!map.containsKey(e.nextElement()))
-					return false;
 			return true;
 		}
 	}
@@ -186,6 +181,7 @@ public final class Maps
 			return new Builder<K,V>(base);
 		}
 
+		@SuppressFBWarnings(value="UP_UNUSED_PARAMETER",justification="Used to clarify/workaround generics")
 		public static <K,V> Builder<K,V> instance(Class<K> keyCls, Class<V> valCls)
 		{
 			return instance(new HashMap<K,V>());
@@ -213,7 +209,7 @@ public final class Maps
 			V oldValue;
 
 			if(map==null)
-				throw new IllegalStateException("Attempt to use builder after building Map.");
+				throw new IllegalStateException("Attempt to add (" + key + "," + value + ") to builder after building Map.");
 			if((oldValue = map.put(key, value))!=null && throwOnDuplicate)
 				throw new IllegalArgumentException("Key " + key + " already has value " + oldValue + " when trying to put new value " + value + '.');
 			return this;

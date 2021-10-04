@@ -20,6 +20,10 @@ package net.darkmist.alib.io;
 
 import java.io.PrintWriter;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+
 /** A {@link PrintWriter} wrapper that outputs a prefix before the first output. The prefix is not written until the first output method is called. */
 public class PrefixingPrintWriter extends PrintWriterWrapper
 {
@@ -32,7 +36,7 @@ public class PrefixingPrintWriter extends PrintWriterWrapper
 	protected void setPrefix(String prefix_)
 	{
 		if(hasFirstOutputHappened())
-			throw new IllegalStateException("Attempt to set prefix when the first output has already occured");
+			throw new IllegalStateException("Attempt to set prefix to \"" + prefix_ + "\" when the first output has already occured");
 		prefix = prefix_;
 	}
 
@@ -46,10 +50,11 @@ public class PrefixingPrintWriter extends PrintWriterWrapper
 	 * @param prefix_ the prefix to output before anything else.
 	 * @param pw_ The {@link PrintWriter} to wrap.
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public PrefixingPrintWriter(String prefix_, PrintWriter pw_)
 	{
 		super(pw_);
-		setPrefix(prefix_);
+		prefix = prefix_;
 	}
 
 	/** Reversed argument constructor for dislexics.
@@ -70,5 +75,29 @@ public class PrefixingPrintWriter extends PrintWriterWrapper
 			print(prefix);
 			prefix = null;	// no need to keep a ref
 		}
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof PrefixingPrintWriter))
+			return false;
+		if(!NullSafe.equals(prefix, ((PrefixingPrintWriter)o).prefix))
+			return false;
+		return super.equals(o);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(super.hashCode(), prefix);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": prefix=" + prefix + " super=" + super.toString();
 	}
 }

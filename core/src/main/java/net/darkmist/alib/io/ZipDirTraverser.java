@@ -28,11 +28,15 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import javax.annotation.Nullable;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import net.darkmist.alib.collection.Sets;
+import net.darkmist.alib.lang.NullSafe;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public class ZipDirTraverser extends DirTraverser
 {
@@ -55,6 +59,7 @@ public class ZipDirTraverser extends DirTraverser
 		this.inputStreamHandler = inputStreamHandler;
 	}
 
+	@Nullable
 	private static final String getExtension(String name)
 	{
 		int pos = name.lastIndexOf('.');
@@ -72,8 +77,7 @@ public class ZipDirTraverser extends DirTraverser
 		String ext;
 
 		ext = getExtension(name);
-		if(logger.isDebugEnabled())
-			logger.debug("name=" + name + " ext=" + ext);
+		logger.debug("name={} ext={}", name, ext);
 		if(ext == null || ext.length() <= 0)
 			return false;
 		return ZIP_EXTS.contains(ext.toLowerCase(Locale.getDefault()));
@@ -103,6 +107,7 @@ public class ZipDirTraverser extends DirTraverser
 		}
 	}
 
+	@SuppressFBWarnings(value="IOI_USE_OF_FILE_STREAM_CONSTRUCTORS", justification="Supports 1.6")
 	protected void onZipFile(File file)
 	{
 		FileInputStream fin = null;
@@ -114,7 +119,7 @@ public class ZipDirTraverser extends DirTraverser
 		}
 		catch(IOException e)
 		{
-			logger.warn("Error handling file " + file, e);
+			logger.warn("Error handling file {}", file, e);
 		}
 		finally
 		{
@@ -125,11 +130,7 @@ public class ZipDirTraverser extends DirTraverser
 	@Override
 	protected void onFile(File file)
 	{
-		if(logger.isDebugEnabled())
-		{
-			logger.debug("file=" + file);
-			logger.debug("inputStreamHandler=" + inputStreamHandler);
-		}
+		logger.debug("file={} inputStreamHandler={}", file, inputStreamHandler);
 		if(inputStreamHandler != null && isZip(file.getName()))
 		{
 			logger.debug("file is zip");
@@ -137,5 +138,30 @@ public class ZipDirTraverser extends DirTraverser
 		}
 		else
 			super.onFile(file);
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof ZipDirTraverser))
+			return false;
+		ZipDirTraverser that = (ZipDirTraverser)o;
+		if(!NullSafe.equals(this.inputStreamHandler, that.inputStreamHandler))
+			return false;
+		return super.equals(o);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(inputStreamHandler);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": inputStreamHandler=" + inputStreamHandler;
 	}
 }

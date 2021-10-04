@@ -30,6 +30,10 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
+
 import org.apache.commons.io.IOUtils;
 
 import org.slf4j.Logger;
@@ -299,8 +303,7 @@ public class BufferUtil
 		{
 			int num;
 
-			if(bytes == null)
-				throw new NullPointerException("Byte buffer is null");
+			requireNonNull(bytes,"bytes");
 			if(bytes.length == 0)
 				return 0;
 			if(!buf.hasRemaining())
@@ -313,16 +316,15 @@ public class BufferUtil
 		@Override
 		public int read(byte[] bytes, int off, int len) throws IOException
 		{
-			if(bytes == null)
-				throw new NullPointerException("Byte buffer is null");
+			requireNonNull(bytes,"bytes");
 			if(off >= bytes.length)
-				throw new IllegalArgumentException("Offset is larger than or equal to byte array length");
+				throw new IllegalArgumentException("Offset " + off + " is larger than or equal to byte array length" + bytes.length + '.');
 			if(off < 0)
-				throw new IllegalArgumentException("Offset is negative");
+				throw new IllegalArgumentException("Offset " + off + " is negative");
 			if(len < 0)
-				throw new IllegalArgumentException("Length is negative");
+				throw new IllegalArgumentException("Length " + len + " is negative");
 			if(len + off > bytes.length)
-				throw new IllegalArgumentException("Length + off set is larger than byte array length");
+				throw new IllegalArgumentException("Length " + len + " + off " + off + " set is larger than byte array length");
 
 			int num;
 
@@ -359,7 +361,7 @@ public class BufferUtil
 			if(bufRemaining == 0)
 				return 0;
 			if(bufRemaining < 0)
-				throw new IllegalStateException("Remaining is negative");
+				throw new IllegalStateException("Remaining " + bufRemaining + " is negative");
 			if(bufRemaining < amount)
 			{
 				buf.position(buf.position() + bufRemaining);
@@ -391,6 +393,7 @@ public class BufferUtil
 		}
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public static InputStream asInputStream(ByteBuffer buf)
 	{
 		return new ByteBufferInputStream(buf);
@@ -419,6 +422,7 @@ public class BufferUtil
 		return localBuf;
 	}
 
+	@SuppressFBWarnings(value={"OPM_OVERLY_PERMISSIVE_METHOD","IOI_USE_OF_FILE_STREAM_CONSTRUCTORS"},justification="API Method, v1.6 compat")
 	public static ByteBuffer map(File file) throws IOException
 	{
 		FileInputStream fin=null;
@@ -437,6 +441,7 @@ public class BufferUtil
 		}
 	}
 
+	@SuppressFBWarnings(value={"OPM_OVERLY_PERMISSIVE_METHOD","IOI_USE_OF_FILE_STREAM_CONSTRUCTORS"},justification="API Method, v1.6 compat")
 	public static ByteBuffer mapOrSlurp(File file) throws IOException
 	{
 		FileInputStream fin=null;
@@ -463,16 +468,19 @@ public class BufferUtil
 		}
 	}
 
+	@SuppressFBWarnings(value="PATH_TRAVERSAL_IN",justification="API method assuming sane callers.")
 	public static ByteBuffer mapFile(String path) throws IOException
 	{
 		return map(new File(path));
 	}
 
+	@SuppressFBWarnings(value="PATH_TRAVERSAL_IN",justification="API method assuming sane callers.")
 	public static ByteBuffer mapOrSlurpFile(String path) throws IOException
 	{
 		return mapOrSlurp(new File(path));
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public static boolean isAll(ByteBuffer buf, byte b)
 	{
 		buf = buf.duplicate();
@@ -488,6 +496,7 @@ public class BufferUtil
 		return isAll(buf, (byte)0);
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public static ByteBuffer asBuffer(InputStream in) throws IOException
 	{
 		return ByteBuffer.wrap(IOUtils.toByteArray(in));

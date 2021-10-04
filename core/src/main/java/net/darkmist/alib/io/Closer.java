@@ -21,6 +21,10 @@ package net.darkmist.alib.io;
 import java.io.Closeable;
 import java.io.IOException;
 
+import javax.annotation.Nullable;
+
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +53,9 @@ public class Closer
 	 * @return null as a convinence to null out the closed object as in 
 	 * 	<code>toClose = Closer.close(toClose,logExceptionTo,name)</code>
 	 */
-	public static <T extends Closeable> T close(T toClose, Logger logExceptionTo, Object name)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static <T extends Closeable> T close(@Nullable T toClose, @Nullable Logger logExceptionTo, @Nullable Object name)
 	{
 		if(toClose == null)
 			return null;
@@ -75,7 +81,9 @@ public class Closer
 	 * @return null as a convinence to null out the closed object as in 
 	 * 	<code>toClose = Closer.close(toClose,name)</code>
 	 */
-	public static <T extends Closeable> T close(T toClose, Object name)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static <T extends Closeable> T close(@Nullable T toClose, @Nullable Object name)
 	{
 		return close(toClose, null, name);
 	}
@@ -90,7 +98,9 @@ public class Closer
 	 * @return null as a convinence to null out the closed object as in 
 	 * 	<code>toClose = Closer.close(toClose)</code>
 	 */
-	public static <T extends Closeable> T close(T toClose)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static <T extends Closeable> T close(@Nullable T toClose)
 	{
 		return close(toClose, null, null);
 	}

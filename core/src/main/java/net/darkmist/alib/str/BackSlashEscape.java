@@ -18,17 +18,23 @@
 
 package net.darkmist.alib.str;
 
+import java.nio.charset.Charset;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 // we may be able to use org.apache.commons.lang.StringEscapeUtils.escapeJava(String)
 
 public class BackSlashEscape
 {
 	private static BackSlashEscape singleton = new BackSlashEscape();
+	private static Charset CHARSET = Charset.defaultCharset();
 
 	protected byte escapeChar()
 	{
 		return (byte)'\\';
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public String escape(byte[] in)
 	{
 		byte escape = escapeChar();
@@ -85,7 +91,7 @@ public class BackSlashEscape
 					out[out_counter++] = 'v';
 					continue;
 			}
-			byte[] hex  = Integer.toHexString(b).getBytes();
+			byte[] hex  = Integer.toHexString(b).getBytes(CHARSET);
 			out[out_counter++] = 'x';
 			if(hex.length == 1)
 			{
@@ -98,17 +104,17 @@ public class BackSlashEscape
 				out[out_counter++] = hex[1];
 			}
 		}
-		return new String(out, 0, out_counter);
+		return new String(out, 0, out_counter, CHARSET);
 	}
 
 	public String escape(String in)
 	{
-		return escape(in.getBytes());
+		return escape(in.getBytes(CHARSET));
 	}
 
 	public String escape(CharSequence in)
 	{
-		return escape(in.toString().getBytes());
+		return escape(in.toString().getBytes(CHARSET));
 	}
 
 	public static BackSlashEscape getInstance()

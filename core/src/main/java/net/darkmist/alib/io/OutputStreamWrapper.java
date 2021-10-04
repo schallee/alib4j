@@ -21,6 +21,7 @@ package net.darkmist.alib.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import net.darkmist.alib.lang.NullSafe;
 import net.darkmist.alib.lang.Wrapper;
 
 public class OutputStreamWrapper<I extends OutputStream> extends OutputStream implements Wrapper<I>
@@ -67,5 +68,27 @@ public class OutputStreamWrapper<I extends OutputStream> extends OutputStream im
 	public void close() throws IOException
 	{
 		target.close();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof OutputStreamWrapper))
+			return false;
+		return NullSafe.equals(target, ((OutputStreamWrapper<?>)target));
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(target);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + " wrapping " + target + '.';
 	}
 }

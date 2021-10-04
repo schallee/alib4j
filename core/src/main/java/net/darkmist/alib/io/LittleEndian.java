@@ -145,7 +145,7 @@ public final class LittleEndian
 		@Override
 		public String toString()
 		{
-			return "Little endian wrapped " + toWrap.toString();
+			return "Little endian wrapped " + toWrap;
 		}
 
 		@Override
@@ -284,7 +284,7 @@ public final class LittleEndian
 		@Override
 		public String toString()
 		{
-			return "Little endian wrapped " + toWrap.toString();
+			return "Little endian wrapped " + toWrap;
 		}
 
 		@Override

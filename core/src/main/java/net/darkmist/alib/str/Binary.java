@@ -21,6 +21,8 @@ package net.darkmist.alib.str;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 public class Binary
 {
 	private static final Class<Binary> CLASS = Binary.class;
@@ -79,6 +81,7 @@ public class Binary
 	 * @param one The character to use for a one bit.
 	 * @return a String representing bits in binary.
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public static String toString(int bits, char zero, char one)
 	{
 		StringBuilder sb = new StringBuilder(Integer.SIZE);
@@ -114,6 +117,7 @@ public class Binary
 	 * @param one The character to use for a one bit.
 	 * @return a String representing bits in binary.
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public static String toString(short bits, char zero, char one)
 	{
 		StringBuilder sb = new StringBuilder(Integer.SIZE);
@@ -149,6 +153,7 @@ public class Binary
 	 * @param one The character to use for a one bit.
 	 * @return a String representing bits in binary.
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public static String toString(byte bits, char zero, char one)
 	{
 		StringBuilder sb = new StringBuilder(Integer.SIZE);

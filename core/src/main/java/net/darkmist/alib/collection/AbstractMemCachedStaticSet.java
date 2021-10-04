@@ -22,6 +22,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
 import net.darkmist.alib.ref.MemCachedRef;
 
 public abstract class AbstractMemCachedStaticSet<T> extends MemCachedRef<Set<T>> implements Set<T>
@@ -55,6 +60,7 @@ public abstract class AbstractMemCachedStaticSet<T> extends MemCachedRef<Set<T>>
 		return get().iterator();
 	}
 
+	@CanIgnoreReturnValue
 	@Override
 	public boolean add(T e)
 	{
@@ -74,6 +80,7 @@ public abstract class AbstractMemCachedStaticSet<T> extends MemCachedRef<Set<T>>
 		return get().toArray(a);
 	}
 
+	@CanIgnoreReturnValue
 	@Override
 	public boolean remove(Object o)
 	{
@@ -86,18 +93,21 @@ public abstract class AbstractMemCachedStaticSet<T> extends MemCachedRef<Set<T>>
 		return get().containsAll(c);
 	}
 
+	@CanIgnoreReturnValue
 	@Override
 	public boolean addAll(Collection<? extends T> c)
 	{
 		return get().addAll(c);
 	}
 
+	@CanIgnoreReturnValue
 	@Override
 	public boolean retainAll(Collection<?> c)
 	{
 		return get().retainAll(c);
 	}
 
+	@CanIgnoreReturnValue
 	@Override
 	public boolean removeAll(Collection<?> c)
 	{
@@ -105,5 +115,32 @@ public abstract class AbstractMemCachedStaticSet<T> extends MemCachedRef<Set<T>>
 	}
 
 	// public void clear()
+	
+	@Override
+	@SuppressFBWarnings(value="NSE_NON_SYMMETRIC_EQUALS",justification="Definition of set equals.")
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof Set))
+			return false;
+		Set<?> that = (Set<?>)o;
+		if(this.size()!=that.size())
+			return false;
+		for(T t : this)
+			if(!that.contains(t))
+				return false;
+		return true;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int sum = 0;
+
+		for(T t : this)
+			sum += NullSafe.hashCode(t);
+		return sum;
+	}
 }
 

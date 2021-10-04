@@ -5,16 +5,14 @@ import java.lang.reflect.Method;
 
 import net.darkmist.alib.ref.SimpleRef;
 
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
+
 public class SimpleRefInvocationHandler<T> extends SimpleRef<T> implements InvocationHandler
 {
 	public SimpleRefInvocationHandler(Class<T> iface, T target)
 	{
-		super(target);
-		if(target==null)
-			throw new NullPointerException("Target cannot be null.");
-		if(iface==null)
-			throw new NullPointerException("Iface cannot be null.");
-		if(!iface.isInstance(target))
+		super(requireNonNull(target,"target"));
+		if(!requireNonNull(iface,"iface").isInstance(target))
 			throw new IllegalArgumentException("Target is not an instance of " + iface.getName() + '.');
 	}
 

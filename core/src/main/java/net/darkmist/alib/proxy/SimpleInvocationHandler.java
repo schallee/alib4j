@@ -5,17 +5,16 @@ import java.lang.reflect.Method;
 
 import net.darkmist.alib.lang.NullSafe;
 
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
+
 public class SimpleInvocationHandler<T> implements InvocationHandler
 {
 	private final T target;
 
 	public SimpleInvocationHandler(Class<T> iface, T target)
 	{
-		if((this.target=target)==null)
-			throw new NullPointerException("Target cannot be null.");
-		if(iface==null)
-			throw new NullPointerException("Iface cannot be null.");
-		if(!iface.isInstance(target))
+		this.target = requireNonNull(target, "target");
+		if(!requireNonNull(iface, "iface").isInstance(target))
 			throw new IllegalArgumentException("Target is not an instance of " + iface.getName() + '.');
 	}
 

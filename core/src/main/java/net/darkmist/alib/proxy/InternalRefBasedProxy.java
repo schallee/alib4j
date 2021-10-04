@@ -4,6 +4,14 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
+
+@Deprecated // Never functional
+@SuppressFBWarnings(value="IC_INIT_CIRCULARITY", justification="incomplete")
 public class InternalRefBasedProxy<T> implements ProxyIface<T>
 {
 	private static Set<Flags> unmodifiableFlags(Flags...flags)
@@ -145,8 +153,7 @@ public class InternalRefBasedProxy<T> implements ProxyIface<T>
 
 		private Flags(boolean isFactory, Set<Flags> incompatible, Set<Flags> implies)
 		{
-			if((this.incompatible=incompatible)==null)
-				throw new IllegalStateException("incompatible was null");
+			this.incompatible = requireNonNull(incompatible, "incompatible");
 			if(implies==null)
 				implies = Collections.emptySet();
 			this.implies = implies;
@@ -188,7 +195,7 @@ public class InternalRefBasedProxy<T> implements ProxyIface<T>
 
 		public <T> InternalRef<T> instance(Set<Flags> flags, T target)
 		{
-			throw new IllegalStateException("Not facotry.");
+			throw new IllegalStateException(this.name() + " is not a factory.");
 		}
 
 		public static Set<Flags> expandImplies(Set<Flags> flags)
@@ -213,20 +220,16 @@ public class InternalRefBasedProxy<T> implements ProxyIface<T>
 
 	protected InternalRefBasedProxy(InternalRef<T> ref, Set<Flags> flags)
 	{
-		flags = Flags.expandImplies(flags);
+		this.flags = Flags.expandImplies(requireNonNull(flags, "flags"));
 		if(!Flags.isSetCompatible(flags))
-			throw new IllegalArgumentException("Incompatible flags.");
-
-		if((/*this.ref=*/ref)==null)
-			throw new NullPointerException("Ref cannot be null.");
-		if((this.flags=flags)==null)
-			throw new NullPointerException("Flags cannot be null.");
+			throw new IllegalArgumentException("Incompatible flags " + flags + '.');
+		requireNonNull(ref, "ref");
 	}
 
 	protected T getProxyTargetInternal()
 	{
 		// FIXME
-		throw new RuntimeException();
+		throw new RuntimeException(getClass().getSimpleName() + " has not been fully implemented");
 		//return ref.get();
 	}
 
@@ -235,7 +238,7 @@ public class InternalRefBasedProxy<T> implements ProxyIface<T>
 	{
 		if(flags.contains(Flags.ACCESSIBLE))
 			return getProxyTargetInternal();
-		throw new UnsupportedOperationException("Non-accessible proxy.");
+		throw new UnsupportedOperationException("Proxy is not accessible because flag " + Flags.ACCESSIBLE + " is set.");
 	}
 
 	@Override
@@ -244,7 +247,7 @@ public class InternalRefBasedProxy<T> implements ProxyIface<T>
 		if(target==null)
 		{
 			if(flags.contains(Flags.NONNULL))
-				throw new NullPointerException("Proxy reference is configured to never be null.");
+				throw new NullPointerException("Proxy reference is configured with " + Flags.NONNULL + " and target was null.");
 			if(flags.contains(Flags.CLEARABLE))
 			{
 				clearProxyTarget();
@@ -252,7 +255,7 @@ public class InternalRefBasedProxy<T> implements ProxyIface<T>
 			}
 		}
 		if(!flags.contains(Flags.RETARGETABLE))
-			throw new IllegalArgumentException("Proxy reference is configured to not be set.");
+			throw new IllegalArgumentException("Proxy reference is configured without " + Flags.RETARGETABLE + '.');
 		// FIXME: ref.set(target);
 	}
 
@@ -264,6 +267,29 @@ public class InternalRefBasedProxy<T> implements ProxyIface<T>
 			// FIXME: ref.clear();
 			return;
 		}
-		throw new UnsupportedOperationException("Proxy reference configured to not be cleared.");
+		throw new UnsupportedOperationException("Proxy reference configured does not provided " + Flags.CLEARABLE + '.');
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof InternalRefBasedProxy))
+			return false;
+		InternalRefBasedProxy<?> that = (InternalRefBasedProxy<?>)o;
+		return NullSafe.equals(this.flags, that.flags);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(flags);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + " flags=" + flags;
 	}
 }

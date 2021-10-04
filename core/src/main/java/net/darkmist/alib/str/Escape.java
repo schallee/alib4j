@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API methods")
 public class Escape
 {
 	private static final char DEFAULT_ESCAPE = '\\';
@@ -32,8 +35,8 @@ public class Escape
 	public static Appendable unescape(CharSequence src, Appendable dst, char escapeChar, boolean ignoreError) throws IOException, EscapeException
 	{
 		int srcLen = src.length();
-		char ch;		// char from src we're looking at
-		int left = srcLen;	// amount left in src
+		char ch;	// char from src we're looking at
+		int left;	// amount left in src
 		int i;
 
 		srcloop: for(i=0;i<srcLen;i++)	// i also incremented in loop!
@@ -52,7 +55,7 @@ public class Escape
 				if(ignoreError)
 					return dst;
 				else
-					throw new EscapeException("String to escape ends in unescaped escape char.");
+					throw new EscapeException("String to escape ends in unescaped escape char at offset " + i + '.');
 			ch=src.charAt(i);
 			switch(ch)
 			{
@@ -115,7 +118,7 @@ public class Escape
 						if(ignoreError)
 							return dst;
 						else
-							throw new EscapeException("String to escape ends in truncated hex escape");
+							throw new EscapeException("String to escape ends in truncated hex escape at offset " + i + '.');
 					i++;
 					dst.append((char)(Hex.unhexByte(src,i,2)&0xff));
 					i++;
@@ -127,7 +130,7 @@ public class Escape
 						if(ignoreError)
 							return dst;
 						else
-							throw new EscapeException("String to escape ends in truncated unicode hex escape");
+							throw new EscapeException("String to escape ends in truncated unicode hex escape at offset " + i + '.');
 					i++;
 					//System.err.println("unescaped=" + src.subSequence(i,i+4));
 					//System.err.println("unhexShort=" + Integer.toHexString(unhexShort(src,i,4)) + '=');
@@ -157,6 +160,7 @@ public class Escape
 		return unescape(src,dst, DEFAULT_ESCAPE, DEFAULT_IGNORE_ERROR);
 	}
 
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", justification="Appending to StringBuilder")
 	public static String unescape(CharSequence src, char escapeChar,  boolean ignoreError) throws EscapeException
 	{
 		try
@@ -270,6 +274,7 @@ public class Escape
 		return escape(src, dst, EMPTY_CHAR_ARRAY, escapeChar);
 	}
 
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", justification="Appending to StringBuilder")
 	public static String escape(CharSequence src, char[] alsoEscape, char escapeChar)
 	{
 		try
@@ -364,6 +369,7 @@ public class Escape
 		return joinEscaped(dst,delim,DEFAULT_ESCAPE,strs);
 	}
 
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", justification="Appending to StringBuilder")
 	public static String joinEscaped(char delim, char escapeChar, String...strs)
 	{
 		if(strs==null||strs.length==0)

@@ -18,6 +18,8 @@
 
 package net.darkmist.alib.str;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 public class Octal
 {
 	public static final int OCT_CHAR_SIZE = 3;
@@ -31,6 +33,7 @@ public class Octal
 		return ('0'<=c&&c<='7');
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public static byte unoctTriplet(int c)
 	{
 		if(isOctal(c))
@@ -68,6 +71,7 @@ public class Octal
 		return (short)unoctInt(src,0,Math.min(src.length(),SHORT_OCT_CHARS));
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public static int unoctInt(CharSequence src, int off, int len)
 	{
 		int ret = 0;

@@ -21,6 +21,9 @@ package net.darkmist.alib.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import net.darkmist.alib.lang.NullSafe;
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,9 +59,7 @@ public class OutputStreamBitsOutput implements BitsOutput
 	 */
 	public OutputStreamBitsOutput(OutputStream out)
 	{
-		if(out == null)
-			throw new NullPointerException("Out cannot be null.");
-		this.out = out;
+		this.out = requireNonNull(out, "out");
 	}
 
 	/**
@@ -68,9 +69,9 @@ public class OutputStreamBitsOutput implements BitsOutput
 	protected void checkState() throws IOException
 	{
 		if(closed)
-			throw new IOException("Operation on closed output attempted.");
+			throw new IOException("Operation on closed output " + out + " attempted.");
 		if(error)
-			throw new IOException("Operation on output that has already had an error attempted.");
+			throw new IOException("Operation on output " + out + " that has already had an error attempted.");
 	}
 
 	/**
@@ -277,5 +278,35 @@ public class OutputStreamBitsOutput implements BitsOutput
 	 {
 	 	return true;
 	 }
-	
+
+	 @Override
+	 public boolean equals(Object o)
+	 {
+		 if(this==o)
+			 return true;
+		 if(!(o instanceof OutputStreamBitsOutput))
+			 return false;
+		 OutputStreamBitsOutput that = (OutputStreamBitsOutput)o;
+		 if(this.currentBits != that.currentBits)
+			 return false;
+		 if(this.numBitsLeft != that.numBitsLeft)
+			 return false;
+		 if(this.closed != that.closed)
+			 return false;
+		 if(this.error != that.error)
+			 return false;
+		 return NullSafe.equals(this.out, that.out);
+	 }
+
+	 @Override
+	 public int hashCode()
+	 {
+		 return NullSafe.hashCode(currentBits, numBitsLeft, closed, error, out);
+	 }
+
+	 @Override
+	 public String toString()
+	 {
+		 return getClass().getSimpleName() + ": out=" + out + " currentBits=" + currentBits + " numBitsLeft=" + numBitsLeft + " closed=" + closed + " error=" + error;
+	 }
 }

@@ -6,7 +6,14 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
 import net.darkmist.alib.reflect.Reflections;
+
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
 
 public class MultiplexingInvocationHandler<T, C extends Iterable<T>> implements InvocationHandler
 {
@@ -16,12 +23,11 @@ public class MultiplexingInvocationHandler<T, C extends Iterable<T>> implements 
 	private final C targets;
 	private final Set<MultiplexingFlags> flags;
 
-	public MultiplexingInvocationHandler(Class<T> iface, C targets, Set<MultiplexingFlags> flags)
+	@SuppressFBWarnings(value="OPN_OVERLY_PERMISSIVE_METHOD",justification="API method")
+	public MultiplexingInvocationHandler(Class<T> iface, C targets, @Nullable Set<MultiplexingFlags> flags)
 	{
-		if((this.targets=targets)==null)
-			throw new NullPointerException("Targets cannot be null.");
-		if(iface==null)
-			throw new NullPointerException("Iface cannot be null.");
+		this.targets = requireNonNull(targets, "targets");
+		requireNonNull(iface, "iface");
 		if(flags==null)
 			this.flags = DEFAULT_FLAGS;
 		else
@@ -33,7 +39,8 @@ public class MultiplexingInvocationHandler<T, C extends Iterable<T>> implements 
 		this(iface, targets, null);
 	}
 
-	private Object invokeVoidRet(Method meth, Object[] args) throws Throwable
+	@Nullable
+	private Object invokeVoidRet(Method meth, Object...args) throws Throwable
 	{
 		for(T item : targets)
 		{
@@ -43,7 +50,7 @@ public class MultiplexingInvocationHandler<T, C extends Iterable<T>> implements 
 			{
 				meth.invoke(item, args);
 			}
-			catch(Exception e)
+			catch(Throwable e)
 			{
 				if(!flags.contains(MultiplexingFlags.IGNORE_EXCEPTIONS))
 					throw e;
@@ -52,7 +59,9 @@ public class MultiplexingInvocationHandler<T, C extends Iterable<T>> implements 
 		return null;
 	}
 
-	private Object invokeNonVoidRet(Method meth, Object[] args) throws Throwable
+	@Nullable
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS",justification="I don't know why spot bugs is claiming this.")
+	private Object invokeNonVoidRet(Method meth, Object...args) throws Throwable
 	{
 		boolean retSet=false;
 		boolean first=true;
@@ -71,7 +80,7 @@ public class MultiplexingInvocationHandler<T, C extends Iterable<T>> implements 
 				else
 					first=false;
 			}
-			catch(Exception e)
+			catch(Throwable e)
 			{
 				if(!flags.contains(MultiplexingFlags.IGNORE_EXCEPTIONS))
 					throw e;
@@ -88,9 +97,10 @@ public class MultiplexingInvocationHandler<T, C extends Iterable<T>> implements 
 				return null;
 			return Reflections.zeroIfPrimitiveNullOtherwise(retType);
 		}
-		throw new IllegalStateException("No return from any multiplexed items and non-void method.");
+		throw new IllegalStateException("No return from any multiplexed items with method " + meth);
 	}
 
+	@Nullable
 	@Override
 	public Object invoke(Object proxy, Method meth, Object[] args) throws Throwable
 	{
@@ -98,5 +108,31 @@ public class MultiplexingInvocationHandler<T, C extends Iterable<T>> implements 
 			return invokeVoidRet(meth, args);
 		return invokeNonVoidRet(meth, args);
 	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof MultiplexingInvocationHandler))
+			return false;
+		MultiplexingInvocationHandler<?,?> that = (MultiplexingInvocationHandler<?,?>)o;
+		if(!NullSafe.equals(this.flags, that.flags))
+			return false;
+		return NullSafe.equals(this.targets, that.targets);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(targets, flags);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": flags=" + flags + " targets=" + targets;
+	}
+
 }
 

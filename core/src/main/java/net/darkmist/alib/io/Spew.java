@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.apache.commons.io.FileUtils;
 
 public abstract class Spew
@@ -50,6 +52,7 @@ public abstract class Spew
 		*/
 	}
 
+	@SuppressFBWarnings(value="PATH_TRAVERSAL_IN", justification="Library API that ssumes sane use")
 	public static void spew(String filename, byte[] data) throws IOException
 	{
 		FileUtils.writeByteArrayToFile(new File(filename),data);

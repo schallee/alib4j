@@ -29,12 +29,17 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import net.darkmist.alib.reflect.Reflections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
+@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API method")
 final public class Beans
 {
 	private static final Class<Beans> CLASS = Beans.class;
@@ -191,7 +196,7 @@ final public class Beans
 	}
 	*/
 
-	private static void setPropertyAsText(Object bean, String name, String value, PropertyDescriptor pd, Class<?> propCls, Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException, InstantiationException
+	private static void setPropertyAsText(Object bean, String name, String value, PropertyDescriptor pd, Class<?> propCls, @Nullable Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException, InstantiationException
 
 	{
 		PropertyEditor propEdit;
@@ -215,7 +220,7 @@ final public class Beans
 		meth.invoke(bean, propVal);
 	}
 
-	public static void setPropertyAsText(Object bean, String name, String value, Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException, InstantiationException
+	public static void setPropertyAsText(Object bean, String name, String value, @Nullable Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException, InstantiationException
 
 	{
 		PropertyDescriptor pd;
@@ -235,7 +240,7 @@ final public class Beans
 		setPropertyAsText(bean, name, value, null);
 	}
 
-	public static void setProperty(Object bean, String name, Object value, Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException, InstantiationException
+	public static void setProperty(Object bean, String name, Object value, @Nullable Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException, InstantiationException
 	{
 		PropertyDescriptor pd;
 		Method meth;
@@ -273,7 +278,7 @@ final public class Beans
 		setProperty(bean, name, value, null);
 	}
 
-	private static String getPropertyAsText(Object bean, String name, PropertyDescriptor pd, Class<?> propCls, Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException
+	private static String getPropertyAsText(Object bean, String name, PropertyDescriptor pd, Class<?> propCls, @Nullable Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException
 	{
 		PropertyEditor propEdit;
 		Object o;
@@ -300,7 +305,7 @@ final public class Beans
 		return o.toString();	// FIXME: is this proper for a bean?
 	}
 
-	public static String getPropertyAsText(Object bean, String name, Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException
+	public static String getPropertyAsText(Object bean, String name, @Nullable Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException
 	{
 		PropertyDescriptor pd;
 		Class<?> propCls;
@@ -318,7 +323,7 @@ final public class Beans
 		return getPropertyAsText(bean, name, null);
 	}
 
-	public static <T> T getProperty(Object bean, String name, Class<T> valCls, Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException
+	public static <T> T getProperty(Object bean, String name, Class<T> valCls, @Nullable Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException
 	{
 		PropertyDescriptor pd;
 		Method meth;
@@ -351,7 +356,7 @@ final public class Beans
 		return getProperty(bean,name,valCls, null);
 	}
 
-	public static Map<String,?> getProperties(Object bean, Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException
+	public static Map<String,?> getProperties(Object bean, @Nullable Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException
 	{
 		Class<?> beanCls;
 		PropertyDescriptor[] descriptors;
@@ -386,11 +391,11 @@ final public class Beans
 	}
 
 	// FIXME: should this gaurantee no changes when tag issues exist?
-	public static void setProperties(Object bean, Map<String,?> props, Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException, InstantiationException
+	public static void setProperties(Object bean, Map<String,?> props, @Nullable Class<? extends Annotation> tagCls) throws IntrospectionException, IllegalAccessException, InvocationTargetException, InstantiationException
 	{
 		Class<?> beanCls;
 		PropertyDescriptor[] descriptors;
-		Map<String,PropertyDescriptor> descriptorMap = new HashMap<String,PropertyDescriptor>();
+		Map<String,PropertyDescriptor> descriptorMap;
 		Method meth;
 		String name;
 		Object value;
@@ -400,6 +405,7 @@ final public class Beans
 		beanCls = bean.getClass();
 		if((descriptors = Introspector.getBeanInfo(beanCls).getPropertyDescriptors())==null)
 			throw new IllegalArgumentException("Unable to get PropertyDescriptors for class " + beanCls.getName() + '.');
+		descriptorMap = new HashMap<String,PropertyDescriptor>(descriptors.length);
 		for(PropertyDescriptor pd : descriptors)
 			descriptorMap.put(pd.getName(), pd);
 		for(Map.Entry<String,?> prop : props.entrySet())

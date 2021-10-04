@@ -23,6 +23,10 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +56,7 @@ public class DirTraverser
 		return ret;
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public DirTraverser(Queue<File> frontier, FileHandler fileHandler)
 	{
 		if(frontier == null)
@@ -60,6 +65,7 @@ public class DirTraverser
 		this.fileHandler = fileHandler;
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public DirTraverser(File start, FileHandler fileHandler)
 	{
 		this(newQueue(start), fileHandler);
@@ -106,5 +112,31 @@ public class DirTraverser
 			else
 				onFile(dir);
 		}
+	}
+
+	@Override
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="Really?")
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof DirTraverser))
+			return false;
+		DirTraverser that = (DirTraverser)o;
+		if(!NullSafe.equals(this.fileHandler,that.fileHandler))
+			return false;
+		return NullSafe.equals(this.frontier, that.frontier);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(fileHandler,frontier);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": fileHandler=" + fileHandler + " frontier=" + frontier;
 	}
 }

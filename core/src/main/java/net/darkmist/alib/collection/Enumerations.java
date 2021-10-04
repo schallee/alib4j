@@ -25,6 +25,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+@SuppressFBWarnings(value="FCCD_FIND_CLASS_CIRCULAR_DEPENDENCY",justification="I don't see it.")
 public final class Enumerations
 {
 	private Enumerations()
@@ -54,6 +57,7 @@ public final class Enumerations
 		}
 
 		@Override
+		@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 		public T nextElement()
 		{
 			throw new NoSuchElementException("This enumeration is empty");
@@ -73,6 +77,7 @@ public final class Enumerations
 		 * @param e The enumeration to back the iterator with.
 		 * @throws NullPointerException if e is null
 		 */
+		@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 		public EnumerationIterator(Enumeration<T> e)
 		{
 			if(e == null)

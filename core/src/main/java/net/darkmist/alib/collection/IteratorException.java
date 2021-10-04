@@ -24,7 +24,7 @@ package net.darkmist.alib.collection;
 @Deprecated
 public class IteratorException extends RuntimeException
 {
-	static final long serialVersionUID = 3735916997356627464L;
+	private static final long serialVersionUID = 3735916997356627464L;
 
 	public IteratorException(String msg, Throwable cause)
 	{

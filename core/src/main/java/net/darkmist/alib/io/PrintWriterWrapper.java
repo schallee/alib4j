@@ -21,6 +21,10 @@ package net.darkmist.alib.io;
 import java.io.PrintWriter;
 import java.util.Locale;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+
 /** Wrapper for a PrintWriter. */
 public class PrintWriterWrapper extends PrintWriter
 {
@@ -29,6 +33,7 @@ public class PrintWriterWrapper extends PrintWriter
 	/** Construct wrapper based on paramater.
 	 * @param pw_ the {@link PrintWriter} to wrap.
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public PrintWriterWrapper(PrintWriter pw_)
 	{
 		super(pw_);
@@ -292,4 +297,30 @@ public class PrintWriterWrapper extends PrintWriter
 		checkFirstOutput();
 		return super.append(ch);
 	}
+
+	@Override
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="Err...what?")
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof PrintWriterWrapper))
+			return false;
+		if(firstOutputHappened != ((PrintWriterWrapper)o).firstOutputHappened)
+			return false;
+		return super.equals(o);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(super.hashCode(), firstOutputHappened);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": firstOutputHappended=" + firstOutputHappened + " super=" + super.toString();
+	}
+
 }

@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.io.EOFException;
 import java.io.InputStream;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
 import net.darkmist.alib.str.Binary;
 
 import org.slf4j.Logger;
@@ -41,6 +44,7 @@ public class InputStreamBitsInput implements BitsInput
 		this.in = in;
 	}
 
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 	private void addBits(int b)
 	{
 		int finalNumBits;
@@ -122,5 +126,34 @@ public class InputStreamBitsInput implements BitsInput
 		eof = true;
 		numBits = 0;
 		in.close();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof InputStreamBitsInput))
+			return false;
+		InputStreamBitsInput that = (InputStreamBitsInput)o;
+		if(this.bits != that.bits)
+			return false;
+		if(this.numBits != that.numBits)
+			return false;
+		if(this.eof != that.eof)
+			return false;
+		return NullSafe.equals(this.in, that.in);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(bits, numBits, eof, in);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": in=" + in + " bits=" + bits + " numBits=" + numBits + " eof=" + eof;
 	}
 }

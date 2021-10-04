@@ -22,6 +22,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Nullable;
+
+import net.darkmist.alib.lang.NullSafe;
+
 public class Past<T> implements Future<T>
 {
 	private T returnValue;
@@ -31,7 +35,7 @@ public class Past<T> implements Future<T>
 	 * @param value The value to return.
 	 * @param e The exception to wrap and throw
 	 */
-	public Past(T value, Exception e)
+	public Past(@Nullable T value, @Nullable Exception e)
 	{
 		returnValue = value;
 		exception = e;
@@ -40,7 +44,7 @@ public class Past<T> implements Future<T>
 	/** 
 	 * @param value The value to return.
 	 */
-	public Past(T value)
+	public Past(@Nullable T value)
 	{
 		returnValue = value;
 	}
@@ -48,7 +52,7 @@ public class Past<T> implements Future<T>
 	/** 
 	 * @param e The exception to wrap and throw
 	 */
-	public Past(Exception e)
+	public Past(@Nullable Exception e)
 	{
 		exception = e;
 	}
@@ -100,5 +104,31 @@ public class Past<T> implements Future<T>
 		if(exception != null)
 			throw new ExecutionException(exception);
 		return returnValue;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof Past))
+			return false;
+		Past<?> that = (Past<?>)o;
+		if(!NullSafe.equals(this.exception, that.exception))
+			return false;
+		return NullSafe.equals(this.returnValue, that.returnValue);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(returnValue, exception);
+
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": returnValue=" + returnValue  + " exception=" + exception;
 	}
 }

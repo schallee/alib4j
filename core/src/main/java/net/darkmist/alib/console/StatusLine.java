@@ -18,6 +18,8 @@
 
 package net.darkmist.alib.console;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 // not changed since qcomm
 // added lock object since then.
 
@@ -27,6 +29,7 @@ public class StatusLine
 	private static int lastLineLength = 0;
 	private static Object lock = new Object();
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public static void update(CharSequence msg)
 	{
 		synchronized (lock)

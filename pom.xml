@@ -50,19 +50,25 @@
 		<!--<pmd.skip>${slow.skip}</pmd.skip>-->
 		<pmd.skip>true</pmd.skip>
 
-		<spotbugs.version>3.1.12.2</spotbugs.version>
-		<!--<spotbugs.version>4.4.1</spotbugs.version>-->
 		<!--<spotbugs.skip>${slow.skip}</spotbugs.skip>-->
-		<spotbugs.skip>true</spotbugs.skip>
+		<spotbugs.skip>false</spotbugs.skip>
 		<spotbugs.fail>false</spotbugs.fail>
+		<spotbugs.plugin.version>3.1.12.2</spotbugs.plugin.version>
+		<!--<spotbugs.plugin.version>4.4.1</spotbugs.plugin.version>-->
+		<spotbugs.annotations.version>4.0.3</spotbugs.annotations.version>
 
 		<!--<enforcer.skip>${slow.skip}</enforcer.skip>-->
 		<enforcer.skip>true</enforcer.skip>
 		<enforcer.fail>false</enforcer.fail>
+
+		<!-- errorprone -->
+		<errorprone.annotations.version>2.3.4</errorprone.annotations.version>
 	</properties>
+	<!--
 	<prerequisites>
 		<maven>3.3.0</maven>
 	</prerequisites>
+	-->
 	<modules>
 		<module>core</module>
 		<module>db</module>
@@ -383,10 +389,11 @@
 				<plugin>
 					<groupId>com.github.spotbugs</groupId>
 					<artifactId>spotbugs-maven-plugin</artifactId>
-					<version>${spotbugs.version}</version>
+					<version>${spotbugs.plugin.version}</version>
 					<configuration>
 						<skip>${spotbugs.skip}</skip>
-						<fork>true</fork>
+						<!--<fork>true</fork>-->
+						<fork>false</fork>
 						<effort>Max</effort>
 						<threshold>Low</threshold>
 						<failOnError>${spotbugs.fail}</failOnError>
@@ -645,6 +652,24 @@
 				<artifactId>${osgi.service.log.artifactId}</artifactId>
 				<version>${osgi.service.log.version}</version>
 			</dependency>
+
+			<!-- annotations -->
+			<dependency>
+				<groupId>com.google.errorprone</groupId>
+				<artifactId>error_prone_annotations</artifactId>
+				<version>${errorprone.annotations.version}</version>
+			</dependency>
+			<!--yes, there are problems with this but no good replacements -->
+			<dependency>
+				<groupId>com.google.code.findbugs</groupId>
+				<artifactId>jsr305</artifactId>
+				<version>3.0.2</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-annotations</artifactId>
+				<version>${spotbugs.annotations.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<description>A library of java utils...</description>
@@ -792,7 +817,7 @@
 			<plugin>
 				<groupId>com.github.spotbugs</groupId>
 				<artifactId>spotbugs-maven-plugin</artifactId>
-				<version>${spotbugs.version}</version>
+				<version>${spotbugs.plugin.version}</version>
             		</plugin>
 		</plugins>
 	</reporting>

@@ -18,6 +18,12 @@
 
 package net.darkmist.alib.lang;
 
+import javax.annotation.Nullable;
+
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 public class NullSafe
 {
 	protected NullSafe()
@@ -27,7 +33,7 @@ public class NullSafe
 	/**
 	 * Equals that properly handles null values.
 	 */
-	public static boolean equals(Object a, Object b)
+	public static boolean equals(@Nullable Object a, @Nullable Object b)
 	{
 		if(a==b)
 			return true;
@@ -45,8 +51,9 @@ public class NullSafe
 	 */
 	public static boolean pairsEquals(Object...objs)
 	{
-		if(objs==null || objs.length == 0 || objs.length %2 != 0)
-			throw new IllegalArgumentException("Object pairs must be passed.");
+		requireNonNull(objs, "objs");
+		if(objs.length == 0 || objs.length %2 != 0)
+			throw new IllegalArgumentException("Argument count should be non-zero and even but was " + objs.length + '.');
 		for(int i=0;i<objs.length;i+=2)
 			if(!equals(objs[i],objs[i+1]))
 				return false;
@@ -57,7 +64,7 @@ public class NullSafe
 	 * Get a object's hash code and handle null.
 	 * @return 0 if o is null. o.hashCode() otherwise.
 	 */
-	public static int hashCode(Object o)
+	public static int hashCode(@Nullable Object o)
 	{
 		return (o==null ? 0 : o.hashCode());
 	}
@@ -69,7 +76,7 @@ public class NullSafe
 	 * @return Hashcode appropriate for an object containing each
 	 * 	object in objs.
 	 */
-	public static int hashCode(Object first, Object...objs)
+	public static int hashCode(@Nullable Object first, Object...objs)
 	{
 		int ret;
 
@@ -79,7 +86,8 @@ public class NullSafe
 		return ret;
 	}
 
-	public static String toString(Object o, String ifNull)
+	@SuppressFBWarnings(value={"OPM_OVERLY_PERMISSIVE_METHOD","RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"}, justification="API methods, Spotbugs assumes toString always returns non-null")
+	public static String toString(@Nullable Object o, String ifNull)
 	{
 		String ret;
 
@@ -91,12 +99,12 @@ public class NullSafe
 		return ret;
 	}
 
-	public static String toString(Object o)
+	public static String toString(@Nullable Object o)
 	{
 		return toString(o,"");
 	}
 
-	public static <T extends Comparable<T>> int compare(T a, T b)
+	public static <T extends Comparable<T>> int compare(@Nullable T a, @Nullable T b)
 	{
 		if(a == b)
 			return 0;
@@ -105,5 +113,23 @@ public class NullSafe
 		if(b == null)
 			return 1;
 		return a.compareTo(b);
+	}
+
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value={"WEM_WEAK_EXCEPTION_MESSAGING","NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"},justification="Boolean state, Spotbugs bug")
+	public static <T> T requireNonNull(@Nullable T o)
+	{
+		if(o==null)
+			throw new NullPointerException();
+		return o;
+	}
+
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE",justification="Spotbugs bugs")
+	public static <T> T requireNonNull(@Nullable T o, String message)
+	{
+		if(o==null)
+			throw new NullPointerException(message);
+		return o;
 	}
 }

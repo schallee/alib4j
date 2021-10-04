@@ -18,21 +18,33 @@
 
 package net.darkmist.alib.str;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 public abstract class URLEscape
 {
 	private static final Class<URLEscape> CLASS = URLEscape.class;
         private static final Logger logger = LoggerFactory.getLogger(CLASS);
+	private static final Charset UTF8 = getUTF8Charset();
+
+	@SuppressFBWarnings(value={"WEM_WEAK_EXCEPTION_MESSAGING","EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"}, justification="Boolean state")
+	private static Charset getUTF8Charset()
+	{
+		return Charset.forName("UTF-8");
+	}
 
 	private static class URLByte2StrHolder
 	{
+		private static final Class<URLByte2StrHolder> CLASS = URLByte2StrHolder.class;
+        	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 		static final List<String> urlByte2Str = mkUrlByte2Str();
 
 		private static List<String> mkUrlByte2Str()
@@ -107,14 +119,7 @@ public abstract class URLEscape
 
 	private static final byte[] str2Bytes(String in)
 	{
-		try
-		{
-			return in.getBytes("UTF-8");
-		}
-		catch(UnsupportedEncodingException e)
-		{
-			throw new IllegalStateException("JVM Spec requires support for UTF-8 but getBytes(\"UTF-8\") threw a UnsupportedEncodingException",e);
-		}
+		return in.getBytes(UTF8);
 	}
 
 	public static final String escape(String in)

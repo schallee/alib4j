@@ -18,16 +18,20 @@
 
 package net.darkmist.alib.ref;
 
+import javax.annotation.Nullable;
+
 /**
  * Generic reference to another object interface.
  */
 public interface Ref<T>
 {
-	public void set(T obj) throws RefException;
-	public void setReferent(T obj) throws RefException;
-	public T get() throws RefException;
-	public T getReferent() throws RefException;
-	public void clear() throws RefException;
+	public void set(@Nullable T obj);
+	public void setReferent(@Nullable T obj);
+	@Nullable
+	public T get();
+	@Nullable
+	public T getReferent();
+	public void clear();
 	public boolean isSetSupported();
 
 	/**

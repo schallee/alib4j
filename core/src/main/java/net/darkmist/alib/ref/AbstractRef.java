@@ -18,6 +18,8 @@
 
 package net.darkmist.alib.ref;
 
+import javax.annotation.Nullable;
+
 public abstract class AbstractRef<T> implements Ref<T>
 {
 	/**
@@ -26,13 +28,13 @@ public abstract class AbstractRef<T> implements Ref<T>
 	 * @throws RefException always.
 	 */
 	@Override
-	public void set(@SuppressWarnings("unused") T obj) throws RefException
+	public void set(@SuppressWarnings("unused") @Nullable T obj)
 	{
 		throw new RefException(new UnsupportedOperationException());
 	}
 
 	@Override
-	public void setReferent(T obj) throws RefException
+	public void setReferent(@Nullable T obj)
 	{
 		set(obj);
 	}
@@ -43,20 +45,22 @@ public abstract class AbstractRef<T> implements Ref<T>
 		return false;
 	}
 
+	@Nullable
 	@Override
-	public T get() throws RefException
+	public T get()
 	{
 		return null;
 	}
 
+	@Nullable
 	@Override
-	public T getReferent() throws RefException
+	public T getReferent()
 	{
 		return get();
 	}
 
 	@Override
-	public void clear() throws RefException
+	public void clear()
 	{
 		set(null);
 	}

@@ -24,6 +24,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * StrongWeakSet implementation using a {@link WeakHashMap} and a {@link
  * Hashset} internally. Basically this is a proxy for a set created
@@ -32,6 +34,7 @@ import java.util.WeakHashMap;
  * in the WeakHashMap will not be garbage collected from the WeakHashMap
  * because strong references are guaranteed to still exist.
  */
+@SuppressFBWarnings(value={"WOC_WRITE_ONLY_COLLECTION_FIELD","EQ_DOESNT_OVERRIDE_EQUALS"},justification="Used to keep from being dereferenced, Symantics of equals/hashCode implemented in super")
 class StrongWeakHashSet<T> extends SetWrapper.SimplifiedSetWrapper<T,Set<T>> implements StrongWeakSet<T>
 {
 	private final Set<T> strong = new HashSet<T>();
@@ -69,6 +72,12 @@ class StrongWeakHashSet<T> extends SetWrapper.SimplifiedSetWrapper<T,Set<T>> imp
 	{
 		strong.remove(o);
 		return super.remove(o);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": strong=" + strong + " super=" + super.toString();
 	}
 }
 

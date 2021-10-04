@@ -28,31 +28,11 @@ public class RegexStringIteratorTest extends TestCase
 	private static final Class<RegexStringIteratorTest> CLASS = RegexStringIteratorTest.class;
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 
-	static private class RegIt extends RegexStringIterator 
-	{
-		RegIt(CharSequence data)
-		{
-			super(data);
-		}
-
-		@Override
-		protected String getRegex()
-		{
-			return "a";
-		}
-	}
-
 	static private class GroupRegIt extends RegexStringIterator 
 	{
 		GroupRegIt(CharSequence data)
 		{
-			super(data);
-		}
-
-		@Override
-		protected String getRegex()
-		{
-			return "a(.)";
+			super("a(.)",data);
 		}
 
 		@Override
@@ -64,7 +44,7 @@ public class RegexStringIteratorTest extends TestCase
 
 	public void testSimple() throws Exception
 	{
-		RegexStringIterator i = new RegIt("xyzabcxyzabc");
+		RegexStringIterator i = new RegexStringIterator("a","xyzabcxyzabc");
 		int expected = 2;
 		int actual = 0;
 		String tmp;

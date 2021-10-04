@@ -21,9 +21,16 @@ package net.darkmist.alib.res;
 import java.io.InputStream;
 import java.io.IOException;
 
-import org.apache.commons.io.IOUtils;
+import javax.annotation.Nullable;
+
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import net.darkmist.alib.io.Closer;
+import net.darkmist.alib.lang.NullSafe;
+
+import org.apache.commons.io.IOUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +46,7 @@ public class PkgRes
 	private ClassLoader loader;
 	private String prefix;
 
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 	public PkgRes(Class<?> cls)
 	{
 		if(cls == null)
@@ -47,6 +55,7 @@ public class PkgRes
 		prefix = appendResourcePathPrefixFor(null,cls).toString();
 	}
 
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 	public PkgRes(Object obj)
 	{
 		Class<?> cls;
@@ -58,6 +67,7 @@ public class PkgRes
 		prefix = appendResourcePathPrefixFor(null,cls).toString();
 	}
 
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 	public PkgRes(String pkg, ClassLoader loader)
 	{
 		if(pkg == null)
@@ -91,6 +101,7 @@ public class PkgRes
 	 * @return the class's pacakge name.
 	 * @throws NullPointerException if cls is null.
 	 */
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 	public static String getPackageName(Class<?> cls)
 	{
 		Package pkg;
@@ -113,6 +124,7 @@ public class PkgRes
 	 * @return the object's class's pacakge name.
 	 * @throws NullPointerException if obj is null.
 	 */
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 	public static String getPackageName(Object obj)
 	{
 		if(obj == null)
@@ -129,7 +141,9 @@ public class PkgRes
 	 * 	prefixed by pkgName.
 	 * @throws NullPointerException if pkgName is null.
 	 */
-	protected static StringBuilder appendResourcePathPrefixFor(StringBuilder sb, String pkgName)
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
+	protected static StringBuilder appendResourcePathPrefixFor(@Nullable StringBuilder sb, String pkgName)
 	{
 		if(pkgName == null)
 			throw new NullPointerException("pkgName is null");
@@ -139,7 +153,6 @@ public class PkgRes
 		if(pkgName.length() == 0)
 			return sb;
 		sb.append(pkgName.replace('.','/'));
-		pkgName = null;
 		sb.append('/');
 		return sb;
 	}
@@ -153,7 +166,9 @@ public class PkgRes
 	 * 	prefixed by the package name.
 	 * @throws NullPointerException if cls is null.
 	 */
-	protected static StringBuilder appendResourcePathPrefixFor(StringBuilder sb, Class<?> cls)
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
+	protected static StringBuilder appendResourcePathPrefixFor(@Nullable StringBuilder sb, Class<?> cls)
 	{
 		if(cls == null)
 			throw new NullPointerException("cls is null");
@@ -169,7 +184,9 @@ public class PkgRes
 	 * 	prefixed by the package name.
 	 * @throws NullPointerException if obj is null.
 	 */
-	protected static StringBuilder appendResourcePathPrefixFor(StringBuilder sb, Object obj)
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
+	protected static StringBuilder appendResourcePathPrefixFor(@Nullable StringBuilder sb, Object obj)
 	{
 		if(obj == null)
 			throw new NullPointerException("obj is null");
@@ -183,6 +200,7 @@ public class PkgRes
 	 * @return Path of a resource prefixed by the class package name.
 	 * @throws NullPointerException if name or cls are null.
 	 */
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 	public static String getResourcePathFor(CharSequence name, Class<?> cls)
 	{
 		int nameLen;
@@ -195,12 +213,10 @@ public class PkgRes
 		nameLen = name.length();
 		sb = new StringBuilder(cls.getName().length() + nameLen + 2);
 		appendResourcePathPrefixFor(sb,cls);
-		cls = null;
 		if(name.charAt(0)!='/')
 			sb.append(name, 1, nameLen);
 		else
 			sb.append(name);
-		name = null;
 		return sb.toString();
 	}
 
@@ -216,7 +232,7 @@ public class PkgRes
 	public static String getResourcePathFor(CharSequence name, Object obj)
 	{
 		if(obj == null)
-			throw new NullPointerException("obj is null");
+			throw new NullPointerException("obj named " + name + " is null");
 		return getResourcePathFor(name,obj.getClass());
 	}
 
@@ -228,6 +244,7 @@ public class PkgRes
 	 * @throws NullPointerException if name or cls are null.
 	 * 	ResourceException if the resource cannot be found.
 	 */
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 	public static InputStream getFor(String name, Class<?> cls)
 	{
 		InputStream ret;
@@ -247,6 +264,7 @@ public class PkgRes
 	 * @throws NullPointerException if name or obj are null.
 	 * 	ResourceException if the resource cannot be found.
 	 */
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 	public static InputStream getFor(String name, Object obj)
 	{
 		if(obj == null)
@@ -261,6 +279,8 @@ public class PkgRes
 	 * @throws NullPointerException if name is null.
 	 * 	ResourceException if the resource cannot be found.
 	 */
+	@Nullable
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 	public InputStream get(String name)
 	{
 		InputStream ret;
@@ -281,14 +301,14 @@ public class PkgRes
 	 * @throws NullPointerException if name or cls are null.
 	 * 	ResourceException if the resource cannot be found.
 	 */
+	@SuppressFBWarnings(value={"OPM_OVERLY_PERMISSIVE_METHOD","EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"}, justification="API method, Missing resource is usually fatal")
 	public static String getStringFor(String name, Class<?> cls)
 	{
 		InputStream in = null;
 
 		try
 		{
-			if((in = getFor(name, cls))==null)
-				throw new ResourceException("Unablet to find package resource for " + name + " and " + cls);
+			in = getFor(name, cls);
 			return IOUtils.toString(in);
 		}
 		catch(IOException e)
@@ -312,7 +332,7 @@ public class PkgRes
 	public static String getStringFor(String name, Object obj)
 	{
 		if(obj == null)
-			throw new NullPointerException("obj is null");
+			throw new NullPointerException("obj named " + name + " is null");
 		return getStringFor(name,obj.getClass());
 	}
 
@@ -325,6 +345,7 @@ public class PkgRes
 	 *	ResourceException if the resource cannot be found or
 	 * 	there is a error reading it.
 	 */
+	@SuppressFBWarnings(value={"WEM_WEAK_EXCEPTION_MESSAGING","EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"},justification="Boolean state, Missing resource is usually fatal")
 	public String getString(String name)
 	{
 		InputStream in = null;
@@ -355,19 +376,19 @@ public class PkgRes
 	 * @throws NullPointerException if name or cls are null.
 	 * 	ResourceException if the resource cannot be found.
 	 */
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS",justification="Missing resource is usually fatal")
 	public static byte[] getBytesFor(String name, Class<?> cls)
 	{
 		InputStream in = null;
 
 		try
 		{
-			if((in = getFor(name, cls))==null)
-				throw new ResourceException("Unablet to find package resource for " + name + " and " + cls);
+			in = getFor(name, cls);
 			return IOUtils.toByteArray(in);
 		}
 		catch(IOException e)
 		{
-			throw new ResourceException("IOException reading resource");
+			throw new ResourceException("IOException reading resource " + name + " for class " + cls + '.', e);
 		}
 		finally
 		{
@@ -382,6 +403,7 @@ public class PkgRes
 	 * @throws NullPointerException if name or obj are null.
 	 * 	ResourceException if the resource cannot be found.
 	 */
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 	public static byte[] getBytesFor(String name, Object obj)
 	{
 		if(obj == null)
@@ -397,6 +419,7 @@ public class PkgRes
 	 *	ResourceException if the resource cannot be found or
 	 * 	there is a error reading it.
 	 */
+	@SuppressFBWarnings(value={"WEM_WEAK_EXCEPTION_MESSAGING","EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"},justification="Boolean state")
 	public byte[] getBytes(String name)
 	{
 		InputStream in = null;
@@ -417,5 +440,30 @@ public class PkgRes
 		{
 			Closer.close(in,logger,"resource InputStream for " + name);
 		}
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof PkgRes))
+			return false;
+		PkgRes that = (PkgRes)o;
+		if(!NullSafe.equals(this.loader, that.loader))
+			return false;
+		return NullSafe.equals(this.prefix, that.prefix);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(loader,prefix);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": prefix=" + prefix + " loader=" + loader;
 	}
 }

@@ -22,6 +22,7 @@ import java.lang.ref.WeakReference;
 
 public abstract class MemCachedRef<T> extends AbstractRef<T>
 {
+	private final Object lock = new Object();
 	private WeakReference<T> valRef = null;
 
 	/**
@@ -37,7 +38,7 @@ public abstract class MemCachedRef<T> extends AbstractRef<T>
 	{
 		T val;
 
-		synchronized(this)
+		synchronized(lock)
 		{
 			if(valRef==null || (val = valRef.get())==null)
 			{

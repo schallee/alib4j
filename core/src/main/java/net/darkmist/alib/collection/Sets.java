@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Static utilities for {@link Set}s.
  */
@@ -43,6 +45,7 @@ public final class Sets
 	 * easily.
 	 * @return a new empty set.
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public static <T> Set<T> newSet()
 	{
 		return new HashSet<T>();
@@ -55,6 +58,7 @@ public final class Sets
 	 * @param set The set to dupplicate.
 	 * @return a new empty set.
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public static <T> Set<T> dup(Collection<T> collection)
 	{
 		if(isEmpty(collection))
@@ -69,6 +73,7 @@ public final class Sets
 	 * @param initialSize hint defining the initial size.
 	 * @return a new set with the initial capacity
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public static <T> Set<T> newSet(int initialSize)
 	{
 		return new HashSet<T>(initialSize);
@@ -112,6 +117,7 @@ public final class Sets
 		return Collections.unmodifiableSet(set);
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public static <T> Set<T> asUnmodifiable(Set<T> contents)
 	{
 		if(isEmpty(contents))

@@ -21,7 +21,10 @@ package net.darkmist.alib.io;
 import java.io.IOException;
 import java.io.InputStream;
 
+import net.darkmist.alib.lang.NullSafe;
 import net.darkmist.alib.lang.Wrapper;
+
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
 
 public class InputStreamWrapper<I extends InputStream> extends InputStream implements Wrapper<I>
 {
@@ -29,8 +32,7 @@ public class InputStreamWrapper<I extends InputStream> extends InputStream imple
 
 	public InputStreamWrapper(I target)
 	{
-		if((this.target = target)==null)
-			throw new NullPointerException();
+		this.target = requireNonNull(target, "target");
 	}
 
 	@Override
@@ -91,5 +93,27 @@ public class InputStreamWrapper<I extends InputStream> extends InputStream imple
 	public boolean markSupported()
 	{
 		return target.markSupported();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof InputStreamWrapper))
+			return false;
+		return NullSafe.equals(target, ((InputStreamWrapper)o).target);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(target);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": target=" + target;
 	}
 }

@@ -21,6 +21,11 @@ package net.darkmist.alib.str;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 public class Hex
 {
 	private static final String HEX_DUMP_HEADER = "          0011 2233 4455 6677  8899 aabb ccdd eeff  0123456789abcdef\n";
@@ -47,18 +52,21 @@ public class Hex
 		return (char)((n<0xa ? '0' : 'a'-0xa) + n);
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T hexNybble(T dst, int n) throws IOException
 	{
 		dst.append(hexNybble(n));
 		return dst;
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T hexByte(T dst, int b) throws IOException
 	{
 		hexNybble(dst,(b>>HEX_CHAR_SIZE)&0xf);
 		return hexNybble(dst,b&0xf);
 	}
 
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", justification="Appending to StringBuilder")
 	public static StringBuilder hexByte(StringBuilder dst, int b)
 	{
 		try
@@ -82,22 +90,27 @@ public class Hex
 		return hexByte(b);
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T hex(T dst, byte b) throws IOException
 	{
 		return hexByte(dst,b);
 	}
 
+	@CanIgnoreReturnValue
 	public static StringBuilder hex(StringBuilder dst, byte b)
 	{
 		return hexByte(dst, b);
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T hexShort(T dst, int s) throws IOException
 	{
 		hexByte(dst,(s>>8)&0xff);
 		return hexByte(dst,s&0xff);
 	}
 
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", justification="Appending to StringBuilder")
 	public static StringBuilder hexShort(StringBuilder dst, int s)
 	{
 		try
@@ -116,11 +129,13 @@ public class Hex
 		return hexShort(new StringBuilder(), s).toString();
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T hex(T dst, short s) throws IOException
 	{
 		return hexShort(dst,s);
 	}
 
+	@CanIgnoreReturnValue
 	public static StringBuilder hex(StringBuilder dst, short s)
 	{
 		return hexShort(dst,s);
@@ -131,12 +146,15 @@ public class Hex
 		return hexShort(s);
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T hexInt(T dst, int i) throws IOException
 	{
 		hexShort(dst,(i>>16)&0xffff);
 		return hexShort(dst,i&0xffff);
 	}
 
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", justification="Appending to StringBuilder")
 	public static StringBuilder hexInt(StringBuilder dst, int i)
 	{
 		try
@@ -155,11 +173,13 @@ public class Hex
 		return hexInt(new StringBuilder(), i).toString();
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T hex(T dst, int i) throws IOException
 	{
 		return hexInt(dst,i);
 	}
 
+	@CanIgnoreReturnValue
 	public static StringBuilder hex(StringBuilder dst, int i)
 	{
 		return hexInt(dst,i);
@@ -170,12 +190,15 @@ public class Hex
 		return hexInt(i);
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T hexLong(T dst, long l) throws IOException
 	{
 		hexInt(dst,(int)(l>>32));
 		return hexInt(dst,(int)l);
 	}
 
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", justification="Appending to StringBuilder")
 	public static StringBuilder hexLong(StringBuilder dst, long l)
 	{
 		try
@@ -194,11 +217,13 @@ public class Hex
 		return hexLong(new StringBuilder(), l).toString();
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T hex(T dst, long l) throws IOException
 	{
 		return hexLong(dst,l);
 	}
 
+	@CanIgnoreReturnValue
 	public static StringBuilder hex(StringBuilder dst, long l)
 	{
 		return hexLong(dst, l);
@@ -209,6 +234,7 @@ public class Hex
 		return hexLong(l);
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T hex(T dst, byte[] bytes, int off, int len) throws IOException
 	{
 		int end = off + len;
@@ -220,16 +246,19 @@ public class Hex
 		return dst;
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T hex(T dst, byte[] bytes, int off) throws IOException
 	{
 		return hex(dst, bytes, off, bytes.length - off);
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T hex(T dst, byte[] bytes) throws IOException
 	{
 		return hex(dst, bytes, 0, bytes.length);
 	}
 
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", justification="Appending to StringBuilder")
 	public static StringBuilder hex(StringBuilder dst, byte[] bytes, int off, int len)
 	{
 		try
@@ -248,6 +277,8 @@ public class Hex
 		return hex(new StringBuilder(), bytes, off, len).toString();
 	}
 
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", justification="Appending to StringBuilder")
 	public static StringBuilder hex(StringBuilder dst, byte[] bytes, int off)
 	{
 		try
@@ -266,6 +297,8 @@ public class Hex
 		return hex(new StringBuilder(), bytes, off).toString();
 	}
 
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", justification="Appending to StringBuilder")
 	public static StringBuilder hex(StringBuilder dst, byte[] bytes)
 	{
 		try
@@ -284,6 +317,7 @@ public class Hex
 		return hex(new StringBuilder(), bytes).toString();
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T hex(T dst, ByteBuffer buf) throws IOException
 	{
 		buf = buf.duplicate();
@@ -292,6 +326,8 @@ public class Hex
 		return dst;
 	}
 
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS", justification="Writing to ByteBuffer")
 	public static StringBuilder hex(StringBuilder sb, ByteBuffer buf)
 	{
 		try
@@ -427,7 +463,7 @@ public class Hex
 		return unhex(src, 0, srcLen, new  byte[srcLen/2], 0);
 	}
 
-
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T dump(T sb, ByteBuffer buf) throws IOException
 	{
 		StringBuilder printable = new StringBuilder(0x10);
@@ -466,6 +502,8 @@ public class Hex
 		return sb;
 	}
 
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value={"WEM_WEAK_EXCEPTION_MESSAGING","EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"}, justification="Boolean case, writing to ByteBuffer")
 	public static StringBuilder dump(StringBuilder sb, ByteBuffer buf)
 	{
 		try
@@ -484,6 +522,7 @@ public class Hex
 		return dump(new StringBuilder(), buf).toString();
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T dump(T sb, byte[] bytes) throws IOException
 	{
 		return dump(sb, ByteBuffer.wrap(bytes));
@@ -499,11 +538,13 @@ public class Hex
 		return dump(ByteBuffer.wrap(bytes));
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T dump(T sb, byte[] bytes, int off, int len) throws IOException
 	{
 		return dump(sb, ByteBuffer.wrap(bytes,off,len));
 	}
 
+	@CanIgnoreReturnValue
 	public static StringBuilder dump(StringBuilder sb, byte[] bytes, int off, int len)
 	{
 		return dump(sb, ByteBuffer.wrap(bytes,off,len));
@@ -514,11 +555,13 @@ public class Hex
 		return dump(ByteBuffer.wrap(bytes,off,len));
 	}
 
+	@CanIgnoreReturnValue
 	public static <T extends Appendable> T dump(T sb, byte[] bytes, int off) throws IOException
 	{
 		return dump(sb, ByteBuffer.wrap(bytes,off,bytes.length-off));
 	}
 
+	@CanIgnoreReturnValue
 	public static StringBuilder dump(StringBuilder sb, byte[] bytes, int off)
 	{
 		return dump(sb, ByteBuffer.wrap(bytes,off,bytes.length-off));

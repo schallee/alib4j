@@ -18,12 +18,16 @@
 
 package net.darkmist.alib.lang;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API methods")
 public class ValueFits
 {
 	private ValueFits()
 	{
 	}
 
+	@SuppressFBWarnings(value="UP_UNUSED_PARAMETER", justification="Symetry of API")
 	public static boolean fitsByte(@SuppressWarnings("unused") byte b)
 	{
 		return true;
@@ -44,6 +48,7 @@ public class ValueFits
 		return Byte.MIN_VALUE <= l && l <= Byte.MAX_VALUE;
 	}
 
+	@SuppressFBWarnings(value="UP_UNUSED_PARAMETER", justification="Symetry of API")
 	public static boolean fitsByte(@SuppressWarnings("unused") Byte b)
 	{
 		return true;
@@ -64,6 +69,7 @@ public class ValueFits
 		return fitsShort(l.longValue());
 	}
 
+	@SuppressFBWarnings(value="ITC_INHERITANCE_TYPE_CHECKING", justification="Less complex than alternatives")
 	public static boolean fitsByte(Object o)
 	{
 		if(o instanceof Byte)
@@ -77,11 +83,13 @@ public class ValueFits
 		return false;
 	}
 
+	@SuppressFBWarnings(value="UP_UNUSED_PARAMETER", justification="Symetry of API")
 	public static boolean fitsShort(@SuppressWarnings("unused") byte b)
 	{
 		return true;
 	}
 
+	@SuppressFBWarnings(value="UP_UNUSED_PARAMETER", justification="Symetry of API")
 	public static boolean fitsShort(@SuppressWarnings("unused") short s)
 	{
 		return true;
@@ -97,11 +105,13 @@ public class ValueFits
 		return Short.MIN_VALUE <= l && l <= Short.MAX_VALUE;
 	}
 
+	@SuppressFBWarnings(value="UP_UNUSED_PARAMETER", justification="Symetry of API")
 	public static boolean fitsShort(@SuppressWarnings("unused") Byte b)
 	{
 		return true;
 	}
 
+	@SuppressFBWarnings(value="UP_UNUSED_PARAMETER", justification="Symetry of API")
 	public static boolean fitsShort(@SuppressWarnings("unused") Short s)
 	{
 		return true;
@@ -117,6 +127,7 @@ public class ValueFits
 		return fitsShort(l.longValue());
 	}
 
+	@SuppressFBWarnings(value="ITC_INHERITANCE_TYPE_CHECKING", justification="Less complex than alternatives")
 	public static boolean fitsShort(Object o)
 	{
 		if(o instanceof Byte)
@@ -130,16 +141,19 @@ public class ValueFits
 		return false;
 	}
 
+	@SuppressFBWarnings(value="UP_UNUSED_PARAMETER", justification="Symetry of API")
 	public static boolean fitsInt(@SuppressWarnings("unused") byte b)
 	{
 		return true;
 	}
 
+	@SuppressFBWarnings(value="UP_UNUSED_PARAMETER", justification="Symetry of API")
 	public static boolean fitsInt(@SuppressWarnings("unused") short s)
 	{
 		return true;
 	}
 
+	@SuppressFBWarnings(value="UP_UNUSED_PARAMETER", justification="Symetry of API")
 	public static boolean fitsInt(@SuppressWarnings("unused") int i)
 	{
 		return true;
@@ -150,16 +164,19 @@ public class ValueFits
 		return Integer.MIN_VALUE <= l && l <= Integer.MAX_VALUE;
 	}
 
+	@SuppressFBWarnings(value="UP_UNUSED_PARAMETER", justification="Symetry of API")
 	public static boolean fitsInt(@SuppressWarnings("unused") Byte b)
 	{
 		return true;
 	}
 
+	@SuppressFBWarnings(value="UP_UNUSED_PARAMETER", justification="Symetry of API")
 	public static boolean fitsInt(@SuppressWarnings("unused") Short s)
 	{
 		return true;
 	}
 
+	@SuppressFBWarnings(value="UP_UNUSED_PARAMETER", justification="Symetry of API")
 	public static boolean fitsInt(@SuppressWarnings("unused") Integer i)
 	{
 		return true;
@@ -170,6 +187,7 @@ public class ValueFits
 		return fitsInt(l.longValue());
 	}
 
+	@SuppressFBWarnings(value="ITC_INHERITANCE_TYPE_CHECKING", justification="Less complex than alternatives")
 	public static boolean fitsInt(Object o)
 	{
 		if(o instanceof Byte)

@@ -20,26 +20,30 @@ package net.darkmist.alib.str;
 
 import  java.util.regex.Matcher;
 
-public abstract class RegexStringIterator extends RegexIterator<String>
+import javax.annotation.Nullable;
+
+public class RegexStringIterator extends RegexIterator<String>
 {
 	protected int getGroup()
 	{
 		return 0;
 	}
 
+	@Nullable
 	@Override
 	protected String getObj(Matcher matcher_param)
 	{
 		return matcher_param.group(getGroup());
 	}
 
-	public RegexStringIterator(byte[] data)
+	@Deprecated	// Not our job to decode bytes.
+	public RegexStringIterator(CharSequence regex, byte[] data)
 	{
-		super(data);
+		super(regex, data);
 	}
 
-	public RegexStringIterator(CharSequence data)
+	public RegexStringIterator(CharSequence regex, CharSequence data)
 	{
-		super(data);
+		super(regex, data);
 	}
 }

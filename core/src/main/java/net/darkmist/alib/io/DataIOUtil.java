@@ -29,6 +29,10 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
+
 public class DataIOUtil
 {
 	/**
@@ -44,8 +48,7 @@ public class DataIOUtil
 
 		DataInputAsStream(DataInput din)
 		{
-			if((this.din = din)==null)
-				throw new NullPointerException("DataInput cannot be null.");
+			this.din = requireNonNull(din, "din");
 		}
 
 		@Override
@@ -58,6 +61,7 @@ public class DataIOUtil
 		// samantics as read(byte[]...) so is not directly wrapped.
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public static InputStream asInputStream(DataInput din)
 	{
 		if(din instanceof InputStream)
@@ -76,8 +80,7 @@ public class DataIOUtil
 
 		DataOutputAsStream(DataOutput dout)
 		{
-			if((this.dout = dout)==null)
-				throw new NullPointerException("DataOutput cannot be null.");
+			this.dout = requireNonNull(dout, "dout");
 		}
 
 		@Override
@@ -99,6 +102,7 @@ public class DataIOUtil
 		}
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API Method")
 	public static OutputStream asOutputStream(DataOutput dout)
 	{
 		if(dout instanceof OutputStream)

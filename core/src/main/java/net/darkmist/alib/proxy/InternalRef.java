@@ -6,6 +6,11 @@ import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
+
+@Deprecated // Never functional
 public interface InternalRef<T>
 {
 
@@ -33,8 +38,7 @@ public interface InternalRef<T>
 			@Override
 			public <T> InternalRef<T>  instance(final InternalRefFactory nextFactory, final T target)
 			{
-				if(nextFactory==null)
-					throw new NullPointerException();
+				requireNonNull(nextFactory, "nextFactory");
 				return new InternalRef<T>()
 				{
 					private InternalRef<T> next = getNext(nextFactory, target);
@@ -73,8 +77,7 @@ public interface InternalRef<T>
 			@Override
 			public <T> InternalRef<T>  instance(final InternalRefFactory nextFactory, final T target)
 			{
-				if(nextFactory==null)
-					throw new NullPointerException();
+				requireNonNull(nextFactory, "nextFactory");
 				return new InternalRef<T>()
 				{
 					private volatile InternalRef<T> next = getNext(nextFactory, target);
@@ -256,10 +259,8 @@ public interface InternalRef<T>
 
 		public static <T> InternalRef<T> instance(ModifierType modType, ReferenceType refType, T target)
 		{
-			if(modType == null)
-				throw new NullPointerException("Modifier type cannot be null.");
-			if(refType == null)
-				throw new NullPointerException("Reference type cannot be null.");
+			requireNonNull(modType, "modType");
+			requireNonNull(refType, "refType");
 			return modType.instance(refType, target);
 		}
 	}

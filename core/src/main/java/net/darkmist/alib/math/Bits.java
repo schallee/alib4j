@@ -18,6 +18,8 @@
 
 package net.darkmist.alib.math;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 public class Bits
 {
 	/** Only static methods so private constructor */
@@ -25,6 +27,7 @@ public class Bits
 	{
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public static int reverseByte(int in)
 	{
 		/*
@@ -54,6 +57,7 @@ public class Bits
 		return (byte)reverseByte(in);
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public static int reverseShort(int in)
 	{
 		int out = 0;
@@ -72,6 +76,7 @@ public class Bits
 		return (short)reverseShort(in);
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public static int reverseInt(int in)
 	{
 		int out = 0;
@@ -90,6 +95,7 @@ public class Bits
 		return reverseInt(in);
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public static long reverseLong(long in)
 	{
 		long out = 0;

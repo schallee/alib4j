@@ -22,6 +22,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 public class CollectionWrapper<T,I extends Collection<T>> extends IterableWrapper<T,I> implements Collection<T>
 {
 	public CollectionWrapper(I target)
@@ -60,12 +64,14 @@ public class CollectionWrapper<T,I extends Collection<T>> extends IterableWrappe
 		return target.toArray(array);
 	}
 
+	@CanIgnoreReturnValue
 	@Override
 	public boolean add(T e)
 	{
 		return target.add(e);
 	}
 
+	@CanIgnoreReturnValue
 	@Override
 	public boolean remove(Object o)
 	{
@@ -78,18 +84,21 @@ public class CollectionWrapper<T,I extends Collection<T>> extends IterableWrappe
 		return target.containsAll(c);
 	}
 
+	@CanIgnoreReturnValue
 	@Override
 	public boolean addAll(Collection<? extends T> c)
 	{
 		return target.addAll(c);
 	}
 
+	@CanIgnoreReturnValue
 	@Override
 	public boolean removeAll(Collection<?> c)
 	{
 		return target.removeAll(c);
 	}
 
+	@CanIgnoreReturnValue
 	@Override
 	public boolean retainAll(Collection<?> c)
 	{
@@ -132,6 +141,7 @@ public class CollectionWrapper<T,I extends Collection<T>> extends IterableWrappe
 			return target.containsAll(c);
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public boolean addAll(Collection<? extends T> c)
 		{
@@ -142,6 +152,7 @@ public class CollectionWrapper<T,I extends Collection<T>> extends IterableWrappe
 			return ret;
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public boolean removeAll(Collection<?> c)
 		{
@@ -152,6 +163,7 @@ public class CollectionWrapper<T,I extends Collection<T>> extends IterableWrappe
 			return ret;
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public boolean retainAll(Collection<?> c)
 		{
@@ -195,6 +207,7 @@ public class CollectionWrapper<T,I extends Collection<T>> extends IterableWrappe
 				}
 
 				@Override
+				@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING", justification="Boolean case")
 				public void remove()
 				{
 					if(!lastValid)

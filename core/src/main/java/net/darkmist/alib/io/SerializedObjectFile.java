@@ -22,15 +22,20 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.annotation.Nullable;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import net.darkmist.alib.generics.GenericFudge;
+import net.darkmist.alib.lang.NullSafe;
 import net.darkmist.alib.ref.AbstractRef;
 import net.darkmist.alib.ref.RefException;
 
 import static net.darkmist.alib.io.Serializer.deserializeFromFile;
 import static net.darkmist.alib.io.Serializer.serializeToTempFile;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SerializedObjectFile<T extends Serializable> extends AbstractRef<T>
 {
@@ -41,14 +46,15 @@ public class SerializedObjectFile<T extends Serializable> extends AbstractRef<T>
 	private File file;
 	private Class<? extends T> objType;
 
-	public SerializedObjectFile(T obj) throws RefException
+	public SerializedObjectFile(T obj)
 	{
 		set(obj);
 		objType = GenericFudge.getClass(obj);
 	}
 
 	@Override
-	public void set(T obj) throws RefException
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS",justification="Iterface does not throw checked exceptions")
+	public final void set(T obj)
 	{
 		clear();
 		try
@@ -58,12 +64,14 @@ public class SerializedObjectFile<T extends Serializable> extends AbstractRef<T>
 		}
 		catch(IOException e)
 		{
-			throw new RefException("Could not serialize object to file.", e);
+			throw new RefException("Could not serialize " + obj + " to file.", e);
 		}
 	}
 
+	@Nullable
 	@Override
-	public T get() throws RefException
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS",justification="Iterface does not throw checked exceptions")
+	public T get()
 	{
 		T obj;
 
@@ -75,17 +83,17 @@ public class SerializedObjectFile<T extends Serializable> extends AbstractRef<T>
 		}
 		catch(IOException e)
 		{
-			throw new RefException("IOException reading serialized object from file", e);
+			throw new RefException("IOException reading serialized object from " + file, e);
 		}
 		catch(ClassNotFoundException e)
 		{
-			throw new RefException("Serialized object deserialized to different type!", e);
+			throw new RefException("Serialized object deserialized to different type when reading from file " + file + '!', e);
 		}
 		return obj;
 	}
 
 	@Override
-	public void clear() throws RefException
+	public void clear()
 	{
 		try
 		{
@@ -102,5 +110,30 @@ public class SerializedObjectFile<T extends Serializable> extends AbstractRef<T>
 	protected void finalize() throws Throwable
 	{
 		clear();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof SerializedObjectFile))
+			return false;
+		SerializedObjectFile<?> that = (SerializedObjectFile<?>)o;
+		if(!NullSafe.equals(this.file, that.file))
+			return false;
+		return NullSafe.equals(this.objType, that.objType);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(file, objType);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": file=" + file + " objType=" + objType;
 	}
 }

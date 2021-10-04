@@ -26,6 +26,10 @@ import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+
 /** Wrapper around a stream to iterate through the stream one line at a time.
  * @deprecated Use {@link org.apache.commons.io.LineIterator} instead.
  */
@@ -103,7 +107,8 @@ public class LineIterator implements Iterator<String>
 	  *	be retrieved via {@link #getIOException()}.
 	  */
 	@Override
-	public String next() throws NoSuchElementException
+	@SuppressFBWarnings(value={"EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS","WEM_WEAK_EXCEPTION_MESSAGING"}, justification="Iterface cannot throw checked exeception, boolean state")
+	public String next()
 	{
 		String ret;
 
@@ -118,8 +123,10 @@ public class LineIterator implements Iterator<String>
 			}
 			catch(IOException e)
 			{
+				NoSuchElementException nsee = new NoSuchElementException("IOException reading next line.");
 				previousException = e;
-				throw new NoSuchElementException("IOException reading next line.");
+				nsee.initCause(e);
+				throw nsee;
 			}
 		}
 		ret = line;
@@ -131,8 +138,35 @@ public class LineIterator implements Iterator<String>
 	  * @throws UnsupportedOperationException Always thrown.
 	  */
 	@Override
-	public void remove() throws UnsupportedOperationException
+	public void remove()
 	{
 		throw new UnsupportedOperationException("Remove is not supported");
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof LineIterator))
+			return false;
+		LineIterator that = (LineIterator)o;
+		if(!NullSafe.equals(this.line, that.line))
+			return false;
+		if(!NullSafe.equals(this.previousException, that.previousException))
+			return false;
+		return NullSafe.equals(this.in, that.in);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(line, previousException, in);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": in=" + in + " line=" + line + " previousException=" + previousException;
 	}
 }

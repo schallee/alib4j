@@ -23,11 +23,14 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 public class ASCII
 {
 	public static final String CHARSET_NAME = "US-ASCII";
 	public static final Charset CHARSET = getCharSet();
 
+	@SuppressFBWarnings(value={"EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS","WEM_WEAK_EXCEPTION_MESSAGING"},justification="Boolean state, shouldn't happen for ASCII")
 	private static Charset getCharSet()
 	{
 		try
@@ -44,28 +47,16 @@ public class ASCII
 	{
 	}
 
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 	public static String fromBytes(byte[] bytes)
 	{
-		try
-		{
-			return new String(bytes,CHARSET_NAME);
-		}
-		catch(UnsupportedEncodingException e)
-		{
-			throw new IllegalStateException("JVM spec requires " + CHARSET_NAME + " but I got an exception using it.", e);
-		}
+		return new String(bytes,CHARSET);
 	}
 
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 	public static byte[] toBytes(String str)
 	{
-		try
-		{
-			return str.getBytes(CHARSET_NAME);
-		}
-		catch(UnsupportedEncodingException e)
-		{
-			throw new IllegalStateException("JVM spec requires " + CHARSET_NAME + " but I got an exception using it.", e);
-		}
+		return str.getBytes(CHARSET);
 	}
 
 	/**
@@ -73,6 +64,7 @@ public class ASCII
 	 * @param ch The char to check
 	 * @return true if it is printable. false otherwise.
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public static boolean isPrintable(int ch)
 	{
 		switch(ch)
@@ -190,6 +182,7 @@ public class ASCII
 		return '.';
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public static <T extends Appendable> T printable(T sb, byte[] bin, int off, int len) throws IOException
 	{
 		for(len+=off;off<len;off++)
@@ -197,6 +190,7 @@ public class ASCII
 		return sb;
 	}
 
+	@SuppressFBWarnings(value={"OPM_OVERLY_PERMISSIVE_METHOD","EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"},justification="API method, appending to StringBuilder")
 	public static StringBuilder printable(StringBuilder sb, byte[] bin, int off, int len)
 	{
 		try
@@ -206,10 +200,11 @@ public class ASCII
 		}
 		catch(IOException e)
 		{
-			throw new IllegalStateException("Caught IOException appending to a StringBuilder", e);
+			throw new IllegalStateException("Caught IOException appending to a StringBuilder " + sb + '.', e);
 		}
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API method")
 	public static String printable(byte[] bin, int off, int len)
 	{
 		return printable(new StringBuilder(bin.length), bin, off, len).toString();
