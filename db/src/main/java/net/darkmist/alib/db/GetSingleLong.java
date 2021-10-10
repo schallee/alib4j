@@ -25,40 +25,45 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 public class GetSingleLong
 {
 	private GetSingleLong()
 	{
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API")
 	public static long getSingleLong(ResultSet rs) throws SQLException
 	{
 		long ret;
 
 		if(!rs.next())
-			throw new SQLException("Expected single row from query but got no rows at all.");
+			throw new SQLException("Expected single row from resultset " + rs + " but got no rows at all.");
 		ret = rs.getLong(1);
 		if(rs.next())
-			throw new SQLException("Expected single row from query but got more than one row.");
+			throw new SQLException("Expected single row from resultset " + rs + " but got more than one row.");
 
 		return ret;
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API")
 	public static long getSingleLongExclusive(ResultSet rs) throws SQLException
 	{
 		long ret;
 
 		ret = getSingleLong(rs);
 		rs.close();
-		rs = null;
 		return ret;
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API")
 	public static long getSingleLong(PreparedStatement stmt) throws SQLException
 	{
 		return getSingleLongExclusive(stmt.executeQuery());
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="API")
 	public static long getSingleLongExclusive(PreparedStatement stmt) throws SQLException
 	{
 		long ret;
@@ -66,10 +71,10 @@ public class GetSingleLong
 		ret = getSingleLong(stmt);
 		stmt.clearParameters();
 		stmt.close();
-		stmt = null;
 		return ret;
 	}
 
+	@SuppressFBWarnings(value="SQL_INJECTION_JDBC",justification="Util method assuming caller is sane")
 	public static long getSingleLong(Connection db, String sql) throws SQLException
 	{
 		return getSingleLongExclusive(db.prepareStatement(sql));

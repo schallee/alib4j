@@ -24,12 +24,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.annotation.Nullable;
+
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Static methods to convinently close JDBC objects.
  */
+@CanIgnoreReturnValue
 public class DbCloser
 {
 	private static final Class<DbCloser> CLASS = DbCloser.class;
@@ -51,7 +56,8 @@ public class DbCloser
 	 *	stmt.toString() will be used.
 	 * @return null as a convinence to null out the closed object.
 	 */
-	public static Statement close(Statement stmt, Logger logExceptionTo, Object name)
+	@Nullable
+	public static Statement close(@Nullable Statement stmt, @Nullable Logger logExceptionTo, @Nullable Object name)
 	{
 		if(stmt == null)
 			return null;
@@ -75,7 +81,8 @@ public class DbCloser
 	 *	will be used.
 	 * @return null as a convinence to null out the closed object.
 	 */
-	public static Statement close(Statement stmt, Logger logExceptionTo)
+	@Nullable
+	public static Statement close(@Nullable Statement stmt, @Nullable Logger logExceptionTo)
 	{
 		return close(stmt, logExceptionTo, null);
 	}
@@ -87,7 +94,8 @@ public class DbCloser
 	 * @param stmt The statement to close.
 	 * @return null as a convinence to null out the closed object.
 	 */
-	public static Statement close(Statement stmt)
+	@Nullable
+	public static Statement close(@Nullable Statement stmt)
 	{
 		return close(stmt, null, null);
 	}
@@ -103,7 +111,8 @@ public class DbCloser
 	 *	stmt.toString() will be used.
 	 * @return null as a convinence to null out the closed object.
 	 */
-	public static PreparedStatement close(PreparedStatement stmt, Logger logExceptionTo, Object name)
+	@Nullable
+	public static PreparedStatement close(@Nullable PreparedStatement stmt, @Nullable Logger logExceptionTo, @Nullable Object name)
 	{
 		if(stmt == null)
 			return null;
@@ -128,7 +137,8 @@ public class DbCloser
 	 *	to. If this is null, the logger for the DbCloser class
 	 *	will be used.
 	 */
-	public static PreparedStatement close(PreparedStatement stmt, Logger logExceptionTo)
+	@Nullable
+	public static PreparedStatement close(@Nullable PreparedStatement stmt, @Nullable Logger logExceptionTo)
 	{
 		return close(stmt, logExceptionTo, null);
 	}
@@ -139,7 +149,8 @@ public class DbCloser
 	 * logExceptionTo and name.
 	 * @param stmt The statement to close.
 	 */
-	public static PreparedStatement close(PreparedStatement stmt)
+	@Nullable
+	public static PreparedStatement close(@Nullable PreparedStatement stmt)
 	{
 		return close(stmt, null, null);
 	}
@@ -155,7 +166,8 @@ public class DbCloser
 	 *	rs.toString() will be used.
 	 * @return null as a convinence to null out the closed object.
 	 */
-	public static ResultSet close(ResultSet rs, Logger logExceptionTo, Object name)
+	@Nullable
+	public static ResultSet close(@Nullable ResultSet rs, @Nullable Logger logExceptionTo, @Nullable Object name)
 	{
 		if(rs == null)
 			return null;
@@ -179,7 +191,8 @@ public class DbCloser
 	 *	will be used.
 	 * @return null as a convinence to null out the closed object.
 	 */
-	public static ResultSet close(ResultSet rs, Logger logExceptionTo)
+	@Nullable
+	public static ResultSet close(@Nullable ResultSet rs, @Nullable Logger logExceptionTo)
 	{
 		return close(rs,logExceptionTo,null);
 	}
@@ -190,7 +203,8 @@ public class DbCloser
 	 * logExceptionTo and name
 	 * @param rs The result set to close.
 	 */
-	public static ResultSet close(ResultSet rs)
+	@Nullable
+	public static ResultSet close(@Nullable ResultSet rs)
 	{
 		return close(rs,(Logger)null,null);
 	}
@@ -209,7 +223,8 @@ public class DbCloser
 	 *	rs.toString() will be used.
 	 * @return null as a convinence to null out the closed objects.
 	 */
-	public static ResultSet close(ResultSet rs, PreparedStatement stmt, Logger logExceptionTo, Object name)
+	@Nullable
+	public static ResultSet close(@Nullable ResultSet rs, @Nullable PreparedStatement stmt, @Nullable Logger logExceptionTo, @Nullable Object name)
 	{
 		close(rs, logExceptionTo, name);
 		close(stmt, logExceptionTo, name);
@@ -227,7 +242,8 @@ public class DbCloser
 	 *	will be used.
 	 * @return null as a convinence to null out the closed objects.
 	 */
-	public static ResultSet close(ResultSet rs, PreparedStatement stmt, Logger logExceptionTo)
+	@Nullable
+	public static ResultSet close(@Nullable ResultSet rs, @Nullable PreparedStatement stmt, @Nullable Logger logExceptionTo)
 	{
 		return close(rs,stmt,logExceptionTo,null);
 	}
@@ -240,7 +256,8 @@ public class DbCloser
 	 * @param stmt The statement to close.
 	 * @return null as a convinence to null out the closed objects.
 	 */
-	public static ResultSet close(ResultSet rs, PreparedStatement stmt)
+	@Nullable
+	public static ResultSet close(@Nullable ResultSet rs, @Nullable PreparedStatement stmt)
 	{
 		return close(rs,stmt,(Logger)null,null);
 	}
@@ -256,7 +273,8 @@ public class DbCloser
 	 *	conn.toString() will be used.
 	 * @return null as a convinence to null out the closed object.
 	 */
-	public static Connection close(Connection conn, Logger logExceptionTo, Object name)
+	@Nullable
+	public static Connection close(@Nullable Connection conn, @Nullable Logger logExceptionTo, @Nullable Object name)
 	{
 		if(conn == null)
 			return null;
@@ -280,7 +298,8 @@ public class DbCloser
 	 *	will be used.
 	 * @return null as a convinence to null out the closed object.
 	 */
-	public static Connection close(Connection conn, Logger logExceptionTo)
+	@Nullable
+	public static Connection close(@Nullable Connection conn, @Nullable Logger logExceptionTo)
 	{
 		return close(conn,logExceptionTo,null);
 	}
@@ -292,7 +311,8 @@ public class DbCloser
 	 * @param conn The conneciton to close.
 	 * @return null as a convinence to null out the closed object.
 	 */
-	public static Connection close(Connection conn)
+	@Nullable
+	public static Connection close(@Nullable Connection conn)
 	{
 		return close(conn,null,null);
 	}
@@ -312,7 +332,8 @@ public class DbCloser
 	 * 	name the object closed for any logged exception.
 	 * @return null as a convinence to null out the closed objects.
 	 */
-	public static ResultSet close(ResultSet rs, PreparedStatement stmt, Connection conn, Logger logExceptionTo, Object name)
+	@Nullable
+	public static ResultSet close(@Nullable ResultSet rs, @Nullable PreparedStatement stmt, @Nullable Connection conn, @Nullable Logger logExceptionTo, @Nullable Object name)
 	{
 		close(rs, stmt, logExceptionTo,name);
 		close(conn,logExceptionTo,name);
@@ -331,7 +352,8 @@ public class DbCloser
 	 *	will be used.
 	 * @return null as a convinence to null out the closed objects.
 	 */
-	public static ResultSet close(ResultSet rs, PreparedStatement stmt, Connection conn, Logger logExceptionTo)
+	@Nullable
+	public static ResultSet close(@Nullable ResultSet rs, @Nullable PreparedStatement stmt, @Nullable Connection conn, @Nullable Logger logExceptionTo)
 	{
 		return close(rs,stmt,conn,logExceptionTo,null);
 	}
@@ -345,7 +367,8 @@ public class DbCloser
 	 * @param conn The connection to close.
 	 * @return null as a convinence to null out the closed objects.
 	 */
-	public static ResultSet close(ResultSet rs, PreparedStatement stmt, Connection conn)
+	@Nullable
+	public static ResultSet close(@Nullable ResultSet rs, @Nullable PreparedStatement stmt, @Nullable Connection conn)
 	{
 		return close(rs,stmt,conn,null,null);
 	}

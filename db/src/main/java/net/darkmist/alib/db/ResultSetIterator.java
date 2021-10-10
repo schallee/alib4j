@@ -25,6 +25,10 @@ import java.sql.ResultSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import static net.darkmist.alib.db.LocalNullSafe.requireNonNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,8 +87,8 @@ public class ResultSetIterator<E> implements Iterator<E>
 	  * when calling {@link java.sql.ResultSet#next()}. */
 	public ResultSetIterator(ResultSet rs, Row2Obj<E> converter) throws SQLException
 	{
-		this.rs = rs;
-		this.converter = converter;
+		this.rs = requireNonNull(rs, "rs");
+		this.converter = requireNonNull(converter, "converter");
 		advance();
 	}
 
@@ -99,16 +103,16 @@ public class ResultSetIterator<E> implements Iterator<E>
 	  * {@link java.sql.ResultSet} does. */
 	public ResultSetIterator(PreparedStatement stmt, Row2Obj<E> converter) throws SQLException
 	{
-		this.converter = converter;
-		this.stmt = stmt;
+		this.converter = requireNonNull(converter, "converter");
+		this.stmt = requireNonNull(stmt, "stmt");
 		rs = stmt.executeQuery();
 		advance();
 	}
 
 	public ResultSetIterator(PreparedStatement stmt, Row2Obj<E> converter, boolean exclusive) throws SQLException
 	{
-		this.converter = converter;
-		this.stmt = stmt;
+		this.converter = requireNonNull(converter, "converter");
+		this.stmt = requireNonNull(stmt, "stmt");
 		rs = stmt.executeQuery();
 		this.exclusive = exclusive;
 		if(exclusive)
@@ -119,37 +123,38 @@ public class ResultSetIterator<E> implements Iterator<E>
 
 	protected ResultSetIterator(ResultSet rs, boolean exclusive) throws SQLException
 	{
-		this.rs = rs;
-		this.exclusive = exclusive;
+		this.rs = requireNonNull(rs, "rs");
+		this.exclusive = requireNonNull(exclusive, "exclusive");
 		advance();
 	}
 
 	protected ResultSetIterator(ResultSet rs) throws SQLException
 	{
-		this.rs = rs;
+		this.rs = requireNonNull(rs, "rs");
 		advance();
 	}
 
 	protected ResultSetIterator(PreparedStatement stmt) throws SQLException
 	{
+		this.stmt = requireNonNull(stmt, "stmt");
 		rs = stmt.executeQuery();
-		this.stmt = stmt;
 		advance();
 	}
 
 	protected ResultSetIterator(PreparedStatement stmt, boolean exclusive) throws SQLException
 	{
+		this.stmt = requireNonNull(stmt, "stmt");
 		rs = stmt.executeQuery();
-		this.stmt = stmt;
 		this.exclusive = exclusive;
 		if(exclusive)
 			stmt.clearParameters();
 		advance();
 	}
 
+	@SuppressFBWarnings(value="SQL_INJECTION_JDBC", justification="Library that assumes caller is sane")
 	protected ResultSetIterator(Connection db, String sql) throws SQLException
 	{
-		stmt = db.prepareStatement(sql);
+		stmt = requireNonNull(db, "db").prepareStatement(sql);
 		exclusive = true;
 		rs = stmt.executeQuery();
 		stmt.clearParameters();
@@ -159,7 +164,7 @@ public class ResultSetIterator<E> implements Iterator<E>
 	@SuppressWarnings("unused")
 	protected void setConverter(Row2Obj<E> converter) throws SQLException
 	{
-		this.converter = converter;
+		this.converter = requireNonNull(converter, "converter");
 	}
 
 	/////////////////////
@@ -170,7 +175,7 @@ public class ResultSetIterator<E> implements Iterator<E>
 	  * set if there are more rows to retrieve.
 	  * @throws SQLException if calling
 	  * {@link java.sql.ResultSet#next()} on {@link #rs} does. */
-	private void advance() throws SQLException
+	private final void advance() throws SQLException
 	{
 		if(rs.next())
 			more = true;
@@ -185,6 +190,7 @@ public class ResultSetIterator<E> implements Iterator<E>
 	// public Methods //
 	////////////////////
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API")
 	public void close() throws SQLException
 	{
 		more = false;
@@ -202,6 +208,7 @@ public class ResultSetIterator<E> implements Iterator<E>
 		}
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API")
 	public ResultSetIterator<E> setExclusive(boolean exclusive) throws SQLException
 	{
 		this.exclusive = exclusive;
@@ -236,10 +243,10 @@ public class ResultSetIterator<E> implements Iterator<E>
 	  * @throws NoSuchElementException if there are no more results.
 	  * @throws IllegalStateException For other exceptions caught from {@link Row2Obj#resultSetIteratorRow2Obj(ResultSet)} or an {@link java.sql.SQLException} from {@link java.sql.ResultSet#next()}. */
 	@Override
-	public E next() throws NoSuchElementException
+	public E next()
 	{
 		if(!more)
-			throw new NoSuchElementException("No more rows to return");
+			throw new NoSuchElementException("No more rows from " + rs + " to return");
 		try
 		{
 			E ret = converter.resultSetIteratorRow2Obj(rs);
@@ -252,19 +259,51 @@ public class ResultSetIterator<E> implements Iterator<E>
 		}
 		catch(SQLException e)
 		{
-			throw new IllegalStateException("SQLException which cannot be rethrown caught", e);
+			throw new IllegalStateException("SQLException getting row from result set " + rs + " which cannot be rethrown caught", e);
 		}
 		catch(Exception e)
 		{
-			throw new IllegalStateException("Exception which cannot be rethrown caught", e);
+			throw new IllegalStateException("Exception converting result set to object via " + converter + "  which cannot be rethrown caught", e);
 		}
 	}
 
 	/** Unsupported remove operation.
 	  * @throws UnsupportedOperationException always */
 	@Override
-	public void remove() throws UnsupportedOperationException
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING", justification="Inherint state of implementation")
+	public void remove()
 	{
 		throw new UnsupportedOperationException("remove is not implemented for ResultSetIterator");
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof ResultSetIterator))
+			return false;
+		ResultSetIterator<?> that = (ResultSetIterator<?>)o;
+		if(this.more != that.more)
+			return false;
+		if(this.exclusive != that.exclusive)
+			return false;
+		if(!LocalNullSafe.equals(this.rs, that.rs))
+			return false;
+		if(!LocalNullSafe.equals(this.stmt, that.stmt))
+			return false;
+		return LocalNullSafe.equals(this.converter, that.converter);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return LocalNullSafe.hashCode(rs, stmt, more, converter, exclusive);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": rs=" + rs + " stmt=" + stmt + " more=" + more + " converter=" + converter + " exclusive=" + exclusive;
 	}
 }

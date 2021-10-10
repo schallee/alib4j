@@ -22,6 +22,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +39,7 @@ public final class DbUtil
 	{
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API")
 	public static void cleanup(PreparedStatement stmt)
 	{
 		if(stmt == null)
@@ -59,6 +62,7 @@ public final class DbUtil
 		}
 	}
 	
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API")
 	public static void cleanup(ResultSet rs)
 	{
 		if(rs == null)
@@ -73,6 +77,7 @@ public final class DbUtil
 		}
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API")
 	public static void cleanup(ResultSet rs, PreparedStatement stmt)
 	{
 		cleanup(rs);
