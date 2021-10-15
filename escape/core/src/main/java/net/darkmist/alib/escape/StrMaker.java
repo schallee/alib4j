@@ -23,14 +23,24 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 interface StrMaker
 {
 	public String makeStr(int code);
+
+	@CanIgnoreReturnValue
 	public Appendable appendStr(Appendable appendable, int code) throws IOException;
+
+	@CanIgnoreReturnValue
 	public StringBuilder appendStr(StringBuilder sb, int code);
+
+	@CanIgnoreReturnValue
 	public StringBuffer appendStr(StringBuffer sb, int code);
 
 	abstract class Abstract implements StrMaker
@@ -49,7 +59,9 @@ interface StrMaker
 			return appendStr(new StringBuilder(), code).toString();
 		}
 
+		@CanIgnoreReturnValue
 		@Override
+		@SuppressFBWarnings(value={"EXS_EXCEPTION_SOFTENING_NO_CHECKED","WEM_WEAK_EXCEPTION_MESSAGING"}, justification="Boolean state that shouldn't happen")
 		public StringBuilder appendStr(StringBuilder sb, int code)
 		{
 			try
@@ -63,7 +75,9 @@ interface StrMaker
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
+		@SuppressFBWarnings(value={"EXS_EXCEPTION_SOFTENING_NO_CHECKED","WEM_WEAK_EXCEPTION_MESSAGING"}, justification="Boolean state that shouldn't happen")
 		public StringBuffer appendStr(StringBuffer sb, int code)
 		{
 			try
@@ -114,6 +128,7 @@ interface StrMaker
 
 		protected abstract Appendable appendStrNoCache(Appendable appendable, int ch) throws IOException;
 
+		@SuppressFBWarnings(value={"EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS","WEM_WEAK_EXCEPTION_MESSAGING"}, justification="Boolean state that shouldn't happen")
 		protected String makeStrNoCache(int ch)
 		{
 			try
@@ -126,11 +141,12 @@ interface StrMaker
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public String makeStr(int ch)
 		{
 			if(ch < 0)
-				throw new IllegalArgumentException("Character code was less than zero");
+				throw new IllegalArgumentException("Character code " + ch + " was less than zero");
 			if(cache == null)
 				logger.warn("Cache was never initialized for {}", this);
 			else if(ch<cache.size())
@@ -138,11 +154,12 @@ interface StrMaker
 			return makeStrNoCache(ch);
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public Appendable appendStr(Appendable appendable, int ch) throws IOException
 		{
 			if(ch < 0)
-				throw new IllegalArgumentException("Character code was less than zero");
+				throw new IllegalArgumentException("Character code " + ch + " was less than zero");
 			if(cache == null)
 				logger.warn("Cache was never initialized for {}", this);
 			else if(ch<cache.size())

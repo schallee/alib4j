@@ -21,39 +21,65 @@ package net.darkmist.alib.escape;
 import java.io.IOException;
 import java.io.Writer;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressFBWarnings(value={"EXS_EXCEPTION_SOFTENING_NO_CHECKED","WEM_WEAK_EXCEPTION_MESSAGING"}, justification="Boolean state that shouldn't happen")
 public interface Escaper
 {
 	public String escape(int ch);
 	public String escape(String str);
 
 	// StringBuilder like methods
+	@CanIgnoreReturnValue
 	public StringBuilder escape(StringBuilder sb, int ch);
+	@CanIgnoreReturnValue
 	public StringBuilder escape(StringBuilder sb, String str);
+	@CanIgnoreReturnValue
 	public StringBuilder escape(StringBuilder sb, String str, int off, int len);
+	@CanIgnoreReturnValue
 	public StringBuilder escape(StringBuilder sb, CharSequence str);
+	@CanIgnoreReturnValue
 	public StringBuilder escape(StringBuilder sb, CharSequence str, int off, int len);
+	@CanIgnoreReturnValue
 	public StringBuilder escape(StringBuilder sb, char[] chars);
+	@CanIgnoreReturnValue
 	public StringBuilder escape(StringBuilder sb, char[] chars, int off, int len);
 
 	// StringBuffer like methods
+	@CanIgnoreReturnValue
 	public StringBuffer escape(StringBuffer sb, int ch);
+	@CanIgnoreReturnValue
 	public StringBuffer escape(StringBuffer sb, String str);
+	@CanIgnoreReturnValue
 	public StringBuffer escape(StringBuffer sb, String str, int off, int len);
+	@CanIgnoreReturnValue
 	public StringBuffer escape(StringBuffer sb, CharSequence str);
+	@CanIgnoreReturnValue
 	public StringBuffer escape(StringBuffer sb, CharSequence str, int off, int len);
+	@CanIgnoreReturnValue
 	public StringBuffer escape(StringBuffer sb, char[] chars);
+	@CanIgnoreReturnValue
 	public StringBuffer escape(StringBuffer sb, char[] chars, int off, int len);
 
 	// Appendable like methods
+	@CanIgnoreReturnValue
 	public Appendable escape(Appendable appendable, int ch) throws IOException;
+	@CanIgnoreReturnValue
 	public Appendable escape(Appendable appendable, String str) throws IOException;
+	@CanIgnoreReturnValue
 	public Appendable escape(Appendable appendable, String str, int off, int len) throws IOException;
+	@CanIgnoreReturnValue
 	public Appendable escape(Appendable appendable, CharSequence str) throws IOException;
+	@CanIgnoreReturnValue
 	public Appendable escape(Appendable appendable, CharSequence str, int start, int end) throws IOException;
+	@CanIgnoreReturnValue
 	public Appendable escape(Appendable appendable, char[] chars) throws IOException;
+	@CanIgnoreReturnValue
 	public Appendable escape(Appendable appendable, char[] chars, int off, int len) throws IOException;
 
 
@@ -63,6 +89,7 @@ public interface Escaper
 	 * @return A writer that escapes all output and then writes it
 	 * 	to out.
 	 */
+	@CanIgnoreReturnValue
 	public Writer escape(Writer out);
 
 	public abstract class Abstract implements Escaper
@@ -83,6 +110,7 @@ public interface Escaper
 			return escape(new StringBuilder(), str).toString();
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public StringBuilder escape(StringBuilder sb, int ch)
 		{
@@ -97,6 +125,7 @@ public interface Escaper
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public StringBuilder escape(StringBuilder sb, String str)
 		{
@@ -111,6 +140,7 @@ public interface Escaper
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public StringBuilder escape(StringBuilder sb, String str, int off, int len)
 		{
@@ -125,6 +155,7 @@ public interface Escaper
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public StringBuilder escape(StringBuilder sb, CharSequence str)
 		{
@@ -139,6 +170,7 @@ public interface Escaper
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public StringBuilder escape(StringBuilder sb, CharSequence str, int off, int len)
 		{
@@ -153,6 +185,7 @@ public interface Escaper
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public StringBuilder escape(StringBuilder sb, char[] chars)
 		{
@@ -167,6 +200,7 @@ public interface Escaper
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public StringBuilder escape(StringBuilder sb, char[] chars, int off, int len)
 		{
@@ -181,6 +215,7 @@ public interface Escaper
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public StringBuffer escape(StringBuffer sb, int ch)
 		{
@@ -195,6 +230,7 @@ public interface Escaper
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public StringBuffer escape(StringBuffer sb, String str)
 		{
@@ -209,6 +245,7 @@ public interface Escaper
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public StringBuffer escape(StringBuffer sb, String str, int off, int len)
 		{
@@ -223,6 +260,7 @@ public interface Escaper
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public StringBuffer escape(StringBuffer sb, CharSequence str)
 		{
@@ -237,6 +275,7 @@ public interface Escaper
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public StringBuffer escape(StringBuffer sb, CharSequence str, int off, int len)
 		{
@@ -251,6 +290,7 @@ public interface Escaper
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public StringBuffer escape(StringBuffer sb, char[] chars)
 		{
@@ -265,6 +305,7 @@ public interface Escaper
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public StringBuffer escape(StringBuffer sb, char[] chars, int off, int len)
 		{
@@ -279,18 +320,21 @@ public interface Escaper
 			}
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public Appendable escape(Appendable appendable, int ch) throws IOException
 		{
 			return appendable.append(escape(ch));
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public Appendable escape(Appendable appendable, String str) throws IOException
 		{
 			return escape(appendable, str, 0, str.length());
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public Appendable escape(Appendable appendable, String str, int off, int len) throws IOException
 		{
@@ -306,6 +350,7 @@ public interface Escaper
 			return appendable;
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public Appendable escape(Appendable appendable, CharSequence str) throws IOException
 		{
@@ -313,6 +358,7 @@ public interface Escaper
 			return escape(appendable, str.toString());
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public Appendable escape(Appendable appendable, CharSequence str, int start, int end) throws IOException
 		{
@@ -320,6 +366,7 @@ public interface Escaper
 			return escape(appendable, str.toString(), start, end);
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public Appendable escape(Appendable appendable, char[] chars) throws IOException
 		{
@@ -327,6 +374,7 @@ public interface Escaper
 			return escape(appendable, String.valueOf(chars));
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public Appendable escape(Appendable appendable, char[] chars, int off, int len) throws IOException
 		{
@@ -334,6 +382,7 @@ public interface Escaper
 			return escape(appendable, String.valueOf(chars, off, len));
 		}
 
+		@CanIgnoreReturnValue
 		@Override
 		public Writer escape(Writer out)
 		{

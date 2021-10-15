@@ -18,6 +18,8 @@
 
 package net.darkmist.alib.escape;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 class Util
 {
 	public static final String STRING_BUILDER_IO_EXCEPTION = "IOException appending to StringBuilder cast to Appendable?";
@@ -29,11 +31,13 @@ class Util
 	{
 	}
 
+	@SuppressFBWarnings(value="MRC_METHOD_RETURNS_CONSTANT", justification="For convinence in changing without rebuilting everything")
 	static int getCacheSizeDefault()
 	{
 		return DEFAULT_CACHE_SIZE;
 	}
 
+	@SuppressFBWarnings(value="MRC_METHOD_RETURNS_CONSTANT", justification="For convinence in changing without rebuilting everything")
 	static String getCacheSizePropName()
 	{
 		return CACHE_SIZE_PROP_NAME;

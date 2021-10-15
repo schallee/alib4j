@@ -40,9 +40,9 @@ class TwoCharHexMaker extends StrMaker.PreCachedSingletonAbstract
 	protected Appendable appendStrNoCache(Appendable appendable, int ch) throws IOException
 	{
 		if(ch < 0)
-			throw new IllegalArgumentException("Negative code point.");
+			throw new IllegalArgumentException("Character code " + ch + " is negative.");
 		if(ch > 0xFF)
-			throw new IllegalArgumentException("Char code is too large for two hex digits.");
+			throw new IllegalArgumentException("Character code " + ch + " is too large for two hex digits.");
 		if(ch < 0x10)
 			appendable.append('0');
 		return appendable.append(Integer.toHexString(ch));

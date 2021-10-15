@@ -40,7 +40,7 @@ public class CSS extends Escaper.Abstract
 		switch(ch)
 		{
 			case 0:
-				throw new IllegalArgumentException("Chracter value zero is not valid in CSS");
+				throw new IllegalArgumentException("Chracter " + ch + " has value zero is not valid in CSS");
 			case 'a':
 			case 'b':
 			case 'c':

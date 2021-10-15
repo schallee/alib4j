@@ -46,9 +46,15 @@ class BackSlashXHexMaker extends StrMaker.PreCachedSingletonAbstract
 	protected Appendable appendStrNoCache(Appendable appendable, int ch) throws IOException
 	{
 		if(ch < 0)
-			throw new IllegalArgumentException("Negative code point.");
+			throw new IllegalArgumentException("Code point " + ch + " is negative.");
 		if(ch > 0xFF)
-			throw new IllegalArgumentException("Char code is too large for two hex digits.");
+			throw new IllegalArgumentException("Char code " + ch + " is too large for two hex digits.");
 		return TWO_CHAR_HEX.appendStr(appendable.append("\\x"), ch);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName();	// singleton
 	}
 }

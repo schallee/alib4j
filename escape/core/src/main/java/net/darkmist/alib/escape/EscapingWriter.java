@@ -22,6 +22,8 @@ import java.io.Writer;
 import java.io.IOException;
 import java.io.FilterWriter;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
 class EscapingWriter extends FilterWriter
 {
 	private final Escaper escaper;
@@ -62,6 +64,7 @@ class EscapingWriter extends FilterWriter
 		escaper.escape(out, str, off, len);
 	}
 
+	@CanIgnoreReturnValue
 	@Override
 	public Writer append(char ch) throws IOException
 	{
@@ -69,6 +72,7 @@ class EscapingWriter extends FilterWriter
 		return this;
 	}
 
+	@CanIgnoreReturnValue
 	@Override
 	public Writer append(CharSequence str) throws IOException
 	{
@@ -76,6 +80,7 @@ class EscapingWriter extends FilterWriter
 		return this;
 	}
 
+	@CanIgnoreReturnValue
 	@Override
 	public Writer append(CharSequence str, int off, int len) throws IOException
 	{
@@ -93,5 +98,30 @@ class EscapingWriter extends FilterWriter
 	public void close() throws IOException
 	{
 		out.close();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof EscapingWriter))
+			return false;
+		EscapingWriter that = (EscapingWriter)o;
+		if(!LocalNullSafe.equals(this.escaper, that.escaper))
+			return false;
+		return super.equals(that);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return LocalNullSafe.hashCode(super.hashCode(), escaper);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": escaper=" + escaper + " super:" + super.toString();
 	}
 }

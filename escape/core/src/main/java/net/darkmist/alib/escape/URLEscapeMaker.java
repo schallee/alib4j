@@ -63,9 +63,15 @@ class URLEscapeMaker extends StrMaker.PreCachedSingletonAbstract
 	protected Appendable appendStrNoCache(Appendable appendable, int ch) throws IOException
 	{
 		if(ch < 0)
-			throw new IllegalArgumentException("Negative valued character is invalid.");
+			throw new IllegalArgumentException("Character value " + ch + " is negative.");
 		if(ch < 0x100)
 			return appendSingleByteEscape(appendable, ch);
 		return appendMultiByteEscape(appendable, ch);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + " SINGLETON";
 	}
 }

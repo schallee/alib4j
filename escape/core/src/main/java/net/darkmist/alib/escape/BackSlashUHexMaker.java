@@ -47,9 +47,15 @@ class BackSlashUHexMaker extends StrMaker.PreCachedSingletonAbstract
 	protected Appendable appendStrNoCache(Appendable appendable, int ch) throws IOException
 	{
 		if(ch < 0)
-			throw new IllegalArgumentException("Negative code point.");
+			throw new IllegalArgumentException("Code point " + ch + " is negative.");
 		if(ch > 0xFFFF)
-			throw new IllegalArgumentException("Char code is too large for four hex digits.");
+			throw new IllegalArgumentException("Char code " + ch + " is too large for four hex digits.");
 		return FOUR_CHAR_HEX.appendStr(appendable.append("\\u"), ch);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName();	// singleton
 	}
 }

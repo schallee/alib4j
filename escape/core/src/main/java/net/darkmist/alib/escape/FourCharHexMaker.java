@@ -20,6 +20,8 @@ package net.darkmist.alib.escape;
 
 import java.io.IOException;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 class FourCharHexMaker extends StrMaker.PreCachedSingletonAbstract
 {
 	@SuppressWarnings("unused")
@@ -40,9 +42,9 @@ class FourCharHexMaker extends StrMaker.PreCachedSingletonAbstract
 	protected Appendable appendStrNoCache(Appendable appendable, int ch) throws IOException
 	{
 		if(ch < 0)
-			throw new IllegalArgumentException("Negative code point.");
+			throw new IllegalArgumentException("Code point " + ch + " was negative.");
 		if(ch > 0xFFFF)
-			throw new IllegalArgumentException("Char code is too large for four hex digits.");
+			throw new IllegalArgumentException("Char point " + ch + " is too large for four hex digits.");
 		if(ch < 0x10)
 			appendable.append("000");
 		else if(ch < 0x100)

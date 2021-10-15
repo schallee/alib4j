@@ -48,11 +48,16 @@ class JSEscapeMaker extends StrMaker.PreCachedSingletonAbstract
 	protected Appendable appendStrNoCache(Appendable appendable, int ch) throws IOException
 	{
 		if(ch < 0)
-			throw new IllegalArgumentException("Negative code point");
+			throw new IllegalArgumentException("Code point " + ch + " is negative.");
 		if(ch < 0x100)
 			return BACKSLASH_X_HEX.appendStr(appendable, ch);
 		if(ch < 0x10000)
 			return BACKSLASH_U_HEX.appendStr(appendable, ch);
-		throw new IllegalArgumentException("JavaScript/ECMAScript does not define how code points greater than 0xFFFF are handled.");
+		throw new IllegalArgumentException("JavaScript/ECMAScript does not define how code points greater than 0xFFFF are handled and code point provided was " + ch + '.');
+	}
+
+	public String toString()
+	{
+		return "Singleton JSEscapeMaker";
 	}
 }
