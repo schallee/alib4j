@@ -89,7 +89,7 @@ public class ShutdownJanitor implements Runnable
 		synchronized(lock)
 		{
 			if(!open)
-				throw new IllegalStateException("Attempt to add object to ShutdownJanitor while shutdown is in progress...");
+				throw new IllegalStateException("Attempt to add object " + obj + " to ShutdownJanitor while shutdown is in progress...");
 			checkRegistered();
 			objects.put(obj,Boolean.TRUE);
 		}

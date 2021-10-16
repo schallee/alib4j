@@ -32,9 +32,12 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressFBWarnings(value="DMI_COLLECTION_OF_URLS", justification="Performance impact is negligable copared to launching a new JVM")
 public class JVMLauncher
 {
 	private static final Class<JVMLauncher> CLASS = JVMLauncher.class;
@@ -52,6 +55,7 @@ public class JVMLauncher
 		return new LinkedHashSet<String>(Arrays.asList(pathext.split(";")));
 	}
 
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING",justification="Boolean state")
 	private static final File getJavaHome() throws LauncherException
 	{
 		String homePath;
@@ -135,6 +139,7 @@ public class JVMLauncher
 		return urls;
 	}
 
+	@SuppressFBWarnings(value="PATH_TRAVERSAL_IN", justification="Library API that assumes sane caller.")
 	private static String mkPath(Collection<URL> urls)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -172,7 +177,7 @@ public class JVMLauncher
 				sb.append(path);
 			}
 			else
-				sb.append(url.toString());
+				sb.append(url);
 			sb.append(PATH_SEPARATOR);
 		}
 		return sb.substring(0, sb.length() - PATH_SEPARATOR.length());
@@ -184,7 +189,7 @@ public class JVMLauncher
 	 * @deprecated Use {@link System#getProperty(String)} directly.
 	 */
 	@Deprecated
-	public static String getClassPath() throws LauncherException
+	public static String getClassPath()
 	{
 		return System.getProperty("java.class.path");
 	}
@@ -235,6 +240,7 @@ public class JVMLauncher
 	 * @param args Additional command line parameters
 	 * @return ProcessBuilder that has not been started.
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="Library API")
 	public static ProcessBuilder getProcessBuilder(Class<?> mainClass, String...args) throws LauncherException
 	{
 		return getProcessBuilder(mainClass, Arrays.asList(args));
@@ -247,14 +253,16 @@ public class JVMLauncher
 	 * @param args Additional command line parameters
 	 * @return ProcessBuilder that has not been started.
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="Library API")
 	public static ProcessBuilder getProcessBuilder(Class<?> mainClass, List<String> args) throws LauncherException
 	{
 		URL mainUrl;
 		String mainName = mainClass.getName();
 		String mainPath = mainName.replace('.','/') + ".class";
 		Set<URL> classPath = getClassPathURLsFor(mainClass);
+		ClassLoader clsLoader = mainClass.getClassLoader();
 
-		if((mainUrl = mainClass.getClassLoader().getResource(mainPath))!=null)
+		if((mainUrl = clsLoader.getResource(mainPath))!=null)
 		{	// So, at least when run from surefire, the actual location of the class is not in the provided URLs.
 			String urlPath = mainUrl.getPath();
 			String proto = mainUrl.getProtocol();
@@ -262,7 +270,7 @@ public class JVMLauncher
 			if(logger.isDebugEnabled())
 			{
 				logger.debug("mainClass={} => {}", mainClass, mainPath);
-				logger.debug("\tclassLoader={}", mainClass.getClassLoader());
+				logger.debug("\tclassLoader={}", clsLoader);
 				logger.debug("\tproto={} path={}", proto, urlPath);
 			}
 			if(urlPath.endsWith(mainPath))
@@ -305,6 +313,7 @@ public class JVMLauncher
 	 * @param args Additional command line parameters
 	 * @return ProcessBuilder that has not been started.
 	 */
+	@SuppressFBWarnings(value={"COMMAND_INJECTION","PATH_TRAVERSAL_IN"},justification="Purpose of class")
 	public static ProcessBuilder getProcessBuilder(String mainClass, Set<URL> classPath, List<String> args) throws LauncherException
 	{
 		List<String> cmdList = new ArrayList<String>();

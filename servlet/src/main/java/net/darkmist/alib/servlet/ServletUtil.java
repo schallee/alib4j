@@ -10,8 +10,15 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServlet;
 
+import net.darkmist.alib.lang.NullSafe;
+
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
+import static net.darkmist.alib.lang.NullSafe.requireNonNullElse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public class ServletUtil
 {
@@ -44,6 +51,7 @@ public class ServletUtil
 	 * @param defaultValue the default value if opts allow
 	 * @return The attribute value
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API Library")
 	public static final <T> T getContextAttribute(ServletContext ctx, String name, Class<T> cls, Set<GetOpts> opts, T defaultValue)
 	{
 		Object o;
@@ -61,7 +69,7 @@ public class ServletUtil
 			if(opts.contains(GetOpts.THROW_ON_WRONG_TYPE))
 				throw new IllegalStateException("ServletContext attribute " + name + " was expected to be of type " + cls.getName() + " but it was of type " + o.getClass().getName());
 			if(opts.contains(GetOpts.LOG_ON_WRONG_TYPE) && logger.isWarnEnabled())
-				logger.warn("ServletContext attribute " + name + " was expected to be of type " + cls.getName() + " but it was of type " + o.getClass().getName());
+				logger.warn("ServletContext attribute {} was expected to be of type {} but it was of type {}", name, cls.getName(), o.getClass().getName());
 			return defaultValue;
 		}
 		return cls.cast(o);
@@ -74,11 +82,12 @@ public class ServletUtil
 
 	public static final <T> T getContextAttribute(ServletContext ctx, String name, Class<T> cls, T defaultValue)
 	{
-		return getContextAttribute(ctx, name, cls, THROW_ON_WRONG_TYPE, null);
+		return getContextAttribute(ctx, name, cls, THROW_ON_WRONG_TYPE, defaultValue);
 	}
 
 	/* getContextAttribute(ServletConfig...) */
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API Library")
 	public static final <T> T getContextAttribute(ServletConfig conf, String name, Class<T> cls, Set<GetOpts> opts, T defaultValue)
 	{
 		return getContextAttribute(conf.getServletContext(), name, cls, opts, defaultValue);
@@ -96,6 +105,7 @@ public class ServletUtil
 
 	/* getContextAttribute(Servlet...) */
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API Library")
 	public static final <T> T getContextAttribute(Servlet servlet, String name, Class<T> cls, Set<GetOpts> opts, T defaultValue)
 	{
 		return getContextAttribute(servlet.getServletConfig(), name, cls, opts, defaultValue);
@@ -113,11 +123,13 @@ public class ServletUtil
 
 	/* getContextAttribute(HttpServlet...) which implements ServletConfig and causes ambigous calls unless explicitly specified... */
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API Library")
 	public static final <T> T getContextAttribute(HttpServlet servlet, String name, Class<T> cls, Set<GetOpts> opts, T defaultValue)
 	{
 		return getContextAttribute((ServletConfig)servlet, name, cls, opts, defaultValue);
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API Library")
 	public static final <T> T getContextAttribute(HttpServlet servlet, String name, Class<T> cls, Set<GetOpts> opts)
 	{
 		return getContextAttribute(servlet, name, cls, opts, null);
@@ -130,16 +142,14 @@ public class ServletUtil
 
 	/* getServletParameter(ServletConfig...) */
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API Library")
 	public static String getServletParameter(ServletConfig conf, String name, Set<GetOpts> opts, String defaultValue)
 	{
 		String ret;
 
-		if(conf == null)
-			throw new NullPointerException("ServletConfig cannot be null");
-		if(name == null)
-			throw new NullPointerException("name cannot be null");
-		if(opts == null)
-			opts = EMPTY_OPTS;
+		requireNonNull(conf, "conf");
+		requireNonNull(name, "name");
+		opts = requireNonNullElse(opts, EMPTY_OPTS);
 		if((ret = conf.getInitParameter(name))!=null)
 			return ret;
 		if(opts.contains(GetOpts.THROW_ON_MISSING))
@@ -161,6 +171,7 @@ public class ServletUtil
 
 	/* getServletParameter(Servlet...) */
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API Library")
 	public static String getServletParameter(Servlet servlet, String name, Set<GetOpts> opts, String defaultValue)
 	{
 		return getServletParameter(servlet.getServletConfig(), name, opts, defaultValue);
@@ -178,6 +189,7 @@ public class ServletUtil
 
 	/* getServletParameter(HttpServlet...) HttpServlet implements ServletConfig as well as Servlet... */
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API Library")
 	public static String getServletParameter(HttpServlet servlet, String name, Set<GetOpts> opts, String defaultValue)
 	{
 		return getServletParameter((ServletConfig)servlet, name, opts, defaultValue);
@@ -195,24 +207,22 @@ public class ServletUtil
 
 	/* getRequestAttribute(...) */
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API Library")
 	public static <T> T getRequestAttribute(ServletRequest req, String name, Class<T> cls, Set<GetOpts> opts, T defaultValue)
 	{
 		Object o;
 
-		if(req == null)
-			throw new NullPointerException("req cannot be null");
-		if(name == null)
-			throw new NullPointerException("name cannot be null");
-		if(cls == null)
-			throw new NullPointerException("cls cannot be null");
-		if(opts == null)
-			opts = EMPTY_OPTS;
+		requireNonNull(req, "req");
+		requireNonNull(name, "name");
+		requireNonNull(cls, "cls");
+		opts = requireNonNullElse(opts, EMPTY_OPTS);
+
 		if((o = req.getAttribute(name))==null)
 		{
 			if(opts.contains(GetOpts.THROW_ON_MISSING))
 				throw new IllegalStateException("Request attribute " + name + " is not present.");
 			if(opts.contains(GetOpts.LOG_ON_MISSING))
-				logger.warn("Request attribute " + name + " is not present.");
+				logger.warn("Request attribute {} is not present.", name);
 			return defaultValue;
 		}
 		if(!cls.isInstance(o))
@@ -220,7 +230,7 @@ public class ServletUtil
 			if(opts.contains(GetOpts.THROW_ON_WRONG_TYPE))
 				throw new IllegalStateException("Request attribute " + name + " was of type " + o.getClass().getName() + " instead of " + cls.getName());
 			if(opts.contains(GetOpts.LOG_ON_MISSING))
-				logger.warn("Request attribute " + name + " was of type " + o.getClass().getName() + " instead of " + cls.getName());
+				logger.warn("Request attribute {} was of type {} instead of {}", name, o.getClass().getName(), cls.getName());
 			return defaultValue;
 		}
 		return cls.cast(o);

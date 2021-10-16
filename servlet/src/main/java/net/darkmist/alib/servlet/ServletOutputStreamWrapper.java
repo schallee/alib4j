@@ -21,6 +21,10 @@ package net.darkmist.alib.servlet;
 import java.io.IOException;
 import javax.servlet.ServletOutputStream;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+
 /** Simple wrapper around a {@link ServletOutputStream}. */
 public class ServletOutputStreamWrapper extends ServletOutputStream
 {
@@ -35,6 +39,7 @@ public class ServletOutputStreamWrapper extends ServletOutputStream
 	/** Constructor.
 	 * @param out_ The {@link ServletOutputStream} to wrap.
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="Library API")
 	public ServletOutputStreamWrapper(ServletOutputStream out_)
 	{
 		setServletOutputStream(out_);
@@ -43,7 +48,7 @@ public class ServletOutputStreamWrapper extends ServletOutputStream
 	/** Sets the {@link ServletOutputStream} to wrap.
 	 * @param out_ The {@link ServletOutputStream} to wrap.
 	 */
-	protected void setServletOutputStream(ServletOutputStream out_)
+	protected final void setServletOutputStream(ServletOutputStream out_)
 	{
 		out = out_;
 	}
@@ -218,5 +223,33 @@ public class ServletOutputStreamWrapper extends ServletOutputStream
 	{
 		checkFirstOutput();
 		out.println(d);
+	}
+
+	@Override
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="Library API")
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof ServletOutputStreamWrapper))
+			return false;
+		ServletOutputStreamWrapper that = (ServletOutputStreamWrapper)o;
+		if(this.firstOutputHappened != that.firstOutputHappened)
+			return false;
+		if(!NullSafe.equals(this.out, that.out))
+			return false;
+		return super.equals(that);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(super.hashCode(), firstOutputHappened, out);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": firstOutputHappened=" + firstOutputHappened + " out=" + out + " super=" + super.toString();
 	}
 }

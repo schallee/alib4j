@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import javax.servlet.ServletOutputStream;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /** Extended HttpServletResponseWrapper that allows easy wrapping of servlet output */
 public abstract class OutputWrappingHttpServletResponse extends HttpServletResponseWrapper implements OutputMethodServletResponse
 {
@@ -46,6 +48,7 @@ public abstract class OutputWrappingHttpServletResponse extends HttpServletRespo
 	 * @return The wrapped output stream. Unless overriden, orig is returned.
 	 * @throws IOException Only when overridding method throws one.
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="Library API")
 	public ServletOutputStream getWrappedOutputStream(ServletOutputStream orig) throws IOException
 	{
 		return orig;
@@ -64,6 +67,7 @@ public abstract class OutputWrappingHttpServletResponse extends HttpServletRespo
 	 * @return The wrapped output stream. Unless overriden, orig is returned.
 	 * @throws IOException Only when overridding method throws one.
 	 */
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="Library API")
 	public PrintWriter getWrappedWriter(PrintWriter orig) throws IOException
 	{
 		return orig;

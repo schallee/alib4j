@@ -24,6 +24,7 @@ import java.io.PrintWriter;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import net.darkmist.alib.lang.NullSafe;
 import net.darkmist.alib.io.PrefixingPrintWriter;
 
 public class PrefixingHttpServletResponse extends OutputWrappingHttpServletResponse
@@ -33,7 +34,7 @@ public class PrefixingHttpServletResponse extends OutputWrappingHttpServletRespo
 
 	/** Set the prefix string.
 	 */
-	protected void setPrefix(String prefix_)
+	final protected void setPrefix(String prefix_)
 	{
 		prefix = prefix_;
 	}
@@ -64,5 +65,30 @@ public class PrefixingHttpServletResponse extends OutputWrappingHttpServletRespo
 	public PrintWriter getWrappedWriter(PrintWriter orig) throws IOException
 	{
 		return new PrefixingPrintWriter(prefix, orig);
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof PrefixingHttpServletResponse))
+			return false;
+		PrefixingHttpServletResponse that = (PrefixingHttpServletResponse)o;
+		if(!NullSafe.equals(this.prefix, that.prefix))
+			return false;
+		return super.equals(o);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(super.hashCode(), prefix);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": prefix=\"" + prefix + "\" super=" + super.toString();
 	}
 }

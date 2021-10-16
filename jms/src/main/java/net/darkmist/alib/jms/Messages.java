@@ -36,6 +36,8 @@ import javax.jms.BytesMessage;
 import javax.jms.JMSException;
 import javax.jms.Session;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import net.darkmist.alib.io.Closer;
 
 import org.slf4j.Logger;
@@ -51,7 +53,7 @@ public class Messages
 	{
 	}
 
-	public static BytesMessage toBytesMessage(Session session, byte[] bytes) throws IOException, JMSException
+	public static BytesMessage toBytesMessage(Session session, byte[] bytes) throws JMSException
 	{
 		BytesMessage msg = session.createBytesMessage();
 
@@ -59,7 +61,7 @@ public class Messages
 		return msg;
 	}
 
-	public static BytesMessage toBytesMessage(Session session, byte[] bytes, int off, int len) throws IOException, JMSException
+	public static BytesMessage toBytesMessage(Session session, byte[] bytes, int off, int len) throws JMSException
 	{
 		BytesMessage msg = session.createBytesMessage();
 
@@ -67,6 +69,7 @@ public class Messages
 		return msg;
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="Library API")
 	public static BytesMessage toBytesMessage(Session session, ByteBuffer bytes) throws IOException, JMSException
 	{
 		BytesMessage msg = session.createBytesMessage();
@@ -87,6 +90,7 @@ public class Messages
 		return msg;
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="Library API")
 	public static BytesMessage toBytesMessage(Session session, InputStream in) throws IOException, JMSException
 	{
 		BytesMessage msg = session.createBytesMessage();
@@ -121,6 +125,7 @@ public class Messages
 		}
 	}
 
+	@SuppressFBWarnings(value="IOI_USE_OF_FILE_STREAM_CONSTRUCTORS", justification="Pre 1.7")
 	public static BytesMessage toBytesMessage(Session session, File file) throws IOException, JMSException
 	{
 		FileInputStream fin=null;
@@ -152,11 +157,13 @@ public class Messages
 		return toBytesMessage(session, file);
 	}
 
+	@SuppressFBWarnings(value="PATH_TRAVERSAL_IN",justification="API that assumes caller is sane.")
 	public static BytesMessage fileToBytesMessage(Session session, String fileName) throws IOException, JMSException
 	{
 		return toBytesMessage(session, new File(fileName));
 	}
 
+	@SuppressFBWarnings(value={"OPM_OVERLY_PERMISSIVE_METHOD","CFS_CONFUSING_FUNCTION_SEMANTICS"},justification="Library API, For chaining methods")
 	public static OutputStream writeTo(BytesMessage msg, OutputStream out) throws IOException, JMSException
 	{
 		byte[] buf = new byte[BUFFER_SIZE];
@@ -168,6 +175,7 @@ public class Messages
 		return out;
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD",justification="Library API")
 	public static ByteBuffer writeTo(BytesMessage msg, ByteBuffer buf) throws JMSException
 	{
 		byte[] bytes = new byte[BUFFER_SIZE];
@@ -228,6 +236,7 @@ public class Messages
 		}
 	}
 	
+	@SuppressFBWarnings(value="IOI_USE_OF_FILE_STREAM_CONSTRUCTORS", justification="Pre 1.7")
 	private static File writeToOutputStream(BytesMessage msg, File file) throws IOException, JMSException
 	{
 		FileOutputStream fos = null;
@@ -261,6 +270,7 @@ public class Messages
 		return writeToOutputStream(msg, file);
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="Library API")
 	public static byte[] asBytes(BytesMessage msg) throws JMSException
 	{
 		long len;

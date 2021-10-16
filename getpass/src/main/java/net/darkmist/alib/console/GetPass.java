@@ -20,16 +20,21 @@ package net.darkmist.alib.console;
 
 // not changed since qcomm
 
-import jline.ConsoleReader;
 import java.io.IOException;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jline.ConsoleReader;
 
 public class GetPass
 {
+	private static final Character ZERO = Character.valueOf((char)0);
+
 	public static String get() throws IOException
 	{
 		return get("password: ");
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="API")
 	public static String get(CharSequence prompt) throws IOException
 	{
 		StringBuilder passwd = new StringBuilder(32);
@@ -43,7 +48,7 @@ public class GetPass
 		echoChar = console.getEchoCharacter();
 		try
 		{
-			console.setEchoCharacter(new Character((char)0));
+			console.setEchoCharacter(ZERO);
 			while(true)
 				switch((ch = console.readVirtualKey()))
 				{

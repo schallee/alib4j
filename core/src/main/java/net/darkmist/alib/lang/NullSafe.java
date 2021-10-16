@@ -31,6 +31,17 @@ public class NullSafe
 	}
 
 	/**
+	 * @see java.util.Objects#requireNonNullElse
+	 * Who names these so poorly?
+	 */
+	public static <T> T requireNonNullElse(@Nullable T obj, T defaultObj)
+	{
+		if(obj==null)
+			return defaultObj;
+		return obj;
+	}
+
+	/**
 	 * Equals that properly handles null values.
 	 */
 	public static boolean equals(@Nullable Object a, @Nullable Object b)

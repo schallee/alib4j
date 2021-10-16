@@ -20,10 +20,12 @@ package net.darkmist.alib.jaxb;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import javax.annotation.Nullable;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class InetAddressXmlAdapter extends XmlAdapter<String, InetAddress>
 {
+	@Nullable
 	@Override
 	public String marshal(InetAddress addr)
 	{

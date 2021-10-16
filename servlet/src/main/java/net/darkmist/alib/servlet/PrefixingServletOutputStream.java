@@ -22,6 +22,8 @@ import java.io.IOException;
 
 import javax.servlet.ServletOutputStream;
 
+import net.darkmist.alib.lang.NullSafe;
+
 /** A {@link ServletOutputStream} wrapper that outputs a prefix before the first output. The prefix is not written until the first output method is called. */
 public class PrefixingServletOutputStream extends ServletOutputStreamWrapper
 {
@@ -31,10 +33,10 @@ public class PrefixingServletOutputStream extends ServletOutputStreamWrapper
 	/** Set the prefix string.
 	 * @throws IllegalStateException If the first output has already occured.
 	 */
-	protected void setPrefix(String prefix_)
+	protected final void setPrefix(String prefix_)
 	{
 		if(hasFirstOutputHappened())
-			throw new IllegalStateException("Attempt to set prefix when the first output has already occured");
+			throw new IllegalStateException("Attempt to set prefix from " + prefix + " to " + prefix_ + " when the first output has already occured");
 		prefix = prefix_;
 	}
 
@@ -73,5 +75,30 @@ public class PrefixingServletOutputStream extends ServletOutputStreamWrapper
 			print(prefix);
 			prefix = null;	// no need to keep a ref
 		}
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof PrefixingServletOutputStream))
+			return false;
+		PrefixingServletOutputStream that = (PrefixingServletOutputStream)o;
+		if(!NullSafe.equals(this.prefix, that.prefix))
+			return false;
+		return super.equals(o);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(super.hashCode(), prefix);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": prefix=" + prefix + " super=" + super.toString();
 	}
 }

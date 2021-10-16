@@ -13,6 +13,11 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,9 +43,7 @@ public class Dispatchers<T extends Servlet & Serializable> implements Serializab
 
 	public Dispatchers(T servlet)
 	{
-		if(servlet == null)
-			throw new NullPointerException("Servlet cannot be null.");
-		this.servlet = servlet;
+		this.servlet = requireNonNull(servlet, "servlet");
 		init();
 	}
 	
@@ -51,6 +54,7 @@ public class Dispatchers<T extends Servlet & Serializable> implements Serializab
 		init();
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="Library API")
 	public synchronized RequestDispatcher getByName(String name) throws ServletException
 	{
 		RequestDispatcher dispatcher;
@@ -64,16 +68,19 @@ public class Dispatchers<T extends Servlet & Serializable> implements Serializab
 		return dispatcher;
 	}
 
+	@SuppressFBWarnings(value="REQUESTDISPATCHER_FILE_DISCLOSURE", justification="Library API that assumes sane caller")
 	public void forwardByName(String name, ServletRequest req, ServletResponse resp) throws ServletException, IOException
 	{
 		getByName(name).forward(req,resp);
 	}
 
+	@SuppressFBWarnings(value="REQUESTDISPATCHER_FILE_DISCLOSURE", justification="Library API that assumes sane caller")
 	public void includeByName(String name, ServletRequest req, ServletResponse resp) throws ServletException, IOException
 	{
 		getByName(name).include(req,resp);
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="Library API")
 	public synchronized RequestDispatcher getByPath(String path) throws ServletException
 	{
 		RequestDispatcher dispatcher;
@@ -87,13 +94,44 @@ public class Dispatchers<T extends Servlet & Serializable> implements Serializab
 		return dispatcher;
 	}
 
+	@SuppressFBWarnings(value="REQUESTDISPATCHER_FILE_DISCLOSURE", justification="Library API that assumes sane caller")
 	public void forwardByPath(String path, ServletRequest req, ServletResponse resp) throws ServletException, IOException
 	{
 		getByPath(path).forward(req,resp);
 	}
 
+	@SuppressFBWarnings(value="REQUESTDISPATCHER_FILE_DISCLOSURE", justification="Library API that assumes sane caller")
 	public void includeByPath(String path, ServletRequest req, ServletResponse resp) throws ServletException, IOException
 	{
 		getByPath(path).include(req,resp);
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof Dispatchers))
+			return false;
+		Dispatchers<?> that = (Dispatchers<?>)o;
+		if(!NullSafe.equals(this.servlet, that.servlet))
+			return false;
+		if(!NullSafe.equals(this.ctx, that.ctx))
+			return false;
+		if(!NullSafe.equals(this.namedDispatchers, that.namedDispatchers))
+			return false;
+		return NullSafe.equals(this.pathDispatchers, that.pathDispatchers);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(servlet, ctx, namedDispatchers, pathDispatchers);
+	}
+
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": servlet=" + servlet + " ctx=" + ctx + " namedDispatchers.size()=" + namedDispatchers.size() + " pathDispatchers.size()=" + pathDispatchers.size();
 	}
 }

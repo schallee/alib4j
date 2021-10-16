@@ -20,6 +20,7 @@ package net.darkmist.alib.jpa;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.persistence.Query;
 import javax.persistence.NonUniqueResultException;
 
@@ -35,6 +36,7 @@ public class JPAUtil
 	{
 	}
 
+	@Nullable
 	public static <T> T getSingleResultOrNull(Class<T> cls, Query query)
 	{
 		List<?> l;
@@ -51,7 +53,7 @@ public class JPAUtil
 				logger.debug("One result, returning it.");
 				return cls.cast(l.get(0));
 			default:
-				throw new NonUniqueResultException("More than one result was returned by query.");
+				throw new NonUniqueResultException("More than one result was returned by query " + query + '.');
 		}
 	}
 }

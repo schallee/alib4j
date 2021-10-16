@@ -18,6 +18,8 @@
 
 package net.darkmist.alib.spring;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 
@@ -28,6 +30,7 @@ public class Main
 	private static final int ERROR_EXIT = 1;
 	private static final String MAIN_BEAN = "main";
 
+	@SuppressFBWarnings(value="DM_EXIT", justification="Main class")
 	private static void usage()
 	{
 		System.err.println("Usage: " + CLASS_NAME + " spring-config [args]");
@@ -48,14 +51,13 @@ public class Main
 		if(mb instanceof MainBean)
 			((MainBean)mb).setArgs(args, 1, args.length-1);
 		else if(args.length > 1)
-			throw new IllegalArgumentException("main bean does not take arguments");
+			throw new IllegalArgumentException("main bean " + mb + " does not take arguments");
 		mb.run();
 		if(mb instanceof MainBean)
 		{
 			exitCode = ((MainBean)mb).getExitCode();
 			doExit = true;
 		}
-		mb = null;
 		ctx.close();
 		if(doExit)
 			System.exit(exitCode);

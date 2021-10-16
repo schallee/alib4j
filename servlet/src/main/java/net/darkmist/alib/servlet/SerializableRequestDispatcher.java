@@ -12,6 +12,11 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,12 +66,9 @@ abstract class SerializableRequestDispatcher<T extends Servlet & Serializable> i
 		// If the api user doesn't init a HttpServlet right
 		// the conf may be null. Let's double check it all with
 		// useful exception messages.
-		if(servlet == null)
-			throw new IllegalStateException("Servlet was null in. Initialization issue?");
-		if((conf = servlet.getServletConfig()) == null)
-			throw new IllegalStateException("ServletConfig was null in. Initialization issue?");
-		if((ctx = conf.getServletContext()) == null)
-			throw new IllegalStateException("ServletContext was null in. Initialization issue?");
+		requireNonNull(servlet, "servlet");
+		conf = requireNonNull(servlet.getServletConfig(), "servlet config");
+		ctx = requireNonNull(conf.getServletContext(), "servlet context");
 
 		// get the actual dispatcher
 		if(isName)
@@ -84,13 +86,12 @@ abstract class SerializableRequestDispatcher<T extends Servlet & Serializable> i
 	 * @param nameOrPath What the dispatcher is for.
 	 * @throws ServletException if the dispatcher cannot be acquired.
 	 */
+	@SuppressFBWarnings(value="WEM_WEAK_EXCEPTION_MESSAGING", justification="Boolean state")
 	protected SerializableRequestDispatcher(T servlet, boolean isName, String nameOrPath) throws ServletException
 	{
-		if((this.servlet = servlet) == null)
-			throw new NullPointerException("Servlet cannot be null.");
+		this.servlet = requireNonNull(servlet, "servlet");
 		this.isName = isName;
-		if((this.nameOrPath = nameOrPath) == null)
-			throw new NullPointerException("NameOrPath cannot be null.");
+		this.nameOrPath = requireNonNull(nameOrPath, "nameOrPath");
 		if(nameOrPath.length() <= 0)
 			throw new IllegalArgumentException("NameOrPath cannot be empty.");
 		init();
@@ -100,6 +101,7 @@ abstract class SerializableRequestDispatcher<T extends Servlet & Serializable> i
 	 * Custom deserialization. This handles setting transient fields
 	 * through @{link #init()}.
 	 */
+	@SuppressFBWarnings(value={"EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS","WEM_WEAK_EXCEPTION_MESSAGING"}, justification="Boolean state")
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
 	{
 		// this should set servlet...
@@ -118,12 +120,14 @@ abstract class SerializableRequestDispatcher<T extends Servlet & Serializable> i
 	}
 
 	@Override
+	@SuppressFBWarnings(value="REQUESTDISPATCHER_FILE_DISCLOSURE", justification="Library API that assumes sane caller")
 	public void forward(ServletRequest req, ServletResponse resp) throws ServletException, IOException
 	{
 		dispatcher.forward(req, resp);
 	}
 
 	@Override
+	@SuppressFBWarnings(value="REQUESTDISPATCHER_FILE_DISCLOSURE", justification="Library API that assumes sane caller")
 	public void include(ServletRequest req, ServletResponse resp) throws ServletException, IOException
 	{
 		dispatcher.include(req, resp);

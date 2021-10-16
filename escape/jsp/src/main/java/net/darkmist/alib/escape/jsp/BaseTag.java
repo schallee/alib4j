@@ -51,7 +51,7 @@ abstract class BaseTag extends BodyTagSupport
 		}
 		catch (IOException e)
 		{
-			throw new JspTagException("IOException writing encoded output.", e);
+			throw new JspTagException("IOException writing " + bodyContent.getString() + " encoded output.", e);
 		}
 
 		bodyContent.clearBody();

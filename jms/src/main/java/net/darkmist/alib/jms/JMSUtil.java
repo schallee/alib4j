@@ -18,6 +18,7 @@
 
 package net.darkmist.alib.jms;
 
+import javax.annotation.Nullable;
 import javax.jms.Connection;
 import javax.jms.ExceptionListener;
 import javax.jms.JMSException;
@@ -26,9 +27,16 @@ import javax.jms.MessageProducer;
 import javax.jms.QueueBrowser;
 import javax.jms.Session;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+@SuppressFBWarnings(value="LO_SUSPECT_LOG_PARAMETER", justification="Logger for exception handler")
+	// Can't put this on the implicit constructure for the ExceptionListner inner class
 public class JMSUtil
 {
 	private static final Class<JMSUtil> CLASS = JMSUtil.class;
@@ -38,47 +46,68 @@ public class JMSUtil
 	{
 	}
 
-	public static ExceptionListener loggingExceptionListener(final Logger logExceptionTo, final String msg)
+	private static <T> T nullOr(@Nullable T val, T def)
 	{
+		if(val==null)
+			return def;
+		return val;
+	}
+
+	@SuppressFBWarnings(value={"OPM_OVERLY_PERMISSIVE_METHOD","LO_SUSPECT_LOG_PARAMETER"}, justification="Library API, Logger for exception handler")
+	public static ExceptionListener loggingExceptionListener(@Nullable Logger logExceptionTo, @Nullable String msg)
+	{
+		final Logger finalLogger = nullOr(logExceptionTo, logger);
+		final String finalMsg = nullOr(msg, "Asynchronous JMSException thrown");
+
 		return new ExceptionListener()
 		{
 			@Override
 			public void onException(JMSException e)
 			{
-				(logExceptionTo==null?logger:logExceptionTo).warn((msg==null?"Asynchronous JMSException thrown":msg), e);
+				finalLogger.warn(finalMsg, e);
 			}
 		};
 	}
 
-	public static ExceptionListener loggingExceptionListener(String msg)
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="Library API")
+	public static ExceptionListener loggingExceptionListener(@Nullable String msg)
 	{
 		return loggingExceptionListener(null,msg);
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="Library API")
 	public static ExceptionListener loggingExceptionListener()
 	{
 		return loggingExceptionListener(null,null);
 	}
 
-	public static Connection setLoggingExceptionListener(Connection conn, Logger logExceptionTo, String msg) throws JMSException
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value="CFS_CONFUSING_FUNCTION_SEMANTICS",justification="Method chaining")
+	public static Connection setLoggingExceptionListener(Connection conn, @Nullable Logger logExceptionTo, @Nullable String msg) throws JMSException
 	{
 		conn.setExceptionListener(loggingExceptionListener(logExceptionTo, msg));
 		return conn;
 	}
 	
-	public static Connection setLoggingExceptionListener(Connection conn, String msg) throws JMSException
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value="CFS_CONFUSING_FUNCTION_SEMANTICS",justification="Method chaining")
+	public static Connection setLoggingExceptionListener(Connection conn, @Nullable String msg) throws JMSException
 	{
 		conn.setExceptionListener(loggingExceptionListener(msg));
 		return conn;
 	}
 
+	@CanIgnoreReturnValue
+	@SuppressFBWarnings(value="CFS_CONFUSING_FUNCTION_SEMANTICS",justification="Method chaining")
 	public static Connection setLoggingExceptionListener(Connection conn) throws JMSException
 	{
 		conn.setExceptionListener(loggingExceptionListener());
 		return conn;
 	}
 
-	public static Connection close(Connection toClose, Logger logExceptionTo, Object name)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static Connection close(@Nullable Connection toClose, @Nullable Logger logExceptionTo, @Nullable Object name)
 	{
 		if(toClose==null)
 			return null;
@@ -93,17 +122,23 @@ public class JMSUtil
 		return null;
 	}
 
-	public static Connection close(Connection toClose, Object name)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static Connection close(@Nullable Connection toClose, @Nullable Object name)
 	{
 		return close(toClose, null, name);
 	}
 
-	public static Connection close(Connection toClose)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static Connection close(@Nullable Connection toClose)
 	{
 		return close(toClose, null, null);
 	}
 
-	public static MessageConsumer close(MessageConsumer toClose, Logger logExceptionTo, Object name)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static MessageConsumer close(@Nullable MessageConsumer toClose, @Nullable Logger logExceptionTo, @Nullable Object name)
 	{
 		if(toClose==null)
 			return null;
@@ -118,17 +153,23 @@ public class JMSUtil
 		return null;
 	}
 
-	public static MessageConsumer close(MessageConsumer toClose, Object name)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static MessageConsumer close(@Nullable MessageConsumer toClose, @Nullable Object name)
 	{
 		return close(toClose, null, name);
 	}
 
-	public static MessageConsumer close(MessageConsumer toClose)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static MessageConsumer close(@Nullable MessageConsumer toClose)
 	{
 		return close(toClose, null, null);
 	}
 
-	public static MessageProducer close(MessageProducer toClose, Logger logExceptionTo, Object name)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static MessageProducer close(@Nullable MessageProducer toClose, @Nullable Logger logExceptionTo, @Nullable Object name)
 	{
 		if(toClose==null)
 			return null;
@@ -143,17 +184,23 @@ public class JMSUtil
 		return null;
 	}
 
-	public static MessageProducer close(MessageProducer toClose, Object name)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static MessageProducer close(@Nullable MessageProducer toClose, @Nullable Object name)
 	{
 		return close(toClose, null, name);
 	}
 
-	public static MessageProducer close(MessageProducer toClose)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static MessageProducer close(@Nullable MessageProducer toClose)
 	{
 		return close(toClose, null, null);
 	}
 
-	public static QueueBrowser close(QueueBrowser toClose, Logger logExceptionTo, Object name)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static QueueBrowser close(@Nullable QueueBrowser toClose, @Nullable Logger logExceptionTo, @Nullable Object name)
 	{
 		if(toClose==null)
 			return null;
@@ -168,17 +215,23 @@ public class JMSUtil
 		return null;
 	}
 
-	public static QueueBrowser close(QueueBrowser toClose, Object name)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static QueueBrowser close(@Nullable QueueBrowser toClose, @Nullable Object name)
 	{
 		return close(toClose, null, name);
 	}
 
-	public static QueueBrowser close(QueueBrowser toClose)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static QueueBrowser close(@Nullable QueueBrowser toClose)
 	{
 		return close(toClose, null, null);
 	}
 
-	public static Session close(Session toClose, Logger logExceptionTo, Object name)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static Session close(@Nullable Session toClose, @Nullable Logger logExceptionTo, @Nullable Object name)
 	{
 		if(toClose==null)
 			return null;
@@ -193,12 +246,16 @@ public class JMSUtil
 		return null;
 	}
 
-	public static Session close(Session toClose, Object name)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static Session close(@Nullable Session toClose, @Nullable Object name)
 	{
 		return close(toClose, null, name);
 	}
 
-	public static Session close(Session toClose)
+	@CanIgnoreReturnValue
+	@Nullable
+	public static Session close(@Nullable Session toClose)
 	{
 		return close(toClose, null, null);
 	}
