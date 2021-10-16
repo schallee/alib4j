@@ -4,6 +4,9 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
 import net.darkmist.alib.osgi.ServiceUtil;
 
 import org.osgi.framework.Bundle;
@@ -29,57 +32,66 @@ public class LogBridge implements BundleActivator, LogListener, ServiceListener
 	private static final Class<LogBridge> CLASS = LogBridge.class;
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
 	private static final String MDC_SERVICE_ID = Constants.class.getName() + '.' + Constants.SERVICE_ID;
+	private static final String MATCH = "(" + Constants.OBJECTCLASS + '=' + LogReaderService.class.getName() + ')';
+	private final Object lock = new Object();
 	private BundleContext ctx;
 	private Set<ServiceReference<LogReaderService>> servRefs;
 
 	@Override	// BundleActivator
-	public synchronized void start(BundleContext ctx_)
+	@SuppressFBWarnings(value="EXS_EXCEPTION_SOFTENING_HAS_CHECKED", justification="Should never happen")
+	public void start(BundleContext ctx_)
 	{
-		this.ctx = ctx_;
-		servRefs = new HashSet<ServiceReference<LogReaderService>>();
-		try
+		synchronized(lock)
 		{
-			ctx.addServiceListener(this, "(" + Constants.OBJECTCLASS + '=' + LogReaderService.class.getName() + ')');
-		}
-		catch(InvalidSyntaxException e)
-		{
-			throw new IllegalStateException("Match for object class is invalid?", e);
+			this.ctx = ctx_;
+			servRefs = new HashSet<ServiceReference<LogReaderService>>();
+			try
+			{
+				ctx.addServiceListener(this, MATCH);
+			}
+			catch(InvalidSyntaxException e)
+			{
+				throw new IllegalStateException("Match \"" + MATCH + "\" for object class is invalid?", e);
+			}
 		}
 	}
 
 	@Override	// BundleActivator
-	public synchronized void stop(BundleContext ctx_)
+	public void stop(BundleContext ctx_)
 	{
 		LogReaderService lrs;
 
-		this.ctx = ctx_;
-		for(ServiceReference<LogReaderService> servRef : servRefs)
+		synchronized(lock)
 		{
-			if((lrs = ctx.getService(servRef))==null)
-				continue;
-			try
+			this.ctx = ctx_;
+			for(ServiceReference<LogReaderService> servRef : servRefs)
 			{
-				lrs.removeLogListener(this);
+				if((lrs = ctx.getService(servRef))==null)
+					continue;
+				try
+				{
+					lrs.removeLogListener(this);
+				}
+				catch(Exception e)
+				{
+					logger.warn("Exception removing ourselves as a log listener", e);
+				}
 			}
-			catch(Exception e)
-			{
-				logger.warn("Exception removing ourselves as a log listener", e);
-			}
+			servRefs=null;
 		}
-		servRefs=null;
 	}
 
 	/**
 	 * Utility method to reduce unchecked area.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked","cast"})
 	private static Enumeration<LogEntry> getLogEntries(LogReaderService lrs)
 	{
 		return (Enumeration<LogEntry>)lrs.getLog();
 	}
 
 	@Override	// ServiceListener
-	public synchronized void serviceChanged(ServiceEvent event)
+	public void serviceChanged(ServiceEvent event)
 	{
 		ServiceReference<LogReaderService> ref;
 		LogReaderService lrs;
@@ -98,20 +110,23 @@ public class LogBridge implements BundleActivator, LogListener, ServiceListener
 				return;
 			case ServiceEvent.REGISTERED:
 				// Register us
-				if((lrs = ctx.getService(ref))==null)
+				synchronized(lock)
 				{
-					logger.debug("service disappeared before we could use it");
-					return;
-				}
+					if((lrs = ctx.getService(ref))==null)
+					{
+						logger.debug("service disappeared before we could use it");
+						return;
+					}
 
-				try
-				{
-					lrs.addLogListener(this);
-					servRefs.add(ref);
-				}
-				catch(Exception e)
-				{
-					logger.warn("error adding log listener", e);
+					try
+					{
+						lrs.addLogListener(this);
+						servRefs.add(ref);
+					}
+					catch(Exception e)
+					{
+						logger.warn("error adding log listener", e);
+					}
 				}
 				try
 				{
@@ -126,12 +141,13 @@ public class LogBridge implements BundleActivator, LogListener, ServiceListener
 						logged(logEntries.nextElement());
 				break;
 			case ServiceEvent.MODIFIED_ENDMATCH:
-				// We no longer match so it should ignore our listener
-				servRefs.remove(ref);
-				break;
 			case ServiceEvent.UNREGISTERING:
+				// We no longer match so it should ignore our listener
 				// remove it from the cache
-				servRefs.remove(ref);
+				synchronized(lock)
+				{
+					servRefs.remove(ref);
+				}
 				break;
 			default:
 				logger.warn("Ignoring unknown event type {}", event.getType());
@@ -151,14 +167,15 @@ public class LogBridge implements BundleActivator, LogListener, ServiceListener
 		else
 			sb.append(str);
 		if((version = bundle.getVersion())!=null)
-			sb.append('.').append(version.toString());
+			sb.append('.').append(version);
 		else
 			sb.append(".null_bundle_version");
 		return sb.toString();
 	}
 
 	@Override	// LogListener
-	public synchronized void logged(LogEntry entry)
+	@SuppressWarnings("deprecation")
+	public void logged(LogEntry entry)
 	{
 		ServiceReference<?> servRef = entry.getServiceReference();
 		String loggerName = getLoggerName(entry.getBundle());
@@ -203,5 +220,39 @@ public class LogBridge implements BundleActivator, LogListener, ServiceListener
 		}
 		if(serviceId != null)
 			MDC.remove(MDC_SERVICE_ID);
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof LogBridge))
+			return false;
+		LogBridge that = (LogBridge)o;
+		synchronized(lock)
+		{
+			if(!NullSafe.equals(this.ctx, that.ctx))
+				return false;
+			return NullSafe.equals(this.servRefs, that.servRefs);
+		}
+	}
+
+	@Override
+	public synchronized int hashCode()
+	{
+		synchronized(lock)
+		{
+			return NullSafe.hashCode(ctx, servRefs);
+		}
+	}
+
+	@Override
+	public synchronized String toString()
+	{
+		synchronized(lock)
+		{
+			return getClass().getSimpleName() + ": ctx=" + ctx + " servRefs=" + servRefs;
+		}
 	}
 }

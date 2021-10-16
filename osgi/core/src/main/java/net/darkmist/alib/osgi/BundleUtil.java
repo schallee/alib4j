@@ -1,5 +1,7 @@
 package net.darkmist.alib.osgi;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleEvent;
 
@@ -25,6 +27,7 @@ public class BundleUtil
 		return stateToString(bundle.getState());
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="Library API")
 	public static String stateToString(int state)
 	{
 		switch(state)
@@ -63,6 +66,7 @@ public class BundleUtil
 		return eventTypeToString(event.getType());
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="Library API")
 	public static String eventTypeToString(int type)
 	{
 		switch(type)

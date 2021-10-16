@@ -2,12 +2,15 @@ package net.darkmist.alib.osgi.metatype;
 
 import java.util.regex.Pattern;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.osgi.service.metatype.AttributeDefinition;
 import org.osgi.service.metatype.ObjectClassDefinition;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressFBWarnings(value={"OPM_OVERLY_PERMISSIVE_METHOD","FCCD_FIND_CLASS_CIRCULAR_DEPENDENCY"}, justification="Library API method, Only usses static methods")
 public final class Attributes
 {
 	private static final Class<Attributes> CLASS = Attributes.class;

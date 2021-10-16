@@ -2,6 +2,11 @@ package net.darkmist.alib.osgi.gogo.metatype;
 
 import java.util.Comparator;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
+
 import org.osgi.service.metatype.ObjectClassDefinition;
 
 import org.slf4j.Logger;
@@ -26,8 +31,9 @@ final class MetaTypeEntry
 	{
 		if(objClsDef == null || pid == null)
 			throw new NullPointerException();
-		this.pid = pid;
+		this.pid = requireNonNull(pid, "pid");
 		this.factory = factory;
+		requireNonNull(objClsDef, "objClsDef");
 		this.name = objClsDef.getName();
 		this.id = objClsDef.getID();
 		this.description = objClsDef.getDescription();
@@ -37,6 +43,8 @@ final class MetaTypeEntry
 	{
 		return pid;
 	}
+
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="Library API method")
 	public boolean isFactory()
 	{
 		return factory;
@@ -60,16 +68,7 @@ final class MetaTypeEntry
 	@Override
 	public int hashCode()
 	{
-		int result = 1;
-
-		result = 31*result + (pid==null?0:pid.hashCode());
-		result = 31*result + Boolean.valueOf(factory).hashCode();
-		result = 31*result + (name==null?0:name.hashCode());
-		result = 31*result + (id==null?0:id.hashCode());
-		result = 31*result + (description==null?0:description.hashCode());
-		return result;
-		               
-		//return Objects.hash(pid, factory, name, id, description);
+		return NullSafe.hashCode(pid, factory, name, id, description);
 	}
 
 	private static boolean nullSafeEquals(Object a, Object b)
@@ -108,7 +107,7 @@ final class MetaTypeEntry
 	@Override
 	public String toString()
 	{
-		return "" + pid + ( factory ? " factory for \"" : " \"") + name + "\" with id " + id + '.';
+		return pid + ( factory ? " factory for \"" : " \"") + name + "\" with id " + id + '.';
 	}
 
 	//private static Comparator<MetaTypeEntry> PID_NAME_COMPARATOR;

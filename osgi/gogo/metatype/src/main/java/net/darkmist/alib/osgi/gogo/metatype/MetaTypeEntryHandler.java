@@ -27,7 +27,7 @@ interface MetaTypeEntryHandler<T>
 			if((this.collection=collection)== null)
 				throw new NullPointerException();
 			if(logger.isDebugEnabled())
-				logger.debug("collection={} collection.getClass()={}", collection, collection==null ? null : collection.getClass());
+				logger.debug("collection={} collection.getClass()={}", collection, collection.getClass());
 		}
 
 		@Override

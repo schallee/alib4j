@@ -4,6 +4,12 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.annotation.Nullable;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+
 import org.osgi.service.metatype.AttributeDefinition;
 
 import org.slf4j.Logger;
@@ -13,6 +19,7 @@ public class SimpleAttribute implements AttributeDefinition
 {
 	private static final Class<SimpleAttribute> CLASS = SimpleAttribute.class;
 	private static final Logger logger = LoggerFactory.getLogger(CLASS);
+	private static final String[] EMPTY_STRING_ARRAY = new String[0];
 	private final String name;
 	private final String id;
 	private final String desc;
@@ -31,9 +38,18 @@ public class SimpleAttribute implements AttributeDefinition
 		this.card = card;
 		this.type = Attributes.validTypeOrThrow(type);
 		this.validator = validator;
-		this.optVals = optVals;
-		this.optLabels = optLabels;
-		this.defaults = defaults;
+		if(optVals == null)
+			this.optVals = EMPTY_STRING_ARRAY;
+		else
+			this.optVals = Arrays.copyOf(optVals, optVals.length);
+		if(optLabels == null)
+			this.optLabels = EMPTY_STRING_ARRAY;
+		else
+			this.optLabels = Arrays.copyOf(optLabels, optLabels.length);
+		if(defaults == null)
+			this.defaults = EMPTY_STRING_ARRAY;
+		else
+			this.defaults = Arrays.copyOf(defaults, defaults.length);
 	}
 
 	public SimpleAttribute(String name, String id, String desc, int card, int type, String[] optVals, String[] optLabels, String[] defaults)
@@ -53,6 +69,10 @@ public class SimpleAttribute implements AttributeDefinition
 		private List<String> defaults = null;
 		private Validator validator = null;
 
+		@Nullable
+		// FIXME:
+		@SuppressFBWarnings(value="PZLA_PREFER_ZERO_LENGTH_ARRAYS", justification="Requires API change")
+		@SuppressWarnings("unchecked")
 		private static <T> List<T> arrayToMutableList(T...array)
 		{
 			if(array == null)
@@ -60,6 +80,9 @@ public class SimpleAttribute implements AttributeDefinition
 			return new ArrayList<T>(Arrays.asList(array));
 		}
 
+		@Nullable
+		// FIXME:
+		@SuppressFBWarnings(value="PZLA_PREFER_ZERO_LENGTH_ARRAYS", justification="Requires API change")
 		private static String[] listToArray(List<String> strs)
 		{
 			if(strs == null)
@@ -111,7 +134,7 @@ public class SimpleAttribute implements AttributeDefinition
 			return this;
 		}
 
-		public Builder optionValues(String[] optVals_)
+		public Builder optionValues(String...optVals_)
 		{
 			optVals = arrayToMutableList(optVals_);
 			return this;
@@ -125,7 +148,7 @@ public class SimpleAttribute implements AttributeDefinition
 			return this;
 		}
 
-		public Builder optionLabels(String[] optLabels_)
+		public Builder optionLabels(String...optLabels_)
 		{
 			optLabels = arrayToMutableList(optLabels_);
 			return this;
@@ -210,20 +233,22 @@ public class SimpleAttribute implements AttributeDefinition
 	}
 
 	@Override
+	@SuppressFBWarnings(value="EI_EXPOSE_REP", justification="Only exposes when array is zero length.")
 	public String[] getOptionValues()
 	{
 		if(logger.isDebugEnabled())
-			logger.debug("getOptionValues()=>", Arrays.toString(optVals));
+			logger.debug("getOptionValues()=>{}", Arrays.toString(optVals));
 		if(optVals==null || optVals.length==0)
 			return optVals;
 		return Arrays.copyOf(optVals, optVals.length);
 	}
 
 	@Override
+	@SuppressFBWarnings(value="EI_EXPOSE_REP", justification="Only exposes when array is zero length.")
 	public String[] getOptionLabels()
 	{
 		if(logger.isDebugEnabled())
-			logger.debug("getOptionLabels()=>", Arrays.toString(optLabels));
+			logger.debug("getOptionLabels()=>{}", Arrays.toString(optLabels));
 		if(optLabels==null || optLabels.length==0)
 			return optLabels;
 		return Arrays.copyOf(optLabels, optLabels.length);
@@ -239,6 +264,7 @@ public class SimpleAttribute implements AttributeDefinition
 	}
 
 	@Override
+	@SuppressFBWarnings(value="EI_EXPOSE_REP", justification="Only exposes when array is zero length.")
 	public String[] getDefaultValue()
 	{
 		if(logger.isDebugEnabled())
@@ -247,4 +273,64 @@ public class SimpleAttribute implements AttributeDefinition
 			return defaults;
 		return Arrays.copyOf(defaults, defaults.length);
 	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof SimpleAttribute))
+			return false;
+		SimpleAttribute that = (SimpleAttribute)o;
+		if(this.card!=that.card)
+			return false;
+		if(this.type!=that.type)
+			return false;
+		if(!NullSafe.equals(this.name, that.name))
+			return false;
+		if(!NullSafe.equals(this.id, that.id))
+			return false;
+		if(!NullSafe.equals(this.desc, that.desc))
+			return false;
+		if(!Arrays.equals(this.optVals,that.optVals))
+			return false;
+		if(!Arrays.equals(this.optLabels,that.optLabels))
+			return false;
+		if(!Arrays.equals(this.defaults,that.defaults))
+			return false;
+		return NullSafe.equals(this.validator, that.validator);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(
+			name,
+			id,
+			desc,
+			card,
+			type,
+			validator,
+			Arrays.hashCode(optVals),
+			Arrays.hashCode(optLabels),
+			Arrays.hashCode(defaults)
+		);
+	}
+
+	@Override
+	public String toString()
+	{
+		return new StringBuilder(getClass().getSimpleName()).append(':')
+			.append(" name=").append(name)
+			.append(" id=").append(id)
+			.append(" desc=").append(desc)
+			.append(" card=").append(card)
+			.append(" type=").append(type)
+			.append(" validator=").append(validator)
+			.append(" optVals=").append(Arrays.toString(optVals))
+			.append(" optLabels=").append(Arrays.toString(optLabels))
+			.append(" defaults=").append(Arrays.toString(defaults))
+			.toString();
+	}
+
 }

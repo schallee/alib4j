@@ -6,6 +6,8 @@ import java.net.UnknownHostException;
 import java.net.URL;
 import java.util.regex.Pattern;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +25,7 @@ public final class Validators
 		SINGLETON;
 
 		@Override
+		@SuppressFBWarnings(value="SEC_SIDE_EFFECT_CONSTRUCTOR", justification="Not a good way to verify otherwise")
 		public String validate(String value)
 		{
 			logger.debug("validate(\"{}\")", value);
@@ -61,11 +64,11 @@ public final class Validators
 				return "Null value is invalid.";
 			try
 			{
-				intVal = Integer.valueOf(value);
+				intVal = Integer.parseInt(value);
 			}
 			catch(NumberFormatException e)
 			{
-				logger.warn("Unable to convert {} to integer value.", e);
+				logger.warn("Unable to convert {} to integer value.", value, e);
 				return e.toString();
 			}
 

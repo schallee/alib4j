@@ -4,6 +4,13 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+import static net.darkmist.alib.lang.NullSafe.requireNonNull;
+import static net.darkmist.alib.lang.NullSafe.requireNonNullElse;
 import static net.darkmist.alib.osgi.MiscUtil.contains;
 import static net.darkmist.alib.osgi.MiscUtil.castOrNull;
 
@@ -26,6 +33,7 @@ public class ServiceUtil
 	{
 	}
 
+	@SuppressFBWarnings(value="OPM_OVERLY_PERMISSIVE_METHOD", justification="Library API method")
 	public static String eventTypeToString(int type)
 	{
 		switch(type)
@@ -50,7 +58,7 @@ public class ServiceUtil
 		return eventTypeToString(event.getType());
 	}
 
-	public static String refObjectClassesToString(ServiceReference servRef)
+	public static String refObjectClassesToString(ServiceReference<?> servRef)
 	{
 		Object o;
 		String[] objectClasses;
@@ -91,14 +99,15 @@ public class ServiceUtil
 	private static final Set<PropRetrival> LOGGING_PROP_RETRIVAL = Collections.unmodifiableSet(EnumSet.of(PropRetrival.LOG_ON_NON_EXISTANT, PropRetrival.LOG_ON_WRONG_TYPE, PropRetrival.LOG_ON_NULL_SERVICE_REF, PropRetrival.LOG_ON_NULL_PROP_NAME, PropRetrival.LOG_ON_NULL_TYPE));
 	private static final Set<PropRetrival> THROWING_PROP_RETRIVAL = Collections.unmodifiableSet(EnumSet.of(PropRetrival.THROW_ON_NON_EXISTANT, PropRetrival.THROW_ON_WRONG_TYPE, PropRetrival.THROW_ON_NULL_SERVICE_REF, PropRetrival.THROW_ON_NULL_PROP_NAME, PropRetrival.THROW_ON_NULL_TYPE));
 	
-	public static <T> T getPropertyAs(ServiceReference<?> servRef, String propName, Class<T> type, T defaultValue, Set<PropRetrival> flags)
+	@Nullable
+	@SuppressFBWarnings(value={"BL_BURYING_LOGIC","WEM_WEAK_EXCEPTION_MESSAGING"}, justification="symatry of handling, message provided by caller")
+	public static <T> T getPropertyAs(ServiceReference<?> servRef, String propName, Class<T> type, T defaultValue, @Nullable Set<PropRetrival> flags)
 	{
 		Object o;
 		T val;
 		String msg;
 
-		if(flags == null)
-			flags = EMPTY_PROP_RETRIVAL_FLAGS;
+		flags = requireNonNullElse(flags, EMPTY_PROP_RETRIVAL_FLAGS);
 		if(servRef == null)
 		{
 			msg = "ServiceReference servRef was null.";
@@ -137,39 +146,45 @@ public class ServiceUtil
 		if((val = castOrNull(o, type))==null)
 		{
 			if(flags.contains(PropRetrival.THROW_ON_WRONG_TYPE))
-				throw new IllegalStateException("Service property " + propName + " exists but is of type " + val.getClass().getName() + " instead of " + type.getName());
+				throw new IllegalStateException("Service property " + propName + " exists but is of type " + o.getClass().getName() + " instead of " + type.getName());
 			if(flags.contains(PropRetrival.LOG_ON_NON_EXISTANT))
-				logger.warn("Service property " + propName + " exists but is of type " + val.getClass().getName() + " instead of " + type.getName());
+				logger.warn("Service property {} exists but is of type {} instead of {}", propName, o.getClass().getName(), type.getName());
 			return defaultValue;
 		}
 		return val;
 	}
 
+	@Nullable
 	public static <T> T getPropertyAs(ServiceReference<?> servRef, String propName, Class<T> type, Set<PropRetrival> flags)
 	{
 		return getPropertyAs(servRef, propName, type, null, flags);
 	}
 
+	@Nullable
 	public static <T> T getPropertyAs(ServiceReference<?> servRef, String propName, Class<T> type, T defaultValue)
 	{
 		return getPropertyAs(servRef, propName, type, defaultValue, EMPTY_PROP_RETRIVAL_FLAGS);
 	}
 
+	@Nullable
 	public static <T> T getPropertyAs(ServiceReference<?> servRef, String propName, Class<T> type)
 	{
 		return getPropertyAs(servRef, propName, type, null, EMPTY_PROP_RETRIVAL_FLAGS);
 	}
 
+	@Nullable
 	public static <T> T getPropertyAsLogging(ServiceReference<?> servRef, String propName, Class<T> type, T defaultValue)
 	{
 		return getPropertyAs(servRef, propName, type, defaultValue, LOGGING_PROP_RETRIVAL);
 	}
 
+	@Nullable
 	public static <T> T getPropertyAsLogging(ServiceReference<?> servRef, String propName, Class<T> type)
 	{
 		return getPropertyAsLogging(servRef, propName, type, null);
 	}
 
+	@Nullable
 	public static <T> T getPropertyAsThrowing(ServiceReference<?> servRef, String propName, Class<T> type)
 	{
 		return getPropertyAs(servRef, propName, type, null, THROWING_PROP_RETRIVAL);
@@ -181,12 +196,13 @@ public class ServiceUtil
 	 * @param cls The class this reference is expected to be
 	 * @return servRef as ServiceReference for cls if neither is null and servRef claims cls as a class. null otherwise.
 	 */
+	@Nullable
 	@SuppressWarnings("unchecked")
 	public static <T> ServiceReference<T> getServiceRefAs(ServiceReference<?> servRef, Class<T> cls)
 	{
 		if(servRef == null || cls == null)
 			return null;
-		if(contains(cls.getName(), getPropertyAsLogging(servRef, Constants.OBJECTCLASS, String[].class)))
+		if(NullSafe.equals(cls.getName(), getPropertyAsLogging(servRef, Constants.OBJECTCLASS, String[].class)))
 			return (ServiceReference<T>)servRef;
 		return null;
 	}

@@ -52,5 +52,16 @@
 			<artifactId>core</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.darkmist.alib</groupId>
+			<artifactId>core</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.spotbugs</groupId>
+			<artifactId>spotbugs-annotations</artifactId>
+			<scope>compile</scope>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 </project>

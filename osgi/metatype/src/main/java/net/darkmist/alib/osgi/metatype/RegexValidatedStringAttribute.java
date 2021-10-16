@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nullable;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import net.darkmist.alib.lang.NullSafe;
+
 import org.osgi.service.metatype.AttributeDefinition;
 
 import org.slf4j.Logger;
@@ -28,7 +34,8 @@ public class RegexValidatedStringAttribute implements AttributeDefinition
 		this.id = id;
 		this.desc = desc;
 		this.card = card;
-		this.defaults = defaults;
+		// FIXME: Can we keep from copying this? this.defaults = defaults;
+		this.defaults = Arrays.copyOf(defaults, defaults.length);
 		this.validator = Validators.getRegexValidator(validationPattern);
 	}
 
@@ -72,13 +79,19 @@ public class RegexValidatedStringAttribute implements AttributeDefinition
 		return AttributeDefinition.STRING;
 	}
 
+	@Nullable
 	@Override
+	// FIXME:
+	@SuppressFBWarnings(value="PZLA_PREFER_ZERO_LENGTH_ARRAYS", justification="Requires API change")
 	public String[] getOptionValues()
 	{
 		return null;
 	}
 
+	@Nullable
 	@Override
+	// FIXME:
+	@SuppressFBWarnings(value="PZLA_PREFER_ZERO_LENGTH_ARRAYS", justification="Requires API change")
 	public String[] getOptionLabels()
 	{
 		return null;
@@ -91,6 +104,7 @@ public class RegexValidatedStringAttribute implements AttributeDefinition
 	}
 
 	@Override
+	@SuppressFBWarnings(value="EI_EXPOSE_REP", justification="Only exposes when array is zero length.")
 	public String[] getDefaultValue()
 	{
 		if(logger.isDebugEnabled())
@@ -98,5 +112,45 @@ public class RegexValidatedStringAttribute implements AttributeDefinition
 		if(defaults==null || defaults.length==0)
 			return defaults;
 		return Arrays.copyOf(defaults, defaults.length);
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this==o)
+			return true;
+		if(!(o instanceof RegexValidatedStringAttribute))
+			return false;
+		RegexValidatedStringAttribute that = (RegexValidatedStringAttribute)o;
+		if(this.card!=that.card)
+			return false;
+		if(!NullSafe.equals(this.name, that.name))
+			return false;
+		if(!NullSafe.equals(this.id, that.id))
+			return false;
+		if(!NullSafe.equals(this.desc, that.desc))
+			return false;
+		if(!Arrays.equals(this.defaults,that.defaults))
+			return false;
+		return NullSafe.equals(this.validator, that.validator);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return NullSafe.hashCode(name, id, desc, card, Arrays.hashCode(defaults), validator);
+	}
+
+	@Override
+	public String toString()
+	{
+		return new StringBuilder(getClass().getSimpleName()).append(':')
+			.append(" name=").append(name)
+			.append(" id=").append(id)
+			.append(" desc=").append(desc)
+			.append(" card=").append(card)
+			.append(" defaults=").append(Arrays.toString(defaults))
+			.append(" validator=").append(validator)
+			.toString();
 	}
 }
