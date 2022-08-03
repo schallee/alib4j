@@ -251,7 +251,8 @@ public class PkgRes
 
 		if(cls == null)
 			throw new NullPointerException("cls is null");
-		if((ret = cls.getResourceAsStream(getResourcePathFor(name,cls)))==null)
+		ret = cls.getResourceAsStream(getResourcePathFor(name,cls));	// spotbugs can't handle combining this with if
+		if(ret == null)
 			throw new ResourceException("Unable to find resource for " + name + " and " + cls);
 		return ret;
 	}
