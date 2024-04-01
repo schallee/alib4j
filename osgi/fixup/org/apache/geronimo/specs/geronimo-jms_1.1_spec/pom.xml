@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>pom</artifactId>
+		<groupId>net.darkmist.alib.osgi.fixup.org.apache.geronimo.specs</groupId>
+		<version>1.0.7-SNAPSHOT</version>
+	</parent>
+	<artifactId>geronimo-jms_1.1_spec</artifactId>
+	<description>Bundle fragment to fixing up org.apache.geronimo.specs.geronimo-jms_1.1_spec bundle.</description>
+	<groupId>net.darkmist.alib.osgi.fixup.org.apache.geronimo.specs</groupId>
+	<packaging>jar</packaging>
+	<name>${osgiFixupBaseName}.${project.artifactId}</name>
+	<properties>
+		<base.dir>${project.basedir}/../../../../../../..</base.dir>
+	</properties>
+	<build>
+	<!-- NOT WORKING! -->
+		<!--
+		<plugins>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<forceCreation>true</forceCreation>
+        				<archive>
+						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+						<manifestEntries>
+							<Import-Package>javax.transaction.xa;version=1.1</Import-Package>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<instructions>
+						<Fragment-Host>geronimo-jms_1.1_spec</Fragment-Host>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+		-->
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<!--<Fragment-Host>geronimo-jms_1.1_spec</Fragment-Host>-->
+						<Fragment-Host>org.apache.geronimo.specs.geronimo-jms_1.1_spec</Fragment-Host>
+						<!--<Fragment-Host>${osgiFixupGroupName}.${project.artifactId}</Fragment-Host>-->
+						<Import-Package>
+							javax.jms; version=1.1,
+							javax.transaction.xa; version=1.1
+						</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-jms_1.1_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>

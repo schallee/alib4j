@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>pom</artifactId>
+		<groupId>net.darkmist.alib.osgi.fixup.org.apache.geronimo</groupId>
+		<version>1.0.7-SNAPSHOT</version>
+	</parent>
+	<artifactId>pom</artifactId>
+	<groupId>net.darkmist.alib.osgi.fixup.org.apache.geronimo.specs</groupId>
+	<packaging>pom</packaging>
+	<properties>
+		<base.dir>${project.basedir}/../../../../../..</base.dir>
+		<shortGroupName>alib.osgi.fixup.org.apache.geronimo.specs</shortGroupName>
+		<osgiFixupGroupName>org.apache.geronimo.specs</osgiFixupGroupName>
+	</properties>
+	<name>${shortGroupName}</name>
+	<modules>
+		<module>geronimo-jms_1.1_spec</module>
+	</modules>
+	<description>Bundle fragments fixing up other packages in the maven org.apache.geronimo.specs name space.</description>
+</project>

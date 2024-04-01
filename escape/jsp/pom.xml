@@ -127,7 +127,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<version>${reporting.pmd.version}</version>
+				<version>${pmd.version}</version>
 				<configuration>
 					<linkXref>${reporting.pmd.linkXref}</linkXref>
 					<sourceEncoding>${reporting.pmd.sourceEncoding}</sourceEncoding>
@@ -137,7 +137,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
-				<version>${reporting.versions.version}</version>
+				<version>${versions.version}</version>
 				<reportSets>
 					<reportSet>
 						<reports>
@@ -151,7 +151,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
-				<version>${reporting.jxr.version}</version>
+				<version>${jxr.version}</version>
 			</plugin>
 		</plugins>
 	</reporting>
