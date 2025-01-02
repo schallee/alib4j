@@ -1,0 +1,29 @@
+<?xml version="1.1" encoding="utf-8"?>
+<FindBugsFilter
+	xmlns="https://github.com/spotbugs/filter/3.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+
+	<Match>
+  		<Bug pattern="SPP_EQUALS_ON_ENUM"/>
+		<!--
+			I disagree with this. Using "==" on enum requires
+			remembering/understanding that the type is an
+			enum. Although using "==" is portetially minorly
+			more performant it is also trivially optimized
+			by the compiler/jvm. The same arguments have been
+			made about String interning and comparision with
+			===. If, at some future point, enum is changed
+			to a class or interface then the entire code
+			base must be checked for use of "==". Given the
+			issue of correctness of a program when comparing
+			non-enums with "==" I would much rather train
+			developers to always use ".equals(Object)"
+			for non-primitive comparisons.
+		-->
+	</Match>
+	<Match>
+		<!-- FIXME -->
+  		<Bug pattern="CRLF_INJECTION_LOGS"/>
+	</Match>
+</FindBugsFilter>
